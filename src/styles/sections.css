@@ -1,0 +1,975 @@
+@import './variables.css';
+
+/* ==========================================================================
+   RESET & GLOBAL BASE
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  overflow-x: clip; /* clip (not hidden) so position: sticky keeps working */
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+}
+
+/* Giant section watermarks: fully visible first, GSAP fades them as the content arrives */
+.features-watermark,
+.why-watermark,
+.tv-watermark {
+  position: absolute;
+  top: clamp(40px, 7vw, 130px);
+  left: 0;
+  right: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  /* no big minimum: long words (Client Voice, Questions) must fit a phone */
+  font-size: clamp(40px, 17.5vw, 340px);
+  line-height: 1;
+  /* room below the baseline so descenders (g, Q, y) render inside the clipped box */
+  padding-bottom: 0.24em;
+  margin-bottom: -0.24em;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  text-align: center;
+  /* fades toward the baseline but keeps descenders faintly visible */
+  background: linear-gradient(180deg, rgba(128, 132, 150, 0.85) 0%, rgba(92, 96, 114, 0.6) 38%, rgba(60, 63, 80, 0.28) 72%, rgba(50, 52, 68, 0.22) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  /* no permanent will-change: GSAP promotes this layer only while it animates */
+}
+
+.about-cta-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.about-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 36px;
+  border-radius: 9999px;
+  font-family: var(--font-heading);
+  font-size: clamp(16px, 1.4vw, 22px);
+  font-weight: 700;
+  color: #FFFFFF;
+  background: linear-gradient(90deg, #2A4FE0 0%, #1E3FC4 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 8px 30px rgba(37, 80, 230, 0.35);
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* Logo-orange layer that fades in over the blue on hover */
+.about-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #FF9A3C 0%, #F7801E 45%, #E8650F 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.about-cta:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 214, 170, 0.95);
+  box-shadow: 0 12px 38px rgba(247, 128, 30, 0.5);
+}
+
+.about-cta:hover::before {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+.about-cta-wrap {
+    order: -1;
+    margin-bottom: 12px;
+  }
+
+}
+
+/* ==========================================================================
+   FEATURES SECTION
+   ========================================================================== */
+.features-section {
+  position: relative;
+  width: 100%;
+  padding: clamp(60px, 6vw, 110px) 20px clamp(80px, 7vw, 130px);
+  background: linear-gradient(180deg, #06070B 0%, #0B0C16 12%, #0B0C16 88%, #06070B 100%);
+  overflow: hidden;
+}
+
+.features-glow {
+  position: absolute;
+  top: 26%;
+  left: 5%;
+  width: 70%;
+  height: 62%;
+  background: radial-gradient(ellipse at 40% 55%, rgba(30, 58, 170, 0.5) 0%, rgba(22, 36, 110, 0.22) 45%, transparent 72%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.feat-arena {
+  position: relative;
+  z-index: 10;
+  max-width: 1400px;
+  height: clamp(520px, 38vw, 720px);
+  margin: clamp(150px, 15vw, 290px) auto 0;
+}
+
+/* Brand mark: continuous slow spin + gentle float */
+.feat-logo-wrap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(300px, 30vw, 580px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  z-index: 1;
+  /* no permanent will-change: GSAP promotes this layer only while it animates */
+}
+
+.feat-logo-halo {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 140, 255, 0.35) 0%, rgba(249, 115, 22, 0.14) 50%, transparent 72%);
+  filter: blur(50px);
+  animation: featHaloPulse 6s ease-in-out infinite;
+}
+
+.feat-logo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.55));
+  animation: featLogoRock 9s ease-in-out infinite alternate, featLogoFloat 7s ease-in-out infinite;
+}
+
+@keyframes featLogoRock {
+  from { rotate: -12deg; }
+  to { rotate: 12deg; }
+}
+
+@keyframes featLogoFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -14px; }
+}
+
+@keyframes featHaloPulse {
+  0%, 100% { opacity: 0.75; scale: 1; }
+  50% { opacity: 1; scale: 1.08; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+.feat-logo,
+.feat-logo-halo {
+    animation: none;
+  }
+
+}
+
+.feat-slot {
+  position: absolute;
+  z-index: 5;
+  width: clamp(300px, 24vw, 440px);
+  /* no permanent will-change: GSAP promotes this layer only while it animates */
+}
+
+.feat-slot-left {
+  top: 4%;
+  left: 8%;
+}
+
+.feat-slot-right {
+  bottom: 4%;
+  right: 8%;
+}
+
+.feat-card {
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(180deg, rgba(44, 54, 104, 0.82) 0%, rgba(32, 44, 102, 0.8) 100%);
+  backdrop-filter: blur(30px) saturate(1.2);
+  -webkit-backdrop-filter: blur(30px) saturate(1.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 24px 60px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  text-align: left;
+  animation: featCardIn 0.5s ease both;
+}
+
+@keyframes featCardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+.feat-card-head {
+  display: grid;
+  grid-template-columns: clamp(64px, 5.2vw, 96px) 1fr;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.feat-card-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(54px, 4.6vw, 88px);
+  line-height: 1;
+  color: #3563F0;
+  text-shadow: 0 0 14px rgba(53, 99, 240, 0.9), 0 0 36px rgba(53, 99, 240, 0.55);
+  padding: 18px 0;
+}
+
+.feat-card-titles {
+  padding: clamp(18px, 1.4vw, 26px) clamp(14px, 1.2vw, 22px);
+}
+
+.feat-card-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(20px, 1.9vw, 34px);
+  line-height: 1.1;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+}
+
+.feat-card-sub {
+  font-family: var(--font-heading);
+  font-size: clamp(12px, 0.9vw, 15px);
+  color: #3F6BF0;
+}
+
+.feat-card-body {
+  padding: clamp(20px, 1.6vw, 30px) clamp(20px, 1.5vw, 28px) clamp(26px, 2.2vw, 40px);
+  font-family: var(--font-heading);
+  font-size: clamp(15px, 1.05vw, 20px);
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: #D9DEE8;
+}
+
+.feat-footer {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  margin-top: clamp(40px, 4vw, 70px);
+}
+
+.feat-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+}
+
+.feat-tab {
+  padding: 9px 20px;
+  border-radius: 9999px;
+  border: none;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  color: #94A3B8;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.feat-tab.is-active {
+  color: #FFFFFF;
+  background: #2B55E6;
+  box-shadow: 0 0 16px rgba(43, 85, 230, 0.6);
+}
+
+.feat-tab:not(.is-active):hover {
+  color: #FDBA74;
+}
+
+@media (max-width: 900px) {
+.feat-arena {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+.feat-logo-wrap {
+    position: relative;
+    left: auto;
+    top: auto;
+    translate: none;
+    width: min(78vw, 380px);
+  }
+
+.feat-slot {
+    position: relative;
+    inset: auto;
+    width: min(100%, 460px);
+  }
+
+.feat-slot-left {
+    order: -1;
+  }
+
+}
+
+@media (max-width: 480px) {
+.feat-tab {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+}
+
+/* ==========================================================================
+   WHY US
+   ========================================================================== */
+.why-section {
+  position: relative;
+  width: 100%;
+  padding: clamp(90px, 9vw, 150px) 20px clamp(30px, 3vw, 50px);
+  background: linear-gradient(180deg, #06070B 0%, #0E0F1A 12%, #0E0F1A 88%, #06070B 100%);
+  overflow: hidden;
+  text-align: center;
+}
+
+.why-inner {
+  position: relative;
+  z-index: 10;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: clamp(130px, 13.5vw, 250px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.why-headline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 5.4vw, 6rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+  margin-bottom: 26px;
+}
+
+.why-accent {
+  color: #2B55E6;
+}
+
+.why-sub {
+  max-width: 820px;
+  margin: 0 auto 26px;
+  font-family: var(--font-heading);
+  font-size: clamp(15px, 1.5vw, 24px);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: #E4E6EB;
+}
+
+.why-pills {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 8px 22px;
+  padding: clamp(14px, 1.2vw, 20px) clamp(16px, 1.4vw, 24px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, rgba(48, 50, 62, 0.7) 0%, rgba(34, 36, 48, 0.6) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  text-align: left;
+  margin-bottom: clamp(50px, 5vw, 90px);
+}
+
+.why-pills li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-size: clamp(14px, 1.3vw, 20px);
+  color: #E4E6EB;
+  white-space: nowrap;
+}
+
+.why-pill-check {
+  width: 14px;
+  height: 14px;
+  color: #3563F0;
+  flex-shrink: 0;
+}
+
+/* Cluster geometry is taken from the reference: 4 flat-top hexagons in an offset diamond */
+.why-hexes {
+  position: relative;
+  width: min(100%, 820px);
+  aspect-ratio: 805 / 530;
+}
+
+.why-hexes-glow {
+  position: absolute;
+  inset: 20% 25%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 80, 230, 0.35) 0%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.why-hex {
+  position: absolute;
+  width: 38.3%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  background: linear-gradient(180deg, #2548CE 0%, #1D3AA6 38%, #15225E 72%, rgba(14, 15, 26, 0.9) 100%);
+  transition: filter 0.35s ease, scale 0.35s ease;
+  cursor: default;
+  /* no permanent will-change: GSAP promotes this layer only while it animates */
+}
+
+.why-hex:hover {
+  filter: brightness(1.18);
+  scale: 1.04;
+}
+
+.why-hex--top { left: 31.7%; top: 0; }
+
+.why-hex--left { left: 0;     top: 27.4%; }
+
+.why-hex--right { left: 61.9%; top: 29.6%; }
+
+.why-hex--bottom { left: 30.4%; top: 55%; z-index: 1; }
+
+.why-hex-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(26px, 5vw, 64px);
+  line-height: 1;
+  color: #FFFFFF;
+}
+
+.why-hex-label {
+  font-family: var(--font-heading);
+  font-size: clamp(10px, 1.45vw, 19px);
+  color: #C5CAD6;
+}
+
+@media (max-width: 640px) {
+.why-pills {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* --- Why Us: ambient motion (design unchanged) --- */
+.why-hexes {
+  transform-style: preserve-3d;
+  perspective: 1200px;
+}
+
+/* Idle float: each hex bobs on its own rhythm. Uses `translate` so it
+   doesn't fight GSAP's transform (entrance) or the hover `scale`. */
+.why-hex {
+  animation: whyHexFloat 6s ease-in-out infinite;
+}
+
+.why-hex--top { animation-duration: 6.2s; animation-delay: -1s; }
+
+.why-hex--left { animation-duration: 7s;   animation-delay: -3s; }
+
+.why-hex--right { animation-duration: 6.6s; animation-delay: -2s; }
+
+.why-hex--bottom { animation-duration: 7.4s; animation-delay: -4s; }
+
+@keyframes whyHexFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+
+/* Light sheen sweeping across each hex, staggered */
+.why-hex::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(170, 200, 255, 0.28) 50%, transparent 65%);
+  background-size: 250% 100%;
+  background-position: 150% 0;
+  animation: whyHexSheen 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.why-hex--top::after { animation-delay: 0.5s; }
+
+.why-hex--right::after { animation-delay: 1.4s; }
+
+.why-hex--bottom::after { animation-delay: 2.3s; }
+
+.why-hex--left::after { animation-delay: 3.2s; }
+
+@keyframes whyHexSheen {
+  0%, 60% { background-position: 150% 0; }
+  85%, 100% { background-position: -60% 0; }
+}
+
+/* Hover focus: the hovered hex lifts, siblings step back */
+.why-hexes:hover .why-hex:not(:hover) {
+  filter: brightness(0.72) saturate(0.85);
+}
+
+.why-hex:hover {
+  filter: brightness(1.22) drop-shadow(0 0 24px rgba(59, 110, 255, 0.55));
+}
+
+/* Breathing glow behind the cluster */
+.why-hexes-glow {
+  animation: whyGlowBreath 5s ease-in-out infinite;
+}
+
+@keyframes whyGlowBreath {
+  0%, 100% { opacity: 0.7; scale: 1; }
+  50% { opacity: 1; scale: 1.12; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+.why-hex,
+.why-hex::after,
+.why-hexes-glow {
+    animation: none;
+  }
+
+}
+
+/* ==========================================================================
+   CLIENT VOICE (testimonials)
+   ========================================================================== */
+.tv-section {
+  position: relative;
+  width: 100%;
+  min-height: clamp(760px, 62vw, 1100px);
+  padding: clamp(80px, 8vw, 140px) 20px clamp(120px, 12vw, 220px);
+  background: linear-gradient(180deg, #06070B 0%, #0E0F1A 12%, #0E0F1A 80%, #06070B 100%);
+  overflow: hidden;
+  text-align: center;
+}
+
+.tv-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes tvPortalPulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+/* Watermark sits higher here, like the reference */
+.tv-watermark {
+  top: clamp(20px, 3vw, 60px);
+  transform-origin: 50% 50%;
+}
+
+.tv-inner {
+  position: relative;
+  z-index: 10;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-top: clamp(70px, 8vw, 150px);
+}
+
+.tv-headline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 4.6vw, 5.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+  margin-bottom: clamp(60px, 9vw, 170px);
+}
+
+.tv-accent {
+  color: #2B55E6;
+}
+
+.tv-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 1.4vw, 24px);
+  perspective: 1400px;
+}
+
+.tv-card {
+  margin: 0;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(180deg, rgba(40, 46, 80, 0.55) 0%, rgba(24, 30, 64, 0.5) 100%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 20px 50px rgba(0, 0, 0, 0.35);
+  text-align: left;
+  overflow: hidden;
+  transition: translate 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  /* no permanent will-change: GSAP promotes this layer only while it animates */
+}
+
+.tv-card:hover {
+  translate: 0 -6px;
+  border-color: rgba(120, 165, 255, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 26px 60px rgba(0, 0, 0, 0.45), 0 0 40px rgba(43, 85, 230, 0.3);
+}
+
+.tv-card-head {
+  display: grid;
+  grid-template-columns: clamp(64px, 5vw, 90px) 1fr;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.tv-card-flag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 14px 10px;
+}
+
+.tv-flag {
+  width: 100%;
+  max-width: 54px;
+  height: auto;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.tv-card-who {
+  padding: clamp(12px, 1vw, 18px) clamp(12px, 1vw, 18px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.tv-card-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(17px, 1.4vw, 24px);
+  line-height: 1.15;
+  color: #FFFFFF;
+}
+
+.tv-card-role {
+  font-family: var(--font-heading);
+  font-size: clamp(11px, 0.75vw, 13px);
+  color: #3F6BF0;
+}
+
+.tv-card-body {
+  padding: clamp(16px, 1.3vw, 22px) clamp(16px, 1.3vw, 22px) clamp(26px, 2.4vw, 40px);
+}
+
+.tv-stars {
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+}
+
+.tv-quote {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(14px, 1.05vw, 18px);
+  line-height: 1.5;
+  color: #F1F3F7;
+}
+
+@media (max-width: 900px) {
+.tv-cards {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+.tv-portal-glow { animation: none; }
+
+}
+
+/* Canyon melts into the page at the top and bottom edges */
+.tv-backdrop {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 78%, transparent 100%);
+}
+
+/* Client Voice: photo backdrop (replaces the generated canyon) */
+.tv-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+  user-select: none;
+  will-change: transform;
+}
+
+/* Soft pulse over the portal arch in the image */
+.tv-portal-glow {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  width: 34%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(40, 70, 255, 0.28) 0%, transparent 65%);
+  mix-blend-mode: screen;
+  animation: tvPortalPulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.tv-card {
+  transform-origin: 50% 50%;
+}
+
+/* Solid layer the middle card fades to while it zooms to full screen,
+   matching the Pricing background so the hand-off is seamless */
+.tv-card {
+  position: relative;
+}
+
+.tv-card-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #06070B;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Client Voice on desktop is exactly one screen tall, so the pinned zoom-through
+   hands straight over to Pricing with no leftover dark strip */
+@media (min-width: 901px) {
+.tv-section {
+    min-height: 100vh;
+    height: 100vh;
+    padding-bottom: 0;
+  }
+
+}
+
+/* Features: second showcase follows the first; card 3 sits mid-left like the design */
+.feat-arena + .feat-arena {
+  margin-top: clamp(40px, 5vw, 100px);
+}
+
+.feat-arena--b .feat-slot-left {
+  top: 30%;
+  left: 8%;
+}
+
+/* Alternate the rock so the two marks never move in sync */
+.feat-arena--b .feat-logo {
+  animation-delay: -4.5s, -3s;
+}
+
+@media (max-width: 900px) {
+.feat-arena--b .feat-slot-left { top: auto; left: auto; }
+
+}
+
+/* Interactive 3D logo (Features) */
+.logo3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.logo3d:active {
+  cursor: grabbing;
+}
+
+.logo3d canvas {
+  display: block;
+}
+
+/* Let the logo receive the pointer around the cards */
+.feat-logo-wrap {
+  z-index: 2;
+}
+
+/* ==========================================================================
+   CLIENT REVIEW: card polish (stars, highlight, quote mark, cursor spotlight)
+   ========================================================================== */
+.tv-stars {
+  display: flex;
+  gap: 3px;
+  letter-spacing: 0;
+}
+
+.tv-star {
+  display: inline-block;
+  color: #FFB547;
+  text-shadow: 0 0 10px rgba(255, 181, 71, 0.55);
+  transition: opacity 0.35s ease, scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.35s ease;
+  transition-delay: calc(var(--n) * 90ms);
+}
+
+/* Only dimmed while waiting for the reveal (JS adds .stars-pending) */
+.tv-cards.stars-pending .tv-star {
+  opacity: 0.18;
+  scale: 0.6;
+  color: #FFFFFF;
+  text-shadow: none;
+}
+
+.tv-cards.stars-pending.is-rated .tv-star {
+  opacity: 1;
+  scale: 1;
+  color: #FFB547;
+  text-shadow: 0 0 10px rgba(255, 181, 71, 0.55);
+}
+
+/* Each card's stars start a touch later than the previous card's */
+.tv-card:nth-child(2) .tv-star { transition-delay: calc(150ms + var(--n) * 90ms); }
+
+.tv-card:nth-child(3) .tv-star { transition-delay: calc(300ms + var(--n) * 90ms); }
+
+/* Key result in each quote */
+.tv-hl {
+  background: none;
+  color: #FFFFFF;
+  font-weight: 600;
+  background-image: linear-gradient(90deg, rgba(247, 128, 30, 0.45), rgba(247, 128, 30, 0.15));
+  background-size: 100% 0.42em;
+  background-position: 0 88%;
+  background-repeat: no-repeat;
+  padding: 0 2px;
+}
+
+/* Big decorative quote mark */
+.tv-qmark {
+  position: absolute;
+  right: 18px;
+  bottom: -38px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 150px;
+  line-height: 1;
+  color: rgba(127, 166, 255, 0.1);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Cursor spotlight */
+.tv-spot {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(260px circle at var(--sx, 50%) var(--sy, -40%), rgba(140, 180, 255, 0.16), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.tv-card:hover .tv-spot {
+  opacity: 1;
+}
+
+.tv-card-head,
+.tv-card-body {
+  position: relative;
+  z-index: 1;
+}
+
+/* "Client Review" is wider than the other watermarks: size it to fit the screen */
+.tv-watermark {
+  font-size: clamp(40px, 15vw, 300px);
+}
+
+@media (max-width: 640px) {
+.tv-watermark { font-size: 13.5vw; }
+
+}
+
+.tv-stars { font-size: 17px; }
+
+/* Client Review (desktop): headline + cards centred in the pinned screen */
+@media (min-width: 901px) {
+.tv-section {
+    padding-top: 0;
+  }
+
+.tv-inner {
+    height: 100%;
+    padding-top: 90px; /* clear the fixed navbar */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+.tv-headline {
+    margin-bottom: clamp(36px, 3.6vw, 64px);
+  }
+
+.tv-cards {
+    width: 100%;
+  }
+
+}
+
+/* Features logo: inner layer carries the scroll-in scale/opacity */
+.feat-logo-anim {
+  position: absolute;
+  inset: 0;
+}
