@@ -1,0 +1,281 @@
+/* ==========================================================================
+   VERSION 5 ABOUT US SECTION
+   ========================================================================== */
+
+.about-v5-section {
+  position: relative;
+  width: 100%;
+  padding: clamp(90px, 10vw, 160px) 24px clamp(80px, 8vw, 140px);
+  background-color: var(--bg-v5, #0F0F1C);
+  color: #FFFFFF;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Ambient Blue Glow Orb (from Figma #1542:1466) */
+.about-v5-glow {
+  position: absolute;
+  top: 15%;
+  right: 8%;
+  width: clamp(320px, 45vw, 600px);
+  height: clamp(320px, 45vw, 600px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(39, 83, 227, 0.45) 0%, rgba(39, 83, 227, 0.1) 50%, transparent 70%);
+  filter: blur(140px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+}
+
+.about-v5-glow-secondary {
+  position: absolute;
+  bottom: 10%;
+  left: 5%;
+  width: clamp(260px, 35vw, 450px);
+  height: clamp(260px, 35vw, 450px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240, 113, 8, 0.2) 0%, transparent 70%);
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Giant Background Watermark (from Figma #1542:1462) */
+.about-v5-watermark {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1348px;
+  height: 256px;
+  background-image: url('/assets/about-us-title.svg');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: contain;
+  opacity: 0.38;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+
+/* Main Container */
+.about-v5-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header Text Area */
+.about-v5-header {
+  text-align: center;
+  max-width: 980px;
+  margin-bottom: clamp(48px, 6vw, 72px);
+}
+
+/* Big Heading (#1542:1467) */
+.about-v5-heading {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 700;
+  font-size: clamp(38px, 5.2vw, 84px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: #FFFFFF;
+  margin-bottom: 24px;
+}
+
+.about-v5-highlight {
+  color: #2753E3;
+  text-shadow: 0 0 30px rgba(39, 83, 227, 0.8), 0 0 60px rgba(39, 83, 227, 0.4);
+  display: inline-block;
+}
+
+/* Subtitle (#1542:1468) */
+.about-v5-subtitle {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 400;
+  font-size: clamp(17px, 1.35vw, 22px);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+/* Three-Column Grid: Left Card - Center Button - Right Card */
+.about-v5-showcase {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(24px, 3.5vw, 56px);
+  margin-top: 20px;
+}
+
+/* Glassmorphism Cards (#1542:1469 & #1542:1470) */
+.about-v5-card {
+  position: relative;
+  min-height: 400px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.about-v5-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  opacity: 0.7;
+}
+
+.about-v5-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 25px 60px rgba(39, 83, 227, 0.15), 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.about-v5-card-num {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  color: #2753E3;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.about-v5-card-title {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 700;
+  font-size: clamp(22px, 1.8vw, 28px);
+  line-height: 1.25;
+  color: #FFFFFF;
+  margin-bottom: 14px;
+}
+
+.about-v5-card-desc {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #94A3B8;
+  margin-bottom: 24px;
+}
+
+.about-v5-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.about-v5-card-tag {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #E2E8F0;
+}
+
+/* Center Action Area (#1542:1463) */
+.about-v5-center-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 2;
+}
+
+.about-v5-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 20px 36px;
+  border-radius: 31px;
+  background: linear-gradient(270deg, #0F0F1C 0%, #152E7D 45%, #2753E3 100%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  color: #FFFFFF;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 10px 35px rgba(39, 83, 227, 0.45);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.about-v5-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 15px 45px rgba(39, 83, 227, 0.7);
+  border-color: #FFFFFF;
+}
+
+.about-v5-btn-icon {
+  width: 19px;
+  height: 19px;
+  transition: transform 0.3s ease;
+}
+
+.about-v5-btn:hover .about-v5-btn-icon {
+  transform: translate(3px, -3px);
+}
+
+.about-v5-center-sub {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 13px;
+  color: #94A3B8;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 980px) {
+  .about-v5-showcase {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .about-v5-center-action {
+    order: -1;
+    margin-bottom: 12px;
+  }
+
+  .about-v5-card {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-v5-card {
+    padding: 28px 20px;
+  }
+
+  .about-v5-btn {
+    padding: 16px 28px;
+    font-size: 16px;
+  }
+}

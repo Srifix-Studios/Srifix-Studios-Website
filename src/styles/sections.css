@@ -59,11 +59,6 @@ button, input, textarea, select {
   /* no permanent will-change: GSAP promotes this layer only while it animates */
 }
 
-.about-cta-wrap {
-  display: flex;
-  justify-content: center;
-}
-
 .about-cta {
   display: inline-flex;
   align-items: center;
@@ -106,13 +101,6 @@ button, input, textarea, select {
   opacity: 1;
 }
 
-@media (max-width: 900px) {
-.about-cta-wrap {
-    order: -1;
-    margin-bottom: 12px;
-  }
-
-}
 
 /* ==========================================================================
    FEATURES SECTION
