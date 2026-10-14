@@ -1,0 +1,24 @@
+﻿
+
+
+/* mouse move highlight trail */
+
+.light{
+ 
+  top:0;
+  left:0;
+  z-index:9999;
+ 
+  
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  pointer-events: none; will-change: transform;
+}
+.light--cyan   { background: radial-gradient(circle,#34d0f7  0%, rgba(13, 165, 203, 0) 65%); transition: transform 0.05s linear; }
+.light--blue   { background: radial-gradient(circle,#1585df 0%, rgba(21, 133, 223, 0) 65%); transition: transform 0.10s linear; }
+.light--violet { background: radial-gradient(circle, #ed2da0 , 0%, rgba(229, 6, 114, 0) 65%); transition: transform 0.15s linear; }
+.light--purple { background: radial-gradient(circle, rgba(227, 39, 177, 0.4) 0%, rgba(168, 85, 247, 0) 65%); transition: transform 0.20s linear; }
+.light--orange { background: radial-gradient(circle, #f07108 0%, rgba(240, 113, 8, 0) 65%); transition: transform 0.25s linear; }
+.light--gold   { background: radial-gradient(circle, #Fbaf26 0%, rgba(251, 173, 38, 0) 65%); transition: transform 0.30s linear; }
