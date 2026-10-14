@@ -1,0 +1,496 @@
+/* ==========================================================================
+   VERSION 5 HERO SECTION & NAVISLAND
+   ========================================================================== */
+
+.hero-v5-wrapper {
+  position: relative;
+  width: 100%;
+  background-color: var(--bg-v5, #0F0F1C);
+  color: #FFFFFF;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Space animation background */
+.hero-v5-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  pointer-events: none;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0.95;
+}
+
+/* ==========================================================================
+   NAVISLAND (NAVBAR)
+   ========================================================================== */
+.navisland-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 16px 24px;
+  transition: all 0.3s ease;
+}
+
+.navisland-header.scrolled {
+  background: rgba(15, 15, 28, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.navisland-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Logo */
+.navisland-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.navisland-logo-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 0 18px rgba(240, 113, 8, 0.35);
+  transition: transform 0.3s ease;
+}
+
+.navisland-logo:hover .navisland-logo-img {
+  transform: rotate(-4deg) scale(1.05);
+}
+
+.navisland-logo-text {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.045em;
+  background: linear-gradient(163deg, #F07108 0%, #FFC697 37%, #1585DF 100%, #0847AE 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-transform: uppercase;
+}
+
+/* Center Pill Nav Links */
+.navisland-pill {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 10px 28px;
+  border-radius: 85px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  list-style: none;
+}
+
+.navisland-link {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: color 0.25s ease, transform 0.2s ease;
+  position: relative;
+  display: inline-block;
+}
+
+.navisland-link:hover {
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.navisland-link.active {
+  color: #F07108;
+  font-weight: 700;
+}
+
+.navisland-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #F07108;
+  border-radius: 2px;
+  box-shadow: 0 0 8px #F07108;
+}
+
+/* Right Nav CTA Button */
+.navisland-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 50px;
+  padding: 0 24px;
+  border-radius: 31px;
+  background-color: #0F0F1C;
+  color: #FFFFFF;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 0 0 25px rgba(39, 83, 227, 0.45), 0 0 16px rgba(240, 113, 8, 0.35);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Gradient Border Effect */
+.navisland-cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(152deg, #F07108 0%, #2753E3 78%, #0847AE 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.navisland-cta-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 35px rgba(39, 83, 227, 0.7), 0 0 25px rgba(240, 113, 8, 0.55);
+}
+
+.navisland-cta-icon {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.3s ease;
+}
+
+.navisland-cta-btn:hover .navisland-cta-icon {
+  transform: translate(2px, -2px);
+}
+
+/* Mobile Toggle */
+.navisland-mobile-toggle {
+  display: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 10px;
+  color: #FFFFFF;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   HERO MAIN CONTENT
+   ========================================================================== */
+.hero-v5-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(60px, 8vw, 130px) 24px clamp(40px, 6vw, 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+/* Main Heading */
+.hero-v5-heading {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 700;
+  font-size: clamp(42px, 6vw, 84px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin-bottom: 24px;
+  max-width: 1060px;
+}
+
+.hero-v5-text-gradient {
+  background: linear-gradient(180deg, #FFFFFF 62%, #B0B5C0 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0px 0px 20px rgba(255, 255, 255, 0.25));
+  display: inline;
+}
+
+/* "Digital" Italic Accent */
+.hero-v5-digital-word {
+  font-family: var(--font-serif-italic, 'Playfair Display', Georgia, serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(52px, 7.5vw, 108px);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: #2753E3;
+  -webkit-text-fill-color: #2753E3;
+  text-shadow: 0px 0px 24px rgba(39, 83, 227, 0.95), 0px 0px 48px rgba(39, 83, 227, 0.5);
+  display: inline-block;
+  vertical-align: baseline;
+  padding: 0 4px;
+}
+
+/* Subtitle */
+.hero-v5-subtitle {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 400;
+  font-size: clamp(17px, 1.4vw, 22px);
+  line-height: 1.5;
+  color: #D1D5DB;
+  max-width: 820px;
+  margin: 0 auto 40px;
+  text-shadow: 0px 0px 18px rgba(255, 255, 255, 0.2);
+}
+
+/* Central Hero CTA Button */
+.hero-v5-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 60px;
+  padding: 0 38px;
+  border-radius: 31px;
+  background-color: #0F0F1C;
+  color: #FFFFFF;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 700;
+  font-size: clamp(16px, 1.2vw, 19px);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 0 0 35px rgba(39, 83, 227, 0.55), 0 0 25px rgba(240, 113, 8, 0.45);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-v5-cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(152deg, #F07108 0%, #2753E3 78%, #0847AE 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-v5-cta-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 0 45px rgba(39, 83, 227, 0.8), 0 0 35px rgba(240, 113, 8, 0.65);
+}
+
+.hero-v5-cta-icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.hero-v5-cta-btn:hover .hero-v5-cta-icon {
+  transform: translate(3px, -3px);
+}
+
+/* ==========================================================================
+   MINI INFO BAR (STATS BAR)
+   ========================================================================== */
+.mini-info-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1360px;
+  margin: 30px auto 0;
+  padding: 0 20px;
+  z-index: 10;
+}
+
+.mini-info-container {
+  position: relative;
+  width: 100%;
+  min-height: 140px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  padding: 24px 32px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+/* Subtle SVG background overlay */
+.mini-info-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/assets/mini-info-bg.svg');
+  background-position: center;
+  background-size: cover;
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mini-info-item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 16px;
+  transition: transform 0.3s ease;
+}
+
+.mini-info-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+}
+
+.mini-info-item:hover {
+  transform: translateY(-2px);
+}
+
+.mini-info-number {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 800;
+  font-size: clamp(36px, 4.2vw, 64px);
+  line-height: 1.05;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.mini-info-label {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 600;
+  font-size: clamp(11px, 1vw, 13px);
+  line-height: 1.3;
+  letter-spacing: 0.085em;
+  text-transform: uppercase;
+  color: #9CA3AF;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .navisland-pill {
+    gap: 16px;
+    padding: 8px 20px;
+  }
+
+  .navisland-link {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 860px) {
+  .navisland-pill {
+    display: none;
+  }
+
+  .navisland-mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navisland-mobile-menu {
+    position: fixed;
+    top: 76px;
+    left: 20px;
+    right: 20px;
+    background: rgba(15, 15, 28, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 24px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    list-style: none;
+  }
+
+  .navisland-mobile-menu .navisland-link {
+    font-size: 18px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .mini-info-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 0;
+    padding: 24px 16px;
+  }
+
+  .mini-info-item:nth-child(2)::after {
+    display: none;
+  }
+}
+
+@media (max-width: 540px) {
+  .navisland-logo-text {
+    font-size: 15px;
+  }
+
+  .navisland-cta-btn {
+    padding: 0 16px;
+    height: 44px;
+    font-size: 14px;
+  }
+
+  .mini-info-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .mini-info-item::after {
+    display: none !important;
+  }
+}
