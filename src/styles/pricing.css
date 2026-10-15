@@ -1,0 +1,501 @@
+﻿
+
+/* ----- Pricing section ----- */
+
+.pricing-section {
+  position: relative;
+  min-height: 440px;
+  margin-top: 0.5rem;
+  padding: 3rem 0 5rem;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(39, 83, 227, 0) 68.27%, #0f0f1c 100%);
+  box-shadow: inset 0 -136px 186px -56px #2753e3;
+}
+
+.pricing-bg-text {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  
+ 
+  font-size: clamp(40px, 15vw, 300px);
+  font-weight: bold;
+  white-space: nowrap;
+  background: linear-gradient(180deg, rgba(128, 132, 150, 0.85) 0%, rgba(92, 96, 114, 0.6) 38%, rgba(60, 63, 80, 0.28) 72%, rgba(50, 52, 68, 0.22) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.pricing-grid {
+  position: relative;
+  z-index: 10;
+  max-width: 1308px;
+  margin: 0.5rem auto 0;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .pricing-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 1024px) {
+  .pricing-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+
+.pricing-card {
+  position: relative;
+  display: flex;
+  z-index: 0;
+  flex-direction: column;
+  min-height: 620px;
+  padding: 2.5rem;
+  overflow: hidden; 
+  border-radius: 50px;
+
+
+  --inset: 6px;
+  --border-radius: 50px;
+  --bg-card: #04081c;
+ 
+  --border-conic: conic-gradient(
+    #470cec 0deg,
+    #bb79e1 90deg,
+    rgba(227, 39, 177, 0.75) 180deg,
+    #2b3560 350deg,
+    #470cec 360deg
+  );
+
+  background:
+    linear-gradient(#04081c, #04081c) padding-box,
+    linear-gradient(180deg, #161b2a 41.35%, #534daf 65.87%, #bb79e1 82.21%, #9cb0f2 100%) border-box;
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s;
+}
+
+.pricing-card:hover {
+  transform: translateY(-8px);
+}
+
+.pricing-card.featured {
+  box-shadow: 0 0 60px rgba(59, 130, 246, 0.25);
+}
+
+
+
+
+
+.pricing-card .title {
+  color: #3b82f6;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-bottom: 2.5rem;
+}
+
+.pricing-card .price {
+  font-size: 2.25rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+@media (min-width: 1024px) {
+  .pricing-card .price { font-size: 3rem; }
+}
+
+.pricing-card .tag {
+  color: #60a5fa;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.pricing-card .features {
+  list-style: none;
+  padding: 0;
+}
+
+.pricing-card .features li {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 1.125rem;
+  line-height: 1.625;
+  margin-bottom: 2rem;
+}
+
+.pricing-card .features li:last-child {
+  margin-bottom: 0;
+}
+
+.pricing-card .features .bar {
+  flex-shrink: 0;
+  width: 36px;
+  height: 3.5px;
+  border-radius: 999px;
+  background: linear-gradient(270deg, #2753e3 31.25%, #fff 68.75%);
+}
+
+.btn-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+  margin-top: auto;
+}
+
+.pricing-card .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  width: 100%;
+  max-width: 282px;
+  height: 62px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: linear-gradient(270deg, #2753e3, #152e7d 43.75%, #0f0f1c);
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.pricing-card .btn:hover {
+ transform: translateY(-4px);
+  box-shadow: 0px 15px 30px rgba(227, 39, 177, 0.4);
+ 
+ 
+}
+
+
+
+.pricing-heading {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin-top: 6rem;
+  font-size: 3rem;
+
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: #FFFFFF;
+  letter-spacing: -0.025em;
+}
+
+
+.pricing-heading .accent,
+.question-heading .accent {
+  color: #2B55E6;
+}
+
+@media (min-width: 768px) {
+  .pricing-heading { font-size: 4.5rem; }
+}
+
+@media (min-width: 1024px) {
+  .pricing-heading { font-size: 84px; }
+}
+
+/* 
+   FEATURED CARD WAVY AURORA GLOW
+ */
+
+.featured {
+  position: relative;
+  overflow: hidden;
+}
+
+.featured > *:not(.glow) {
+  position: relative;
+  z-index: 5;
+}
+
+/* Glow container */
+.glow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -60px;
+
+  height: 300px;
+
+  overflow: hidden;
+  pointer-events: none;
+
+  z-index: 1;
+}
+
+/* Wave layers */
+.wave {
+  position: absolute;
+
+  width: 400%;
+  height: 220px;
+
+  left: 0;
+  bottom: 0;
+
+  filter: blur(40px);
+
+  transform: translate3d(0, 0, 0);
+}
+
+/* Main purple-blue wave */
+.wave1 {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(119,49,183,0.95),
+      #bb79e1 ,
+      rgba(227, 39, 177, 0.4) ,
+      rgba(124, 7, 233, 0.95)
+    );
+
+  -webkit-mask:
+    url("https://cdn.kcak11.com/codepen_assets/wave_animation/wave.svg")
+    repeat-x;
+
+  mask:
+    url("https://cdn.kcak11.com/codepen_assets/wave_animation/wave.svg")
+    repeat-x;
+
+  -webkit-mask-size: 1600px 220px;
+  mask-size: 1600px 220px;
+
+  animation: waveMove 8s linear infinite alternate;
+}
+
+/* Highlight wave */
+.wave2 {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(23, 140, 230, 0.9),
+      rgba(131, 54, 203, 0.5)
+     
+    );
+
+  -webkit-mask:
+    url("https://cdn.kcak11.com/codepen_assets/wave_animation/wave.svg")
+    repeat-x;
+
+  mask:
+    url("https://cdn.kcak11.com/codepen_assets/wave_animation/wave.svg")
+    repeat-x;
+
+  -webkit-mask-size: 1600px 220px;
+  mask-size: 1600px 220px;
+
+  opacity: 0.8;
+
+  animation:
+    waveMove 8s linear infinite ,
+    waveSwell 6s ease-in-out infinite alternate;
+}
+
+/* Horizontal movement */
+@keyframes waveMove {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-1000px);
+  }
+}
+
+/* Vertical wave motion */
+@keyframes waveSwell {
+  0% ,
+  100% {
+    transform: translateY(-25px);
+  }
+
+  50% {
+    transform: translateY(45px);
+  }
+}
+
+
+
+
+/* Questions section */
+
+.question-section {
+  position: relative;
+  min-height: 440px;
+  margin-top: 0.5rem;
+  padding: 5rem 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(39, 83, 227, 0) 68.27%, #0f0f1c 100%);
+  box-shadow: inset 0 -136px 186px -56px #2753e3;
+}
+
+
+.question-bg-text {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  
+  font-size: clamp(40px, 15vw, 300px);
+  font-weight: bold;
+  white-space: nowrap;
+  background: linear-gradient(180deg, rgba(128, 132, 150, 0.85) 0%, rgba(92, 96, 114, 0.6) 38%, rgba(60, 63, 80, 0.28) 72%, rgba(50, 52, 68, 0.22) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.question-list {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 900px;
+  margin: 0.5rem auto 0;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+@property --ang {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.question-item {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background:
+    linear-gradient(#04081c, #04081c) padding-box,
+    linear-gradient(180deg, #161b2a 41.35%, #534daf 65.87%, #bb79e1 82.21%, #9cb0f2 100%) border-box;
+  transition:
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
+}
+
+.question-item:hover {
+  box-shadow: 0 18px 44px -22px rgba(59, 130, 246, 0.35);
+}
+
+.question-item.open {
+  --ang: 0deg; /* fallback so the conic still parses without @property support */
+  background:
+    linear-gradient(#04081c, #04081c) padding-box,
+    conic-gradient(
+      from var(--ang),
+      #470cec 0deg,
+      #bb79e1 90deg,
+      rgba(227, 39, 177, 0.4) 180deg,
+      #161b2a 350deg,
+      #470cec 360deg
+    ) border-box;
+  box-shadow: 0 20px 50px -20px rgba(59, 130, 246, 0.45);
+  animation: question-border-spin 1.5s linear infinite;
+}
+
+@keyframes question-border-spin {
+  to {
+    --ang: 360deg;
+  }
+}
+
+.question-q {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.75rem 2rem;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.question-q:hover {
+  color: #9cb0f2;
+}
+
+.question-chevron {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  transition: transform 0.4s ease, border-color 0.3s ease;
+}
+
+.question-chevron svg {
+  width: 16px;
+  height: 16px;
+}
+
+.question-item.open .question-chevron {
+  transform: rotate(180deg);
+  border-color: rgba(59, 130, 246, 0.6);
+}
+
+
+.question-a {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease;
+}
+
+.question-a > p {
+  overflow: hidden;
+  margin: 0;
+  padding: 0 2rem 1.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.question-item.open .question-a {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.question-q:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.7);
+  outline-offset: -2px;
+  border-radius: 20px;
+}
+
+.question-heading {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin: 3rem 0 2.5rem;
+  padding: 0 1.5rem;
+  font-size: 3rem;
+  
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+@media (min-width: 768px) {
+  .question-heading { font-size: 4.5rem; }
+}
+
+

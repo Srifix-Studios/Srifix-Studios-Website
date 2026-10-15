@@ -1,3 +1,5 @@
+/* Main entry point for the React app. */
+import './styles/animations.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'

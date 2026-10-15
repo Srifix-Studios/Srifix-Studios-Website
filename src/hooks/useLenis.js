@@ -18,6 +18,11 @@ export function useLenis() {
       infinite: false,
     })
 
+    // Expose the instance so components (e.g. Footer's "Back to Top") can
+    // drive programmatic smooth scrolling instead of fighting Lenis with
+    // raw window.scrollTo jumps.
+    window.lenis = lenis
+
     // Synchronize Lenis with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update)
 
@@ -53,6 +58,7 @@ export function useLenis() {
       gsap.ticker.remove(update)
       lenis.off('scroll', ScrollTrigger.update)
       lenis.destroy()
+      if (window.lenis === lenis) delete window.lenis
     }
   }, [])
 }
