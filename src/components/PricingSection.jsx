@@ -2,12 +2,26 @@ import React, { useRef, useEffect } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { pricingPlans } from '../data/pricing'
+import { pricingPlans, pricingPrinciple } from '../data/pricing'
 import '../styles/pricing.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
 function PricingCard({ plan }) {
+  const isCustomPrice = plan.price.toLowerCase().includes('requirement')
+
+  const handleCtaClick = (e) => {
+    e.preventDefault()
+    const target = document.getElementById('contact')
+    if (target) {
+      if (window.lenis) {
+        window.lenis.scrollTo(target, { duration: 1.2 })
+      } else {
+        target.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
+
   return (
     <div className={plan.featured ? 'pricing-card featured card' : 'pricing-card card'}>
       {plan.featured && (
@@ -17,9 +31,20 @@ function PricingCard({ plan }) {
         </div>
       )}
 
+      <div className="card-top">
+        <span className="card-num">{plan.num} / {plan.category || 'SERVICE'}</span>
+        {plan.featured && <span className="featured-badge">MOST POPULAR</span>}
+      </div>
+
       <p className="title">{plan.title}</p>
-      <h2 className="price">{plan.price}</h2>
-      <span className="tag">{plan.tag}</span>
+
+      <div className="price-wrap">
+        <span className="price-prefix">{isCustomPrice ? 'Investment Model' : 'Starting From'}</span>
+        <h2 className={`price ${isCustomPrice ? 'price-custom' : ''}`}>{plan.price}</h2>
+        <span className="tag">{plan.tag}</span>
+      </div>
+
+      <div className="scope-label">Scope / Deliverables</div>
 
       <ul className="features">
         {plan.features.map((feature) => (
@@ -30,10 +55,13 @@ function PricingCard({ plan }) {
         ))}
       </ul>
 
+      {plan.note && <div className="card-note">*{plan.note}</div>}
+
       <div className="btn-wrap">
-        <button type="button" className="btn">
-          View Details <ArrowUpRight aria-hidden="true" />
-        </button>
+        <a href="#contact" onClick={handleCtaClick} className="btn">
+          <span>Get Started</span>
+          <ArrowUpRight aria-hidden="true" />
+        </a>
       </div>
     </div>
   )
@@ -46,8 +74,7 @@ export default function PricingSection() {
     const mm = gsap.matchMedia()
 
     mm.add('(prefers-reduced-motion: no-preference)', () => {
-      // "Pricing" is fully visible first as the pricing cards scroll up into
-   
+      // Watermark text fades as grid scrolls in
       gsap.to('.pricing-bg-text', {
         opacity: 0,
         yPercent: -18,
@@ -69,13 +96,44 @@ export default function PricingSection() {
     <section id="pricing" className="pricing-section" ref={sectionRef}>
       <h2 className="pricing-bg-text" aria-hidden="true">Pricing</h2>
 
+      <div className="pricing-header-wrap">
+        <h3 className="pricing-heading">
+          Services &amp; <span className="accent">Pricing</span>
+        </h3>
+        <p className="pricing-subtitle">
+          Creative, design, strategy and digital solutions — structured around your business requirements.
+        </p>
+      </div>
+
       <div className="pricing-grid">
         {pricingPlans.map((plan) => (
           <PricingCard key={plan.title} plan={plan} />
         ))}
       </div>
 
-      <h3 className="pricing-heading">Simple, Transparent Pricing</h3>
+      {/* Pricing Principle & Policy Banner from official sheet */}
+      <div className="pricing-principle-banner">
+        <div className="pricing-principle-card">
+          <div className="principle-col">
+            <h4>
+              <span className="principle-tag">PRINCIPLE</span>
+              {pricingPrinciple.heading}
+            </h4>
+            <p>{pricingPrinciple.description}</p>
+          </div>
+
+          <div className="principle-col">
+            <h4>
+              <span className="principle-tag">POLICY</span>
+              {pricingPrinciple.policyHeading}
+            </h4>
+            <p>{pricingPrinciple.policyDescription}</p>
+            <p className="production-subnote">
+              <strong>{pricingPrinciple.productionHeading}:</strong> {pricingPrinciple.productionDescription}
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
