@@ -86,10 +86,15 @@ The Srifix Studios website is an immersive, interactive digital experience built
 - 3D canyon zoom perspective with animated client cards and interactive star ratings.
 - Real client case studies showcasing measurable conversion lifts and international impact across Finland, India, and Ukraine.
 
-### 9. Transparent Pricing & Tiered Plans
-- **Launch ($999)**: Brand mark, mini style guide, 5-page custom website, 2 revision rounds.
-- **Growth ($2,499 - Featured)**: Complete identity system, 10-page custom website, interactive UI/UX prototyping, full SEO & analytics.
-- **Enterprise (Custom)**: Bespoke solutions, ongoing growth marketing, motion & 3D video, AI automation pipelines.
+### 9. Services & Transparent Pricing
+Official studio service tiers and structured deliverables:
+- **01 Brand Identity (₹20,000 Starting)**: Logo design, brand style guide, color palette, typography system, business cards, social media kit.
+- **02 UI/UX Design (₹25,000 Starting)**: Wireframes, Figma prototypes, website & mobile app UI design, UI flow, user journey mapping.
+- **03 Web Development (₹30,000 Starting - Featured)**: Modern responsive website, WordPress / Webflow / custom code, SEO-friendly setup, speed optimization.
+- **04 Digital Marketing (₹20,000+ / mo Starting)**: Google & Meta ads setup, campaign management, ad creatives, audience research, ROAS optimization.
+- **05 Social Media Marketing (₹12,000+ / mo Starting)**: Content strategy, planning, creation, copywriting, 4 static posts, 4 carousels & 4 reels monthly.
+- **06 Creative Design (As Per Requirement)**: Static posts (₹200), carousels (₹900), reels (₹2,000), posters (₹400), presentation decks (₹3,000).
+- **Pricing Principle & Policy**: Clear scope definitions and quotation policies for custom enterprise deliverables.
 
 ### 10. Frequently Asked Questions (FAQ)
 - Single-expand interactive accordion addressing engagement kickoffs, deliverables, post-launch maintenance, and global client logistics.
