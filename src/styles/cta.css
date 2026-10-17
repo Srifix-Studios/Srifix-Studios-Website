@@ -36,12 +36,13 @@
  
 
   
-    /* background:linear-gradient(
-      rgba(4, 11, 17, 0.95) 1%,
-      rgba(53, 122, 255, 0.95) 5%,
-      rgba(41, 80, 231, 0.95) 55%,
-      rgba(27, 48, 158, 0.95) 100%
-    ) */
+  /* Fallback while the SVG loads*/
+  background: radial-gradient(
+    120% 90% at 50% 0%,
+    #2753e3 0%,
+    #10275a 45%,
+    #020014 100%
+  );
 
    
      
@@ -51,6 +52,27 @@
 
 
 
+/* 
+   BACKGROUND ARTWORK
+*/
+
+.cta-banner-bg {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  z-index: 0;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+
 /* =========================
    TUBE LIGHT
 ========================= */
@@ -58,7 +80,7 @@
 .cta-tubelight {
   position: absolute;
 
-  top: 0;
+  top: 25px; 
   left: 50%;
 
   transform: translateX(-50%);
@@ -77,54 +99,11 @@
     0 0 90px rgba(79, 52, 255, 0.9),
     0 35px 100px rgba(57, 11, 211, 0.85);
 
+  z-index: 2;
+
   
 }
 
-
-/* Extra light shining downward */
-
-.cta-tubelight::after {
-  content: "";
-  position: absolute;
-
-  top: 6px; 
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 1000px; /* bottom width */
-  height: 450px;
-
-  
-  background:linear-gradient(
-      rgba(98, 177, 246, 0.95) 20%,
-     
-      
-     rgba(53, 122, 255, 0.95) 45%,
-      rgba(41, 80, 231, 0.95) 75%,
-      rgba(49, 79, 233, 0.95) 100%
-    
-    ) ;
-
- clip-path: polygon(21.36% 0%, 78.95% 0%, 100% 13.11%, 100% 93.25%, 0% 93.25%, 0% 13.11%);
-
- 
- 
- 
-  mask-image:
-  linear-gradient(
- to right,
-  transparent 0%,
-  black 25%,
-  black 75%,
-  transparent 100%
-  
-  );
- 
-
-  filter: blur(15px);
-
-  pointer-events: none;
-} 
 
 
 /* =========================
@@ -133,7 +112,7 @@
 
 .cta-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
 
   text-align: center;
 
@@ -238,7 +217,8 @@
   }
 
   .cta-tubelight {
-    width: 60%;
+    /* top: 25px; */
+    width: 80%;
   }
 
   .cta-content h2 {

@@ -39,6 +39,15 @@ export default function CtaSection() {
     <section ref={sectionRef} className={`cta-section${lit ? ' is-lit' : ''}`}>
       <div className="cta-banner">
 
+        {/* Tubelight glow artwork (Figma export) sits behind everything */}
+        <img
+          src="/assets/Tublight.svg"
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          className="cta-banner-bg"
+        />
+
         <div className="cta-tubelight" />
 
         <div className="cta-content">

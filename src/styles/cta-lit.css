@@ -5,8 +5,6 @@
 */
 
 
-
-
 /* Complete blackout: the whole section stays pure black until it's reached */
 .cta-section {
   background: #000;
@@ -24,6 +22,8 @@
   content: "";
   position: absolute;
   inset: 0;
+
+  z-index: 1;
 
   background: #000;
   opacity: 1;
@@ -43,36 +43,32 @@
   box-shadow: none;
 }
 
-.cta-tubelight::after {
-  opacity: 0;
-}
-
 
 
 
 .cta-section.is-lit .cta-tubelight {
   background: #70c7ff;
 
-  box-shadow:
+
+
+      box-shadow:
     0 0 8px #6cc8ff,
     0 0 20px #53b9ff,
     0 0 45px #408cff,
     0 0 90px rgba(79, 52, 255, 0.9),
-    0 35px 100px rgba(57, 11, 211, 0.85);
+    0 55px 130px rgba(57, 11, 211, 0.9),
+    0 110px 170px rgba(41, 80, 231, 0.55);
+
 
   animation:
     ctaTubeOn 0.9s steps(1, end) forwards,
     ctaTubeHum 4s ease-in-out 0.9s infinite;
 }
 
-.cta-section.is-lit .cta-tubelight::after {
-  animation:
-    ctaConeOn 0.9s steps(1, end) forwards,
-    ctaConeHum 4s ease-in-out 0.9s infinite;
-}
+
 
 /* Tube ignition: strobe-like flicker, then steady */
-@keyframes ctaTubeOn {
+ @keyframes ctaTubeOn {
   0%   { opacity: 0.1; }
   10%  { opacity: 1; }
   18%  { opacity: 0.15; }
@@ -82,16 +78,6 @@
   100% { opacity: 1; }
 }
 
-/* Light cone flickers in sync with the tube */
-@keyframes ctaConeOn {
-  0%   { opacity: 0; }
-  10%  { opacity: 0.9; }
-  18%  { opacity: 0; }
-  32%  { opacity: 0.85; }
-  40%  { opacity: 0.1; }
-  55%  { opacity: 1; }
-  100% { opacity: 1; }
-}
 
 /* Soft steady hum once lit */
 @keyframes ctaTubeHum {
@@ -99,10 +85,7 @@
   50%      { opacity: 0.92; }
 }
 
-@keyframes ctaConeHum {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.9; }
-}
+
 
 
 /* 
@@ -139,8 +122,8 @@
     transition: none;
   }
 
-  .cta-section.is-lit .cta-tubelight,
-  .cta-section.is-lit .cta-tubelight::after {
+  .cta-section.is-lit .cta-tubelight
+   {
     animation: none;
     opacity: 1;
   }
