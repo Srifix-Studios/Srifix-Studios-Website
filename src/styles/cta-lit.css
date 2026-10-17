@@ -1,0 +1,136 @@
+/*
+   CTA — "light on" variant
+   Loaded AFTER cta.css 
+  
+*/
+
+
+/* Complete blackout: the whole section stays pure black until it's reached */
+.cta-section {
+  background: #000;
+  transition: background 1s ease 0.15s;
+}
+
+/* Original section colour from cta.css returns once the light is on */
+.cta-section.is-lit {
+  background: #0d0d19;
+}
+
+
+
+.cta-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  background: #000;
+  opacity: 1;
+
+  transition: opacity 1s ease 0.15s;
+  pointer-events: none;
+}
+
+
+.cta-section.is-lit .cta-banner::before {
+  opacity: 0;
+}
+
+/* Unlit tube*/
+.cta-tubelight {
+  background: #000;
+  box-shadow: none;
+}
+
+
+
+
+.cta-section.is-lit .cta-tubelight {
+  background: #70c7ff;
+
+
+
+      box-shadow:
+    0 0 8px #6cc8ff,
+    0 0 20px #53b9ff,
+    0 0 45px #408cff,
+    0 0 90px rgba(79, 52, 255, 0.9),
+    0 55px 130px rgba(57, 11, 211, 0.9),
+    0 110px 170px rgba(41, 80, 231, 0.55);
+
+
+  animation:
+    ctaTubeOn 0.9s steps(1, end) forwards,
+    ctaTubeHum 4s ease-in-out 0.9s infinite;
+}
+
+
+
+/* Tube ignition: strobe-like flicker, then steady */
+ @keyframes ctaTubeOn {
+  0%   { opacity: 0.1; }
+  10%  { opacity: 1; }
+  18%  { opacity: 0.15; }
+  32%  { opacity: 1; }
+  40%  { opacity: 0.3; }
+  55%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+
+/* Soft steady hum once lit */
+@keyframes ctaTubeHum {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.92; }
+}
+
+
+
+
+/* 
+   CONTENT REVEAL
+   The copy fades up shortly after the light comes on
+    */
+
+.cta-content {
+  opacity: 0;
+  transform: translateY(18px);
+
+  transition:
+    opacity 0.7s ease 0.55s,
+    transform 0.7s ease 0.55s;
+}
+
+.cta-section.is-lit .cta-content {
+  opacity: 1;
+  transform: none;
+}
+
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  /* Skip the blackout entirely — no dark phase for reduced-motion users */
+  .cta-section {
+    background: #0d0d19;
+    transition: none;
+  }
+
+  .cta-banner::before {
+    opacity: 0;
+    transition: none;
+  }
+
+  .cta-section.is-lit .cta-tubelight
+   {
+    animation: none;
+    opacity: 1;
+  }
+
+  .cta-content {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

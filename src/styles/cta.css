@@ -31,24 +31,46 @@
   display: flex;
   align-items: center;
   justify-content: center;
+ 
 
-  /* background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(95, 190, 255, 0.95) 0%,
-      rgba(53, 122, 255, 0.95) 24%,
-      rgba(41, 80, 231, 0.95) 55%,
-      rgba(27, 48, 158, 0.95) 100%
-    ); */
-    background:linear-gradient(
-      rgba(4, 11, 17, 0.95) 1%,
-      rgba(53, 122, 255, 0.95) 5%,
-      rgba(41, 80, 231, 0.95) 55%,
-      rgba(27, 48, 158, 0.95) 100%
-    )
+ 
+
+  
+  /* Fallback while the SVG loads*/
+  background: radial-gradient(
+    120% 90% at 50% 0%,
+    #2753e3 0%,
+    #10275a 45%,
+    #020014 100%
+  );
+
+   
+     
+    
 }
 
 
+
+
+/* 
+   BACKGROUND ARTWORK
+*/
+
+.cta-banner-bg {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  z-index: 0;
+
+  pointer-events: none;
+  user-select: none;
+}
 
 
 /* =========================
@@ -58,7 +80,7 @@
 .cta-tubelight {
   position: absolute;
 
-  top: 0;
+  top: 25px; 
   left: 50%;
 
   transform: translateX(-50%);
@@ -77,54 +99,11 @@
     0 0 90px rgba(79, 52, 255, 0.9),
     0 35px 100px rgba(57, 11, 211, 0.85);
 
+  z-index: 2;
+
   
 }
 
-
-/* Extra light shining downward */
-
-.cta-tubelight::after {
-  content: "";
-  position: absolute;
-
-  top: 5px; 
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 1000px; /* bottom width */
-  height: 450px;
-
-  background: linear-gradient(
-    to bottom,
-    rgba(108, 200, 255, 0.8) 0%,
-    rgba(83, 185, 255, 0.6) 30%,
-    rgba(64, 140, 255, 0.4) 60%,
-    transparent 100%
-  );
-
-
-
-  clip-path: polygon(
-    20% 0%,  
-    80% 0%,  
-    100% 100%,
-    0% 100%
-  ); 
-
- 
-  mask-image:
-  linear-gradient(
-    to right,
-    transparent,
-    black 30%,
-    black 70%,
-    transparent
-  );
-
-  filter: blur(40px);
-
-  pointer-events: none;
-} 
 
 
 /* =========================
@@ -133,7 +112,7 @@
 
 .cta-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
 
   text-align: center;
 
@@ -218,7 +197,7 @@
 /* Button hover */
 
 .cta-btn:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px) scale(1.02);
   box-shadow: 0px 15px 30px rgba(178, 162, 211, 0.549);
 
 }
@@ -238,7 +217,8 @@
   }
 
   .cta-tubelight {
-    width: 60%;
+    /* top: 25px; */
+    width: 80%;
   }
 
   .cta-content h2 {
