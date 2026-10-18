@@ -110,11 +110,11 @@ export const pricingPlans = [
 export const faqs = [
   {
     q: "How fast can you start your project?",
-    a: "Most engagements kick off within 3-5 days of signing — including discovery and kickoff workshop.",
+    a: "Most engagements kick off within 3-5 days of signing  including discovery and kickoff workshop.",
   },
   {
     q: "What is included after launch?",
-    a: "Design, development, deployment, and ongoing post-launch maintenance or retainer support.",
+    a: "Design, development, deployment, and ongoing post launch maintenance or retainer support.",
   },
   {
     q: "Do you work with international clients?",

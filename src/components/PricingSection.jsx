@@ -24,12 +24,11 @@ function PricingCard({ plan }) {
 
   return (
     <div className={plan.featured ? 'pricing-card featured card' : 'pricing-card card'}>
-      {plan.featured && (
-        <div className="glow">
-          <div className="wave wave1" />
-          <div className="wave wave2" />
-        </div>
-      )}
+      <div className="glow">
+        <div className="wave wave1" />
+        <div className="wave wave2" />
+      </div>
+    
 
       <div className="card-top">
         <span className="card-num">{plan.num} / {plan.category || 'SERVICE'}</span>
