@@ -7,18 +7,23 @@ import '../styles/pricing.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-function PricingCard({ plan }) {
+function PricingCard({ plan, onOpenContact }) {
   const isCustomPrice = plan.price.toLowerCase().includes('requirement')
 
   const handleCtaClick = (e) => {
     e.preventDefault()
-    const target = document.getElementById('contact')
-    if (target) {
-      if (window.lenis) {
-        window.lenis.scrollTo(target, { duration: 1.2 })
-      } else {
-        target.scrollIntoView({ behavior: 'smooth' })
-      }
+    if (onOpenContact) {
+      let serviceId = 'webdev'
+      const titleLower = plan.title.toLowerCase()
+      if (titleLower.includes('brand')) serviceId = 'brand'
+      else if (titleLower.includes('ui') || titleLower.includes('ux')) serviceId = 'uiux'
+      else if (titleLower.includes('web')) serviceId = 'webdev'
+      else if (titleLower.includes('digital') || titleLower.includes('marketing')) serviceId = 'digital-marketing'
+      else if (titleLower.includes('social')) serviceId = 'social-media'
+      else if (titleLower.includes('creative')) serviceId = 'custom'
+      onOpenContact(serviceId)
+    } else {
+      window.location.hash = '#get-started'
     }
   }
 
@@ -66,7 +71,7 @@ function PricingCard({ plan }) {
   )
 }
 
-export default function PricingSection() {
+export default function PricingSection({ onOpenContact }) {
   const sectionRef = useRef(null)
 
   useEffect(() => {
@@ -106,7 +111,7 @@ export default function PricingSection() {
 
       <div className="pricing-grid">
         {pricingPlans.map((plan) => (
-          <PricingCard key={plan.title} plan={plan} />
+          <PricingCard key={plan.title} plan={plan} onOpenContact={onOpenContact} />
         ))}
       </div>
 
