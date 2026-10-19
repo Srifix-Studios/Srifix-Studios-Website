@@ -53,9 +53,9 @@ const INITIAL_MESSAGES = [
     actions: [
       { label: 'Chat on WhatsApp', url: WHATSAPP_URL, isWhatsApp: true },
       { label: 'Email Studio Desk', url: `mailto:${STUDIO_EMAIL}` },
+      { label: 'Start Project & Book Call', sectionId: '#get-started' },
       { label: 'View Pricing', sectionId: '#pricing' },
       { label: 'Explore Process', sectionId: '#how-we-work' },
-      { label: 'Start Project', sectionId: '#contact' },
     ]
   }
 ]
@@ -108,7 +108,15 @@ export default function ChatBot() {
   }
 
   const handleActionClick = (action) => {
-    if (action.sectionId) {
+    if (action.sectionId === '#contact' || action.sectionId === '#get-started') {
+      setIsOpen(false)
+      window.dispatchEvent(
+        new CustomEvent('open-get-started', {
+          detail: { service: action.service || null }
+        })
+      )
+      window.location.hash = '#get-started'
+    } else if (action.sectionId) {
       scrollToSection(action.sectionId)
     } else if (action.url) {
       window.open(action.url, '_blank', 'noopener,noreferrer')
