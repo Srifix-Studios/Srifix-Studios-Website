@@ -6,7 +6,7 @@ import '../styles/cta-lit.css'
 // "Light on" variant of CtaSection: the section starts as a complete blackout;
 // when it scrolls into view the tubelight flickers on, the blackout lifts and
 
-export default function CtaSection() {
+export default function CtaSection({ onOpenContact }) {
   const [lit, setLit] = useState(false)
   const sectionRef = useRef(null)
 
@@ -35,6 +35,15 @@ export default function CtaSection() {
     return () => io.disconnect()
   }, [])
 
+  const handleCtaClick = (e) => {
+    e.preventDefault()
+    if (onOpenContact) {
+      onOpenContact()
+    } else {
+      window.location.hash = '#get-started'
+    }
+  }
+
   return (
     <section id="contact" ref={sectionRef} className={`cta-section${lit ? ' is-lit' : ''}`}>
       <div className="cta-banner">
@@ -62,7 +71,7 @@ export default function CtaSection() {
             one business day.
           </p>
 
-          <a href="#" className="cta-btn">
+          <a href="#get-started" onClick={handleCtaClick} className="cta-btn">
             <span>Get Started</span>
             <ArrowUpRight aria-hidden="true" />
           </a>

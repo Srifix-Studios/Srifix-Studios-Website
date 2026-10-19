@@ -1,0 +1,736 @@
+/* ==========================================================================
+   SRIFIX STUDIOS — DISCOVERY & MEETING SCHEDULER PAGE
+   Matches Exact Studio Design System:
+   - Deep Obsidian Background (#0F0F1C) with Overhead Blue Tubelight
+   - Syne & Plus Jakarta Sans Typography with Vibrant Gradient Highlights
+   - Glassmorphism Cards (.about-v5-card architecture)
+   - Clean, Bespoke Input Fields (No AI Slop / No Generic SaaS clutter)
+   ========================================================================== */
+
+.gs-page-wrapper {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  background-color: var(--bg-v5, #0F0F1C);
+  color: #FFFFFF;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Overhead Neon Tubelight (Faithful match to CtaSection) */
+.gs-overhead-tubelight {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(720px, 90vw);
+  height: 4px;
+  border-radius: 0 0 16px 16px;
+  background: #70C7FF;
+  box-shadow:
+    0 0 10px #6CC8FF,
+    0 0 24px #53B9FF,
+    0 0 45px #408CFF,
+    0 0 90px rgba(79, 52, 255, 0.8),
+    0 30px 100px rgba(57, 11, 211, 0.65);
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Ambient Radial Glow Orb */
+.gs-ambient-glow {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1000px, 96vw);
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(39, 83, 227, 0.22) 0%, rgba(39, 83, 227, 0.05) 50%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ==========================================================================
+   TOP NAVIGATION BAR (MATCHING HERO NAVBAR SPEC)
+   ========================================================================== */
+.gs-navbar {
+  position: relative;
+  width: 100%;
+  z-index: 100;
+  padding: clamp(16px, 2.5vh, 28px) clamp(20px, 4vw, 56px);
+  box-sizing: border-box;
+}
+
+.gs-navbar-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gs-nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.2vw, 32px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gs-nav-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 500;
+  font-size: clamp(14px, 1.05vw, 16px);
+  line-height: 20px;
+  color: #E5E7EB;
+  cursor: pointer;
+  transition: color 0.25s ease;
+  padding: 0;
+}
+
+.gs-nav-btn:hover {
+  color: #FFFFFF;
+}
+
+.gs-nav-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: rgba(15, 15, 28, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(39, 83, 227, 0.8);
+  box-shadow: 0 0 20px rgba(39, 83, 227, 0.35);
+  color: #FFFFFF;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gs-nav-back-btn:hover {
+  border-color: rgba(39, 83, 227, 1);
+  box-shadow: 0 0 28px rgba(39, 83, 227, 0.65);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   WATERMARK & HERO SECTION
+   ========================================================================== */
+.gs-watermark-wrap {
+  position: relative;
+  text-align: center;
+  padding: 20px 24px 0;
+  z-index: 10;
+}
+
+.gs-watermark-text {
+  position: relative;
+  font-size: clamp(48px, 16vw, 220px);
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  margin-bottom: -0.25em;
+  padding-bottom: 0.15em;
+  z-index: 1;
+  text-align: center;
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  font-weight: 700;
+  white-space: nowrap;
+  background: linear-gradient(180deg, rgba(128, 132, 150, 0.75) 0%, rgba(92, 96, 114, 0.45) 38%, rgba(60, 63, 80, 0.18) 72%, rgba(50, 52, 68, 0.08) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ==========================================================================
+   MAIN 2-COLUMN STUDIO LAYOUT
+   ========================================================================== */
+.gs-main-layout {
+  position: relative;
+  z-index: 20;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 10px 24px 110px;
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: clamp(32px, 4.5vw, 64px);
+  align-items: start;
+}
+
+/* --------------------------------------------------------------------------
+   LEFT COLUMN: STUDIO DESK OVERVIEW
+   -------------------------------------------------------------------------- */
+.gs-studio-info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.gs-info-tag {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  color: #2753E3;
+  text-transform: uppercase;
+}
+
+.gs-info-heading {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 700;
+  font-size: clamp(32px, 3.8vw, 54px);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.gs-info-highlight {
+  color: #2753E3;
+  text-shadow: 0 0 30px rgba(39, 83, 227, 0.8), 0 0 60px rgba(39, 83, 227, 0.4);
+  display: inline-block;
+}
+
+.gs-info-desc {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 0;
+}
+
+/* Perks List (Matching Pricing Section Bar Bullets) */
+.gs-perks-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.gs-perk-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  color: #E2E8F0;
+}
+
+.gs-perk-bar {
+  width: 16px;
+  height: 2px;
+  background: #2753E3;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(39, 83, 227, 0.8);
+  flex-shrink: 0;
+}
+
+/* Direct Contacts Box (Matching Footer Contact Box) */
+.gs-direct-leads {
+  margin-top: 10px;
+  padding: 24px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gs-leads-title {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #94A3B8;
+  text-transform: uppercase;
+}
+
+.gs-contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.25s ease;
+}
+
+.gs-contact-link:hover {
+  color: #60A5FA;
+}
+
+.gs-leads-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: rgba(37, 211, 102, 0.12);
+  border: 1px solid rgba(37, 211, 102, 0.35);
+  color: #86EFAC;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.gs-leads-wa-btn:hover {
+  background: rgba(37, 211, 102, 0.22);
+  border-color: rgba(37, 211, 102, 0.6);
+  color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   RIGHT COLUMN: THE STUDIO DISCOVERY CARD
+   -------------------------------------------------------------------------- */
+.gs-form-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 28px;
+  padding: clamp(28px, 3.5vw, 44px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.gs-form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(39, 83, 227, 0.8), rgba(255, 255, 255, 0.5), transparent);
+  opacity: 0.9;
+}
+
+.gs-card-header {
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 16px;
+}
+
+.gs-card-badge {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #2753E3;
+  text-transform: uppercase;
+}
+
+.gs-card-subbadge {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 12px;
+  color: #94A3B8;
+}
+
+/* Form Layout */
+.gs-form {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.gs-section-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gs-block-title {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #CBD5E1;
+}
+
+.gs-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.gs-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gs-label {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #94A3B8;
+}
+
+.gs-label .req {
+  color: #F07108;
+  margin-left: 2px;
+}
+
+/* Bespoke Agency Inputs */
+.gs-text-input,
+.gs-date-input,
+.gs-select-input,
+.gs-textarea-input {
+  width: 100%;
+  background: rgba(15, 15, 28, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #FFFFFF;
+  font-family: var(--font-inter, sans-serif);
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.gs-text-input::placeholder,
+.gs-textarea-input::placeholder {
+  color: #64748B;
+}
+
+.gs-text-input:focus,
+.gs-date-input:focus,
+.gs-select-input:focus,
+.gs-textarea-input:focus {
+  border-color: #2753E3;
+  background: rgba(20, 24, 46, 0.95);
+  box-shadow: 0 0 20px rgba(39, 83, 227, 0.35);
+}
+
+.gs-date-input {
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+.gs-select-input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232753E3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 14px;
+  padding-right: 36px;
+}
+
+.gs-select-input option {
+  background: #0D0D19;
+  color: #FFFFFF;
+}
+
+.gs-textarea-input {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+/* Service Pills */
+.gs-pills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gs-service-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #E2E8F0;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-family: var(--font-inter, sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.gs-service-chip:hover {
+  background: rgba(39, 83, 227, 0.15);
+  border-color: rgba(39, 83, 227, 0.45);
+  color: #FFFFFF;
+}
+
+.gs-service-chip.selected {
+  background: linear-gradient(135deg, rgba(39, 83, 227, 0.3) 0%, rgba(21, 46, 125, 0.3) 100%);
+  border-color: #2753E3;
+  color: #FFFFFF;
+  box-shadow: 0 0 16px rgba(39, 83, 227, 0.4);
+}
+
+.gs-chip-price {
+  font-size: 11px;
+  color: #93C5FD;
+  font-weight: 600;
+}
+
+/* Time Window Pills */
+.gs-time-pills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.gs-time-chip {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #CBD5E1;
+  padding: 10px 8px;
+  border-radius: 12px;
+  font-family: var(--font-inter, sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.gs-time-chip:hover {
+  background: rgba(39, 83, 227, 0.15);
+  border-color: rgba(39, 83, 227, 0.4);
+  color: #FFFFFF;
+}
+
+.gs-time-chip.selected {
+  background: rgba(39, 83, 227, 0.25);
+  border-color: #2753E3;
+  color: #FFFFFF;
+  box-shadow: 0 0 14px rgba(39, 83, 227, 0.35);
+}
+
+/* Submit Action Button (Exact match to .about-v5-btn / .btn) */
+.gs-submit-wrap {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gs-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 32px;
+  border-radius: 999px;
+  background: linear-gradient(270deg, #0F0F1C 0%, #152E7D 45%, #2753E3 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  color: #FFFFFF;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 35px rgba(39, 83, 227, 0.45);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gs-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 45px rgba(39, 83, 227, 0.75);
+  border-color: #FFFFFF;
+}
+
+.gs-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.gs-submit-footnote {
+  font-family: var(--font-inter, sans-serif);
+  font-size: 12px;
+  color: #94A3B8;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   CONFIRMATION SCREEN (MATCHING CARD ARCHITECTURE)
+   -------------------------------------------------------------------------- */
+.gs-success-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 12px;
+  gap: 20px;
+}
+
+.gs-success-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(39, 83, 227, 0.15);
+  border: 1px solid rgba(39, 83, 227, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(39, 83, 227, 0.5);
+}
+
+.gs-success-heading {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 700;
+  font-size: clamp(26px, 2.5vw, 36px);
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.gs-success-desc {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 500px;
+  margin: 0;
+}
+
+.gs-success-date-highlight {
+  color: #60A5FA;
+  font-weight: 600;
+}
+
+.gs-summary-box {
+  width: 100%;
+  background: rgba(15, 15, 28, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.gs-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-inter, sans-serif);
+  font-size: 13px;
+}
+
+.gs-summary-k {
+  color: #94A3B8;
+}
+
+.gs-summary-v {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.gs-success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.gs-btn-wa-direct {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 24px;
+  border-radius: 999px;
+  background: rgba(37, 211, 102, 0.15);
+  border: 1px solid rgba(37, 211, 102, 0.5);
+  color: #86EFAC;
+  font-family: var(--font-inter, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.gs-btn-wa-direct:hover {
+  background: #25D366;
+  color: #06070B;
+}
+
+.gs-btn-home {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-family: var(--font-inter, sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.gs-btn-home:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 980px) {
+  .gs-main-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-bottom: 70px;
+  }
+
+  .gs-nav-links {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .gs-grid-2col {
+    grid-template-columns: 1fr;
+  }
+
+  .gs-time-pills {
+    grid-template-columns: 1fr;
+  }
+
+  .gs-form-card {
+    padding: 24px 18px;
+  }
+
+  .gs-navbar {
+    padding: 16px 20px;
+  }
+}

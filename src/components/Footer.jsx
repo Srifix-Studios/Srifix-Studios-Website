@@ -26,21 +26,30 @@ function scrollToTop() {
   else window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-function handleLinkClick(e, href) {
-  if (href.startsWith('#')) {
-    const target = document.querySelector(href)
-    if (target) {
+export default function Footer({ onOpenContact }) {
+  function handleLinkClick(e, href) {
+    if (href === '#contact' || href === '#get-started') {
       e.preventDefault()
-      if (window.lenis) {
-        window.lenis.scrollTo(target, { duration: 1.2 })
+      if (onOpenContact) {
+        onOpenContact()
       } else {
-        target.scrollIntoView({ behavior: 'smooth' })
+        window.location.hash = '#get-started'
+      }
+      return
+    }
+
+    if (href.startsWith('#')) {
+      const target = document.querySelector(href)
+      if (target) {
+        e.preventDefault()
+        if (window.lenis) {
+          window.lenis.scrollTo(target, { duration: 1.2 })
+        } else {
+          target.scrollIntoView({ behavior: 'smooth' })
+        }
       }
     }
   }
-}
-
-export default function Footer() {
   return (
     <>
       <footer className="footer">
