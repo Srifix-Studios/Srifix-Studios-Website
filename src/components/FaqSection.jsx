@@ -37,7 +37,7 @@ export default function FaqSection() {
   return (
     <section id="faq" className="question-section" ref={sectionRef}>
       <h2 className="question-bg-text" aria-hidden="true">Questions</h2>
-      <h3 className="question-heading">Frequently <span className="accent">Asked</span></h3>
+      <h3 className="question-heading">Frequently Asked <span className="accent">Questions</span></h3>
 
       <div className="question-list">
         {faqs.map((faq, index) => {

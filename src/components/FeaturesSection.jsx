@@ -6,31 +6,31 @@ import Logo3D from './ThreeCanvas/Logo3D'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Services + starting prices from the "Srifix Studios — Services & Pricing" deck
+// Services and starting prices from the "Srifix Studios: Services and Pricing" deck
 const allServices = [
   {
     num: '1',
     title: 'Brand Identity',
     subtitle: 'Starting from ₹20,000',
-    description: 'Logo, brand style guide, colour palette and typography — a complete identity system, delivered with business cards and a social media kit.',
+    description: 'Full identity packages including logo design, color systems, typography rules, business stationery, and ready to use social media kits.',
   },
   {
     num: '2',
     title: 'UI/UX Design',
     subtitle: 'Starting from ₹25,000',
-    description: 'Wireframes, Figma prototypes, UI flows and user-journey mapping for websites and mobile apps — intuitive, elegant and built to convert.',
+    description: 'Clean wireframes, interactive Figma prototypes, and thoughtful user flows for web and mobile apps, crafted to guide visitors into action.',
   },
   {
     num: '3',
     title: 'Web Development',
     subtitle: 'Starting from ₹30,000',
-    description: 'Modern, responsive websites on WordPress, Webflow or fully custom code — SEO-friendly from day one and optimised for speed.',
+    description: 'Fast, responsive websites built on Webflow, WordPress, or custom code, fully search optimized and fine tuned for instant page loads.',
   },
   {
     num: '4',
     title: 'Digital Marketing',
     subtitle: 'Starting from ₹20,000+ / month',
-    description: 'Google and Meta ad campaigns set up and managed end to end — with ad creatives, audience research and ongoing ROAS optimisation.',
+    description: 'Targeted Google and Meta ad campaigns from creative production and audience targeting to weekly optimization for profitable growth.',
   },
 ]
 
@@ -62,26 +62,47 @@ export default function FeaturesSection({ onOpenContact }) {
   useEffect(() => {
     const mm = gsap.matchMedia()
 
-    mm.add('(prefers-reduced-motion: no-preference)', () => {
-      // Each showcase: cards + logo arrive as it enters the viewport
-      gsap.utils.toArray('.feat-arena').forEach((arena) => {
-        gsap.timeline({
-          scrollTrigger: { trigger: arena, start: 'top 95%', end: 'top 45%', scrub: 1 },
-        })
-          .from(arena.querySelector('.feat-slot-left'), { opacity: 0.3, y: 140, x: -70, rotate: -3, ease: 'power2.out' }, 0)
-          .from(arena.querySelector('.feat-slot-right'), { opacity: 0.3, y: 140, x: 70, rotate: 3, ease: 'power2.out' }, 0)
-          .from(arena.querySelector('.feat-logo-anim'), { scale: 0.7, opacity: 0.4, ease: 'power2.out' }, 0)
-      })
+    mm.add(
+      {
+        isDesktop: '(min-width: 901px)',
+        isMobile: '(max-width: 900px)',
+        reduceMotion: '(prefers-reduced-motion: reduce)',
+      },
+      (context) => {
+        const { isDesktop, reduceMotion } = context.conditions
+        if (reduceMotion) return
 
-      // "Features" stays fully visible first, then fades once the user scrolls on past it
-      gsap.to('.features-watermark', {
-        opacity: 0,
-        yPercent: -18,
-        scale: 0.94,
-        ease: 'none',
-        scrollTrigger: { trigger: '.feat-arena', start: 'top 38%', end: 'top -5%', scrub: 1 },
-      })
-    }, sectionRef)
+        // Each showcase: cards + logo arrive as it enters the viewport
+        gsap.utils.toArray('.feat-arena').forEach((arena) => {
+          const leftSlot = arena.querySelector('.feat-slot-left')
+          const rightSlot = arena.querySelector('.feat-slot-right')
+          const logoAnim = arena.querySelector('.feat-logo-anim')
+
+          const tl = gsap.timeline({
+            scrollTrigger: { trigger: arena, start: 'top 95%', end: 'top 45%', scrub: 1 },
+          })
+
+          if (isDesktop) {
+            if (leftSlot) tl.from(leftSlot, { opacity: 0.3, y: 140, x: -70, rotate: -3, ease: 'power2.out' }, 0)
+            if (rightSlot) tl.from(rightSlot, { opacity: 0.3, y: 140, x: 70, rotate: 3, ease: 'power2.out' }, 0)
+          } else {
+            if (leftSlot) tl.from(leftSlot, { opacity: 0.3, y: 60, ease: 'power2.out' }, 0)
+            if (rightSlot) tl.from(rightSlot, { opacity: 0.3, y: 60, ease: 'power2.out' }, 0)
+          }
+          if (logoAnim) tl.from(logoAnim, { scale: 0.7, opacity: 0.4, ease: 'power2.out' }, 0)
+        })
+
+        // "Features" stays fully visible first, then fades once the user scrolls on past it
+        gsap.to('.features-watermark', {
+          opacity: 0,
+          yPercent: -18,
+          scale: 0.94,
+          ease: 'none',
+          scrollTrigger: { trigger: '.feat-arena', start: 'top 38%', end: 'top -5%', scrub: 1 },
+        })
+      },
+      sectionRef
+    )
 
     return () => mm.revert()
   }, [])

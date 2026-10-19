@@ -36,7 +36,7 @@ export default function CtaSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className={`cta-section${lit ? ' is-lit' : ''}`}>
+    <section id="contact" ref={sectionRef} className={`cta-section${lit ? ' is-lit' : ''}`}>
       <div className="cta-banner">
 
         {/* Tubelight glow artwork (Figma export) sits behind everything */}

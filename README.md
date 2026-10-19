@@ -215,8 +215,8 @@ npm run preview
 
 Ready to build something premium? Contact the team directly:
 
-- **Email:** [yogeshsrivastava9876@gmail.com](mailto:yogeshsrivastava9876@gmail.com)
-- **Phone / WhatsApp:** [+91 9625038790](tel:+919625038790)
+- **Email:** [info@srifixstudios.com](mailto:info@srifixstudios.com)
+- **Phone / WhatsApp:** [+91 9625038790](https://wa.me/919625038790)
 - **Headquarters:** Srifix Studios LLC
 
 ---

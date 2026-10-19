@@ -1,4 +1,4 @@
-﻿
+
 
 
 /* 
@@ -237,42 +237,69 @@
 
 
 
-/* 
-   FOOTER*/
-   .footer {
+/* ==========================================================================
+   FOOTER (Figma Node #1542:1852 Reference Match)
+   ========================================================================== */
+.footer {
   position: relative;
   overflow: hidden;
-  font-family: sans-serif,"Inter","Syne";
-  padding: 100px 80px 40px;
-  background:
-    radial-gradient(
-      circle at bottom center,
-      #2d63c8 0%,
-      #10275a 35%,
-      #050816 100%
-    );
-
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  padding: 96px 80px 44px;
+  background: linear-gradient(
+    180deg,
+    #0F0F1C 0%,
+    #131B38 42%,
+    #1C3578 82%,
+    #1E3F8F 100%
+  );
   color: white;
+}
+
+/* Background Atmospheric Glow behind Marquee (Figma #1542:1856) */
+.footer-atmosphere-glow {
+  position: absolute;
+  left: 50%;
+  bottom: 60px;
+  transform: translateX(-50%);
+  width: min(1340px, 94vw);
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(39, 83, 227, 0.7) 0%,
+    rgba(30, 63, 175, 0.38) 45%,
+    rgba(15, 27, 70, 0) 75%
+  );
+  filter: blur(85px);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .footer-top {
   display: flex;
   justify-content: space-between;
   gap: 60px;
+  max-width: 1240px;
+  margin: 0 auto;
   position: relative;
   z-index: 2;
 }
 
 .footer-col h4,
 .dispatch {
+  font-family: var(--font-inter, 'Inter', sans-serif);
   font-size: 14px;
-  letter-spacing: 2px;
-   color: #9cb0f2;
-  margin-bottom: 24px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #A0C9FF;
+  margin-bottom: 22px;
 }
 
 .footer-col ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-col li {
@@ -280,224 +307,306 @@
 }
 
 .footer-col a {
-  color: #d9dbe8;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 16px;
+  line-height: 26px;
+  color: #C4C5D8;
   text-decoration: none;
-  transition: 0.3s;
+  transition: color 0.25s ease;
 }
 
 .footer-col a:hover {
-  color: white;
+  color: #FFFFFF;
 }
 
 .social-grid {
   display: grid;
-  grid-template-columns: repeat(2, 140px);
-  gap: 10px;
+  grid-template-columns: repeat(2, 130px);
+  gap: 8px;
 }
 
 .social-grid a {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 10px;
-  padding: 12px;
+  background: rgba(13, 13, 26, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  color: #C4C5D8;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  display: inline-block;
+}
+
+.social-grid a:hover {
+  background: rgba(39, 83, 227, 0.25);
+  border-color: rgba(39, 83, 227, 0.5);
+  color: #FFFFFF;
 }
 
 .footer-newsletter {
-  max-width: 420px;
+  max-width: 440px;
 }
 
 .footer-newsletter h3 {
-  font-size: 42px;
-  font-family: "Syne","Inter",sans-serif;
-  line-height: 1.1;
-  margin-bottom: 20px;
+  font-size: clamp(24px, 2.2vw, 32px);
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: #E3E0F4;
+  margin-bottom: 16px;
 }
 
 .signup-text {
-  color: #c4c7d3;
-  line-height: 1.7;
-  margin-bottom: 35px;
-}
-.leads{
-  color: #c4c7d3;
-  margin-bottom: 6px;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 14px;
+  line-height: 22px;
+  color: #C4C5D8;
+  margin-bottom: 24px;
 }
 
+.leads {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #C6C6C7;
+  margin-bottom: 10px;
+}
 
 .contact-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  margin-bottom: 10px;
+  background: rgba(13, 13, 26, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #E3E0F4;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.25s ease;
   width: fit-content;
-
-  padding: 14px 18px;
-  margin-bottom: 12px;
-
-  background: rgba(255,255,255,0.05);
-
-  border-radius: 12px;
-
-  color: white;
 }
 
-.footer-logo {
+.contact-box:hover {
+  background: rgba(39, 83, 227, 0.2);
+  border-color: rgba(39, 83, 227, 0.45);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   MONUMENTAL OVERSIZED STUDIO BRAND WATERMARK MARQUEE (FIGMA #1542:1965)
+   ========================================================================== */
+.footer-marquee {
+  position: relative;
+  overflow: hidden;
+  width: calc(100% + 160px);
+  margin-left: -80px;
+  margin-right: -80px;
+  margin-top: clamp(48px, 6vw, 76px);
+  margin-bottom: clamp(16px, 2.5vw, 36px);
+  user-select: none;
+  pointer-events: none;
+  display: flex;
+  z-index: 2;
+}
+
+.footer-marquee-track {
   display: flex;
   width: max-content;
-  white-space: nowrap;
-  gap:0.4em;
-  padding-right: 0.4em;
+  will-change: transform;
+  animation: footer-marquee-scroll 28s linear infinite;
+}
 
-  margin-top: 5px;
+.footer-marquee-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: clamp(40px, 4.5vw, 80px);
+  padding-right: clamp(40px, 4.5vw, 80px);
+}
 
+.footer-marquee-group span {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-style: normal;
   font-weight: 800;
-  font-size: clamp(80px, 22vw, 250px);
-
-  line-height: 0.68; 
+  font-size: clamp(100px, 17.36vw, 250px);
+  line-height: 0.68;
   letter-spacing: -0.0435em;
-
-  text-align: center;
   text-transform: uppercase;
-
+  white-space: nowrap;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.35) 0%,
     rgba(255, 255, 255, 0.15) 50%,
     rgba(255, 255, 255, 0) 100%
   );
-
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-
-  user-select: none;
-
-  animation: footer-logo-marquee 5s linear infinite;
-  will-change: transform;
+  display: inline-block;
 }
 
-
-.footer-logo::before {
-  content: "SRIFIX STUDIOS";
+@keyframes footer-marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
-@keyframes footer-logo-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+@media (prefers-reduced-motion: reduce) {
+  .footer-marquee-track {
+    animation-play-state: paused;
+  }
 }
 
-
-
+/* ==========================================================================
+   SUB-FOOTER MICRO UTILITY BAR (FIGMA #1542:1951)
+   ========================================================================== */
 .footer-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  margin-top: 30px;
-  margin-bottom: 40px;
+  max-width: 1240px;
+  margin: 12px auto 0;
+  width: 100%;
   position: relative;
-  z-index: 2;
+  z-index: 5;
 }
 
 .footer-bottom p {
-  color: #d0d4e4;
+  color: #C4C5D8;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 14px;
+  line-height: 22px;
+  margin: 0;
 }
 
 .back-top {
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-
-
-  color: white;
-
-  background: #091328;
-
+  color: #C4C5D8;
+  background: rgba(13, 13, 26, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: 999px;
-
-  padding: 14px 24px;
+  padding: 8px 18px;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.footer-logo-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  margin-top: 60px;
+.back-top:hover {
+  background: rgba(25, 30, 55, 0.95);
+  color: #FFFFFF;
+  border-color: rgba(39, 83, 227, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(39, 83, 227, 0.35);
 }
 
-.footer-logo-wrapper::before {
-  content: "";
-
-  position: absolute;
-
-  left: 50%;
-  bottom: -120px;
-
-  transform: translateX(-50%);
-
-  width: min(1200px, 90vw);
-  height: 450px;
-
-  border-radius: 50%;
-
-  background: linear-gradient(
-    0deg,
-    #2753E3 0%,
-    #3294EF 50%,
-    rgba(50, 148, 239, 0) 100%
-  );
-
-  filter: blur(160px);
-
-  opacity: 0.8;
-
-  pointer-events: none;
-}
-
+/* ==========================================================================
+   DARK BOTTOM COPYRIGHT BAR (FIGMA #1542:1966)
+   ========================================================================== */
 .footer-copyright {
-  background: #070b18;
-  padding: 45px 80px;
-  
-
+  background: #0F0F1C;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 40px 80px;
 }
 
 .footer-copyright-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1240px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .footer-brand h3 {
-  margin-bottom: 8px;
-  font-family: "Syne", sans-serif;
-  font-weight: 700;
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: #E3E0F4;
+  margin: 0 0 6px 0;
 }
 
-.footer-brand p,
+.footer-brand p {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 14px;
+  line-height: 22px;
+  color: #C4C5D8;
+  margin: 0;
+}
+
 .copyright-text {
-  color: rgba(255,255,255,0.7);
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-size: 14px;
+  color: #C4C5D8;
+  margin: 0;
 }
 
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 900px) {
+  .footer {
+    padding: 70px 32px 36px;
+  }
 
+  .footer-marquee {
+    width: calc(100% + 64px);
+    margin-left: -32px;
+    margin-right: -32px;
+  }
+
+  .footer-top {
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .footer-newsletter {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .footer-copyright {
+    padding: 36px 32px;
+  }
+}
 
 @media (max-width: 768px) {
-
   .footer {
     padding: 60px 24px 32px;
   }
 
-  .footer-top {
-    flex-direction: column;
-    gap: 40px;
+  .footer-marquee {
+    width: calc(100% + 48px);
+    margin-left: -24px;
+    margin-right: -24px;
   }
 
-  .footer-newsletter h3 {
-    font-size: 32px;
+  .footer-top {
+    flex-direction: column;
+    gap: 36px;
   }
 
   .social-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-logo {
-    display: flex;
-    width: max-content;
-    white-space: nowrap;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .footer-bottom {
@@ -506,19 +615,10 @@
     text-align: center;
   }
 
-}
-
-@media (max-width: 768px) {
   .footer-copyright {
-    padding: 40px 24px;
+    padding: 32px 24px;
   }
 
-  .footer-copyright-content {
-    gap: 24px;
-  }
-}
-
-@media (max-width: 576px) {
   .footer-copyright-content {
     flex-direction: column;
     align-items: flex-start;
