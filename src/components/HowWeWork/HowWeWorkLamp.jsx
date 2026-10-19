@@ -1,305 +1,710 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useCallback } from 'react'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { workflowSteps } from '../../data/workflow'
+import '../../styles/howwework.css'
 
-const PULL_MAX = 70 // px the cord can stretch
-const PULL_TRIGGER = 26 // px of drag that counts as a pull
-const AUTO_ON_MS = 6000 // fallback: switch on by itself if the visitor never pulls
+gsap.registerPlugin(ScrollTrigger)
 
-// Dust motes floating in the beam (deterministic so renders are stable)
-const DUST = Array.from({ length: 38 }, (_, i) => {
-  const r = (n) => ((Math.sin(i * 12.9898 + n * 78.233) * 43758.5453) % 1 + 1) % 1
-  return {
-    left: `${15 + r(1) * 70}%`,
-    top: `${20 + r(2) * 70}%`,
-    size: `${1.5 + r(3) * 2.5}px`,
-    dur: `${9 + r(4) * 10}s`,
-    delay: `${-r(5) * 18}s`,
-    drift: `${(r(6) - 0.5) * 60}px`,
-  }
-})
-
-// What the paper tag on the cord says in each interaction state
-const TAG_TEXT = {
-  idle: 'Pull me',
-  hover: 'Go on, give it a tug',
-  more: 'A little more…',
-  letgo: 'Now let go!',
-  lit: 'Lights out?',
+// Compound Aim configuration for each card
+// ropeRot: suspension cable swing angle from ceiling anchor
+// shadeRot: lamp shade tilt angle at socket joint
+// haloX, haloY: spotlight bloom center coordinates over the target card
+const AIM_CONFIG = {
+  '1': {
+    ropeRot: '22deg',
+    shadeRot: '36deg',
+    haloX: '18%',
+    haloY: '34%',
+  },
+  '2': {
+    ropeRot: '15deg',
+    shadeRot: '24deg',
+    haloX: '36%',
+    haloY: '64%',
+  },
+  '3': {
+    ropeRot: '8deg',
+    shadeRot: '12deg',
+    haloX: '60%',
+    haloY: '34%',
+  },
+  '4': {
+    ropeRot: '-2deg',
+    shadeRot: '-4deg',
+    haloX: '81%',
+    haloY: '64%',
+  },
+  default: {
+    ropeRot: '0deg',
+    shadeRot: '0deg',
+    haloX: '78%',
+    haloY: '52%',
+  },
 }
 
-// How We Work — Desk lamp: the process sits on a dark desk under an articulated lamp.
-// Pull the cord and the lamp flickers on, the light falls on the desk and the cards
-// light up one by one, sweeping away from the lamp (right to left). Pull again to switch off.
 export default function HowWeWorkLamp() {
   const [lit, setLit] = useState(false)
   const [pulled, setPulled] = useState(false)
-  const [settled, setSettled] = useState(false) // reveal finished: hover reacts instantly
-  const [tag, setTag] = useState('idle') // paper tag state on the cord
-  const [cordHover, setCordHover] = useState(false)
+  const [activeStep, setActiveStep] = useState(null)
+  const [hoveredCard, setHoveredCard] = useState(null)
+
   const sectionRef = useRef(null)
   const stageRef = useRef(null)
-  const rigRef = useRef(null)
   const cordRef = useRef(null)
-  const drag = useRef({ active: false, startY: 0, dy: 0 })
   const litRef = useRef(false)
-  const autoTimer = useRef(0)
-  const touched = useRef(false) // visitor used the cord: no automatic switching
   litRef.current = lit
 
-  const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-  // Nobody should miss the content: if the cord isn't pulled, the light comes on by itself
-  useEffect(() => {
-    if (reduced()) {
-      setLit(true)
-      return
-    }
-    const io = new IntersectionObserver(
-      ([e]) => {
-        clearTimeout(autoTimer.current)
-        if (e.isIntersecting && !litRef.current && !touched.current) {
-          autoTimer.current = setTimeout(() => {
-            if (!litRef.current && !touched.current) setLit(true)
-          }, AUTO_ON_MS)
-        }
-      },
-      { threshold: 0.45 }
+  // Lamp elastic pendulum swing animation on cord pull
+  const swing = useCallback(() => {
+    const stage = stageRef.current
+    if (!stage) return
+    gsap.fromTo(
+      stage,
+      { '--rope-rot': '10deg', '--shade-rot': '14deg' },
+      {
+        '--rope-rot': '0deg',
+        '--shade-rot': '0deg',
+        duration: 2.2,
+        ease: 'elastic.out(1.1, 0.28)',
+        overwrite: 'auto',
+      }
     )
-    io.observe(stageRef.current)
-    return () => {
-      io.disconnect()
-      clearTimeout(autoTimer.current)
-    }
   }, [])
 
-  // A pull yanks the lamp: it swings on its mount and settles (the beam swings with it)
-  const swing = () => {
-    if (reduced() || !rigRef.current) return
-    gsap.fromTo(rigRef.current, { rotation: 7 }, { rotation: 0, duration: 2.4, ease: 'elastic.out(1, 0.22)', overwrite: true })
+  // Aim lamp at a specific card with compound rope + shade kinematics
+  const aimLamp = useCallback((cardKey) => {
+    const conf = AIM_CONFIG[cardKey] || AIM_CONFIG.default
+    const stage = stageRef.current
+    if (!stage) return
+
+    gsap.to(stage, {
+      '--rope-rot': conf.ropeRot,
+      '--shade-rot': conf.shadeRot,
+      '--halo-x': conf.haloX,
+      '--halo-y': conf.haloY,
+      duration: 0.45,
+      ease: 'power2.out',
+      overwrite: 'auto',
+    })
+  }, [])
+
+  // Card hover handlers
+  const handleCardEnter = (cardNum) => {
+    setHoveredCard(cardNum)
+    if (litRef.current) {
+      aimLamp(cardNum)
+    }
   }
 
-  // Lamp swings / aims from its ceiling mount
-  useEffect(() => {
-    if (rigRef.current) gsap.set(rigRef.current, { transformOrigin: '50% 0%' })
-  }, [])
+  const handleCardLeave = () => {
+    setHoveredCard(null)
+    if (litRef.current && activeStep) {
+      aimLamp(activeStep)
+    } else if (litRef.current) {
+      aimLamp('default')
+    }
+  }
 
-  useEffect(() => {
-    if (!lit) return setSettled(false)
-    const t = setTimeout(() => setSettled(true), 1800)
-    return () => clearTimeout(t)
-  }, [lit])
-
-  const toggle = () => {
-    touched.current = true
-    clearTimeout(autoTimer.current)
-    setLit((v) => !v)
+  // Direct toggle on click/tap
+  const toggleLamp = () => {
+    setLit((prev) => {
+      const next = !prev
+      if (next) {
+        swing()
+        gsap.to('.hw4-bulb-glow', { opacity: 1, duration: 0.2, overwrite: 'auto' })
+        gsap.to('.hw4-beam-group', { opacity: 1, duration: 0.3, overwrite: 'auto' })
+        gsap.to('.hw4-spotlight-bloom', { opacity: 1, duration: 0.35, overwrite: 'auto' })
+        gsap.to('.hw4-dashed-path', { opacity: 0.85, duration: 0.3, overwrite: 'auto' })
+        gsap.to('.hw4-card--1', { opacity: 1, y: 0, duration: 0.35, overwrite: 'auto' })
+        gsap.to('.hw4-watermark-title', { opacity: 0.25, duration: 0.3, overwrite: 'auto' })
+        gsap.to('.hw4-orbit-rings', { opacity: 0.35, duration: 0.3, overwrite: 'auto' })
+        aimLamp('1')
+        setActiveStep('1')
+      } else {
+        gsap.to('.hw4-bulb-glow', { opacity: 0, duration: 0.2, overwrite: 'auto' })
+        gsap.to('.hw4-beam-group', { opacity: 0, duration: 0.2, overwrite: 'auto' })
+        gsap.to('.hw4-spotlight-bloom', { opacity: 0, duration: 0.2, overwrite: 'auto' })
+        gsap.to('.hw4-dashed-path', { opacity: 0, duration: 0.2, overwrite: 'auto' })
+        gsap.to('.hw4-card', { opacity: 0, y: 15, duration: 0.2, overwrite: 'auto' })
+        gsap.to('.hw4-watermark-title', { opacity: 0, duration: 0.2, overwrite: 'auto' })
+        gsap.to('.hw4-orbit-rings', { opacity: 0, duration: 0.2, overwrite: 'auto' })
+        setHoveredCard(null)
+        setActiveStep(null)
+      }
+      return next
+    })
     setPulled(true)
-    swing()
   }
 
-  // Lamp turns to aim its beam at the card being read
-  const aimAt = (e) => {
-    if (!litRef.current || reduced() || !rigRef.current) return
-    const rig = rigRef.current.getBoundingClientRect()
-    const card = e.currentTarget.getBoundingClientRect()
-    const dx = card.left + card.width / 2 - (rig.left + rig.width / 2)
-    const dy = card.top + card.height / 2 - rig.top
-    const deg = Math.max(-16, Math.min(16, (-Math.atan2(dx, dy) * 180) / Math.PI * 0.45))
-    gsap.to(rigRef.current, { rotation: deg, duration: 1.1, ease: 'power3.out', overwrite: true })
-  }
+  useEffect(() => {
+    const section = sectionRef.current
+    const cord = cordRef.current
+    const stage = stageRef.current
+    if (!section || !cord || !stage) return
 
-  const aimHome = () => {
-    if (!rigRef.current || reduced()) return
-    gsap.to(rigRef.current, { rotation: 0, duration: 1.4, ease: 'power3.inOut', overwrite: true })
-  }
+    const mm = gsap.matchMedia()
 
-  const springBack = () => {
-    if (reduced()) return gsap.set(cordRef.current, { '--pull': '0px' })
-    gsap.to(cordRef.current, { '--pull': '0px', duration: 0.9, ease: 'elastic.out(1.2, 0.3)', overwrite: true })
-  }
+    mm.add(
+      {
+        isDesktop: '(min-width: 901px)',
+        isMobile: '(max-width: 900px)',
+        reduceMotion: '(prefers-reduced-motion: reduce)',
+      },
+      (context) => {
+        const { isDesktop, reduceMotion } = context.conditions
 
-  // Click / keyboard: a quick tug, then switch
-  const tug = () => {
-    if (reduced()) return toggle()
-    gsap
-      .timeline()
-      .to(cordRef.current, { '--pull': '34px', duration: 0.14, ease: 'power2.in', onComplete: toggle })
-      .to(cordRef.current, { '--pull': '0px', duration: 0.9, ease: 'elastic.out(1.2, 0.3)' })
-  }
+        if (reduceMotion) {
+          setLit(true)
+          gsap.set(
+            [
+              '.hw4-bulb-glow',
+              '.hw4-beam-group',
+              '.hw4-spotlight-bloom',
+              '.hw4-dashed-path',
+              '.hw4-card',
+              '.hw4-watermark-title',
+              '.hw4-orbit-rings',
+            ],
+            { opacity: 1, y: 0 }
+          )
+          return
+        }
 
-  const onPointerDown = (e) => {
-    touched.current = true
-    clearTimeout(autoTimer.current)
-    drag.current = { active: true, startY: e.clientY, dy: 0 }
-    e.currentTarget.setPointerCapture?.(e.pointerId)
-    gsap.killTweensOf(cordRef.current)
-  }
+        // INITIAL BLACKOUT STATE:
+        // Whole screen is black. ONLY the lamp and cord are visible.
+        // Cards, dashed trail, watermark, and beam start hidden in total darkness.
+        gsap.set('.hw4-bulb-glow', { opacity: 0 })
+        gsap.set('.hw4-beam-group', { opacity: 0 })
+        gsap.set('.hw4-spotlight-bloom', { opacity: 0 })
+        gsap.set('.hw4-dashed-path', { opacity: 0 })
+        gsap.set('.hw4-card', { opacity: 0, y: 15 })
+        gsap.set('.hw4-watermark-title', { opacity: 0 })
+        gsap.set('.hw4-orbit-rings', { opacity: 0 })
+        gsap.set(cord, { '--pull': '0px' })
+        gsap.set(stage, {
+          '--rope-rot': '0deg',
+          '--shade-rot': '0deg',
+          '--halo-x': AIM_CONFIG['1'].haloX,
+          '--halo-y': AIM_CONFIG['1'].haloY,
+        })
 
-  const onPointerMove = (e) => {
-    const d = drag.current
-    if (!d.active) return
-    d.dy = Math.max(0, Math.min(PULL_MAX, e.clientY - d.startY))
-    gsap.set(cordRef.current, { '--pull': `${d.dy}px` })
-    // Bulb warms up as the cord is pulled; the tag cheers the visitor on
-    sectionRef.current?.style.setProperty('--pre', Math.min(1, d.dy / PULL_TRIGGER).toFixed(2))
-    setTag(d.dy >= PULL_TRIGGER ? 'letgo' : d.dy > 6 ? 'more' : 'hover')
-  }
+        // Step-by-Step Pinned ScrollTrigger Sequence:
+        // 1. First scroll -> Wire pulls, Lamp turns ON in favicon orange & aims at Card 1 (only Card 1 visible)
+        // 2. Second scroll -> Lamp swings to Card 2, Card 1 dims, only Card 2 visible
+        // 3. Third scroll -> Lamp swings to Card 3, Card 2 dims, only Card 3 visible
+        // 4. Fourth scroll -> Lamp swings to Card 4, Card 3 dims, only Card 4 visible
+        // 5. Fifth scroll -> Wire pulls, Lamp turns OFF into pure darkness, cleanly unpins into next section
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: isDesktop ? '+=3400' : '+=2600',
+            pin: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              const p = self.progress
+              const isCurrentlyLit = p >= 0.04 && p <= 0.92
+              if (litRef.current !== isCurrentlyLit) {
+                setLit(isCurrentlyLit)
+                if (isCurrentlyLit) setPulled(true)
+              }
 
-  const onPointerUp = (e) => {
-    const d = drag.current
-    if (!d.active) return
-    d.active = false
-    e.currentTarget.releasePointerCapture?.(e.pointerId)
-    sectionRef.current?.style.setProperty('--pre', '0')
-    setTag('idle')
-    if (d.dy >= PULL_TRIGGER) {
-      toggle()
-      springBack()
-    } else if (d.dy < 6) {
-      tug()
-    } else {
-      springBack()
-    }
-  }
+              if (p < 0.04) setActiveStep(null)
+              else if (p < 0.23) setActiveStep('1')
+              else if (p < 0.45) setActiveStep('2')
+              else if (p < 0.67) setActiveStep('3')
+              else if (p <= 0.89) setActiveStep('4')
+              else setActiveStep(null)
+            },
+          },
+        })
 
-  const onKeyDown = (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      tug()
-    }
-  }
+        // -------------------------------------------------------------
+        // STEP 1: First scroll -> Wire pulls, Lamp turns ON in orange, illuminates Card 1
+        // -------------------------------------------------------------
+        tl.to(cord, { '--pull': '46px', duration: 0.035, ease: 'power1.inOut' }, 0)
+          .to(cord, { '--pull': '0px', duration: 0.025, ease: 'elastic.out(1.2, 0.4)' }, 0.035)
+          .to(
+            stage,
+            {
+              '--rope-rot': AIM_CONFIG['1'].ropeRot,
+              '--shade-rot': AIM_CONFIG['1'].shadeRot,
+              '--halo-x': AIM_CONFIG['1'].haloX,
+              '--halo-y': AIM_CONFIG['1'].haloY,
+              duration: 0.05,
+              ease: 'power2.out',
+            },
+            0.04
+          )
+          // Lamp ignites with radiant favicon orange light
+          .to('.hw4-bulb-glow', { opacity: 1, duration: 0.04, ease: 'power2.out' }, 0.04)
+          .to('.hw4-beam-group', { opacity: 1, duration: 0.04, ease: 'power2.out' }, 0.04)
+          .to('.hw4-spotlight-bloom', { opacity: 1, duration: 0.04, ease: 'power2.out' }, 0.04)
+          .to('.hw4-watermark-title', { opacity: 0.25, duration: 0.04, ease: 'power2.out' }, 0.04)
+          .to('.hw4-dashed-path', { opacity: 0.85, duration: 0.04, ease: 'power2.out' }, 0.04)
+          .to('.hw4-orbit-rings', { opacity: 0.35, duration: 0.04, ease: 'power2.out' }, 0.04)
+          // Card 1 illuminates into view
+          .fromTo(
+            '.hw4-card--1',
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' },
+            0.05
+          )
+          // Reading hold on Card 1 (Cards 2, 3, 4 are dark)
+          .to({}, { duration: 0.13 }, 0.10)
 
-  // Resolve the tag message: dragging wins, then hover, then on/off state
-  const tagState = tag !== 'idle' ? tag : lit ? (cordHover ? 'lit' : 'hidden') : cordHover ? 'hover' : 'idle'
+        // -------------------------------------------------------------
+        // STEP 2: Second scroll -> Lamp swings to Card 2, Card 2 illuminates
+        // -------------------------------------------------------------
+        tl.to('.hw4-card--1', { opacity: 0, y: -10, duration: 0.04, ease: 'power2.in' }, 0.23)
+          .to(
+            stage,
+            {
+              '--rope-rot': AIM_CONFIG['2'].ropeRot,
+              '--shade-rot': AIM_CONFIG['2'].shadeRot,
+              '--halo-x': AIM_CONFIG['2'].haloX,
+              '--halo-y': AIM_CONFIG['2'].haloY,
+              duration: 0.06,
+              ease: 'power2.inOut',
+            },
+            0.23
+          )
+          .fromTo(
+            '.hw4-card--2',
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' },
+            0.27
+          )
+          // Reading hold on Card 2 (Cards 1, 3, 4 are dark)
+          .to({}, { duration: 0.13 }, 0.32)
+
+        // -------------------------------------------------------------
+        // STEP 3: Third scroll -> Lamp swings to Card 3, Card 3 illuminates
+        // -------------------------------------------------------------
+        tl.to('.hw4-card--2', { opacity: 0, y: -10, duration: 0.04, ease: 'power2.in' }, 0.45)
+          .to(
+            stage,
+            {
+              '--rope-rot': AIM_CONFIG['3'].ropeRot,
+              '--shade-rot': AIM_CONFIG['3'].shadeRot,
+              '--halo-x': AIM_CONFIG['3'].haloX,
+              '--halo-y': AIM_CONFIG['3'].haloY,
+              duration: 0.06,
+              ease: 'power2.inOut',
+            },
+            0.45
+          )
+          .fromTo(
+            '.hw4-card--3',
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' },
+            0.49
+          )
+          // Reading hold on Card 3 (Cards 1, 2, 4 are dark)
+          .to({}, { duration: 0.13 }, 0.54)
+
+        // -------------------------------------------------------------
+        // STEP 4: Fourth scroll -> Lamp swings to Card 4, Card 4 illuminates
+        // -------------------------------------------------------------
+        tl.to('.hw4-card--3', { opacity: 0, y: -10, duration: 0.04, ease: 'power2.in' }, 0.67)
+          .to(
+            stage,
+            {
+              '--rope-rot': AIM_CONFIG['4'].ropeRot,
+              '--shade-rot': AIM_CONFIG['4'].shadeRot,
+              '--halo-x': AIM_CONFIG['4'].haloX,
+              '--halo-y': AIM_CONFIG['4'].haloY,
+              duration: 0.06,
+              ease: 'power2.inOut',
+            },
+            0.67
+          )
+          .fromTo(
+            '.hw4-card--4',
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' },
+            0.71
+          )
+          // Reading hold on Card 4 (Cards 1, 2, 3 are dark)
+          .to({}, { duration: 0.13 }, 0.76)
+
+        // -------------------------------------------------------------
+        // STEP 5: Final scroll -> Lamp cord triggers OFF, light goes out, section unpins
+        // -------------------------------------------------------------
+        tl.to(cord, { '--pull': '36px', duration: 0.03, ease: 'power1.inOut' }, 0.89)
+          .to(cord, { '--pull': '0px', duration: 0.02, ease: 'elastic.out(1.2, 0.4)' }, 0.92)
+          .to('.hw4-card--4', { opacity: 0, y: -10, duration: 0.04, ease: 'power2.in' }, 0.89)
+          .to(
+            [
+              '.hw4-bulb-glow',
+              '.hw4-beam-group',
+              '.hw4-spotlight-bloom',
+              '.hw4-watermark-title',
+              '.hw4-dashed-path',
+              '.hw4-orbit-rings',
+            ],
+            { opacity: 0, duration: 0.04, ease: 'power2.in' },
+            0.91
+          )
+          .to(
+            stage,
+            {
+              '--rope-rot': '0deg',
+              '--shade-rot': '0deg',
+              duration: 0.05,
+            },
+            0.91
+          )
+          .to({}, { duration: 0.04 }, 0.96)
+      },
+      sectionRef
+    )
+
+    return () => mm.revert()
+  }, [aimLamp])
+
+  // Helper to determine if a card should have active spotlight glow
+  const isCardSpotlight = (cardNum) => {
+    if (!lit) return false
+    if (hoveredCard) return hoveredCard === cardNum
+    return activeStep === cardNum
+  }
 
   return (
-    <section id="workflow" ref={sectionRef} className={`hw4 ${lit ? 'is-on' : ''} ${settled ? 'is-settled' : ''}`}>
-      <div ref={stageRef} className="hw4-stage">
-        {/* Heading sits on the left; the lamp hangs on the right */}
-        <header className="hw4-head">
-          <span className="hw-eyebrow">Our Process</span>
-          <h2 className="hw-title">
-            How We <span className="hw-accent">Work</span>
-          </h2>
-          <p className="hw-lead">
-            {lit
-              ? 'Four focused phases take you from first idea to a launched, growing product.'
-              : 'Every great project starts with a little light. Pull the cord.'}
-          </p>
-        </header>
+    <section
+      id="how-we-work"
+      ref={sectionRef}
+      className={`hw4 ${lit ? 'is-on' : ''}`}
+      aria-label="How We Work Process"
+    >
+      <div className="hw4-stage" ref={stageRef}>
+        {/* Central Display Watermark matching Figma Flow 15 */}
+        <h2 className="hw4-watermark-title" aria-hidden="true">
+          How We Work
+        </h2>
 
-        <div className="hw4-ambient" aria-hidden="true" />
-        <div className="hw4-desktop" aria-hidden="true" />
+        {/* Background Orbit Rings Wireframe matching Figma */}
+        <svg
+          className="hw4-orbit-rings"
+          viewBox="0 0 1440 900"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <ellipse
+            cx="720"
+            cy="460"
+            rx="660"
+            ry="240"
+            stroke="rgba(255, 255, 255, 0.08)"
+            strokeWidth="1.2"
+          />
+          <ellipse
+            cx="720"
+            cy="460"
+            rx="820"
+            ry="310"
+            stroke="rgba(255, 255, 255, 0.05)"
+            strokeWidth="1"
+          />
+          <line
+            x1="220"
+            y1="100"
+            x2="1220"
+            y2="820"
+            stroke="rgba(255, 255, 255, 0.05)"
+            strokeWidth="1"
+          />
+        </svg>
 
-        {/* Articulated lamp */}
-        <div ref={rigRef} className="hw4-lamp">
-          {/* Beam lives inside the lamp rig, so it swings and aims with the lamp */}
-          <div className="hw4-beam" aria-hidden="true">
-            <div className="hw4-beam-soft">
-              <div className="hw4-cone" />
-            </div>
-            <div className="hw4-dust">
-              {DUST.map((d, i) => (
-                <span
-                  key={i}
-                  style={{ left: d.left, top: d.top, width: d.size, height: d.size, '--dur': d.dur, '--delay': d.delay, '--drift': d.drift }}
+        {/* White Dashed Connection Trail connecting 1 Discover -> 2 Design -> 3 Build -> 4 Launch */}
+        <svg
+          className="hw4-dashed-path"
+          viewBox="0 0 1440 900"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M 340 300 C 410 320, 340 540, 440 560 C 560 580, 640 280, 725 280 C 880 280, 970 540, 1070 560 C 1140 580, 1260 520, 1310 460"
+            fill="none"
+            stroke="#FFFFFF"
+            strokeWidth="4"
+            strokeDasharray="9 11"
+            strokeLinecap="round"
+          />
+        </svg>
+
+        {/* Radiant Blue Spotlight Bloom on Active / Resting Target */}
+        <div className="hw4-spotlight-bloom" aria-hidden="true" />
+
+        {/* Exact Figma Pendant Warehouse Bell Lamp with Kinematic Rope & Attached Pull Wire */}
+        <div className="hw4-lamp-anchor">
+          {/* 1. Rope Pivot from ceiling anchor */}
+          <div className="hw4-rope-pivot">
+            {/* Hanging ceiling cable */}
+            <svg viewBox="0 0 280 440" className="hw4-rope-svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="hw4CableGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#1E2A38" />
+                  <stop offset="50%" stopColor="#3D5A80" />
+                  <stop offset="100%" stopColor="#141E28" />
+                </linearGradient>
+              </defs>
+              <rect x="137" y="0" width="3" height="198" fill="url(#hw4CableGrad)" />
+            </svg>
+
+            {/* 2. Shade Pivot at socket joint */}
+            <div className="hw4-shade-pivot">
+              {/* Figma Pendant Lamp & Volumetric Beam SVG */}
+              <svg
+                viewBox="0 0 280 440"
+                className="hw4-lamp-svg"
+                aria-hidden="true"
+              >
+                <defs>
+                  {/* Socket cylinder metallic gradient */}
+                  <linearGradient id="hw4SocketGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#0E1D2D" />
+                    <stop offset="25%" stopColor="#244569" />
+                    <stop offset="45%" stopColor="#6CA0DC" />
+                    <stop offset="70%" stopColor="#1B3450" />
+                    <stop offset="100%" stopColor="#0A1522" />
+                  </linearGradient>
+
+                  {/* Collar ring gradient */}
+                  <linearGradient id="hw4CollarGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#0B1724" />
+                    <stop offset="20%" stopColor="#1C3857" />
+                    <stop offset="42%" stopColor="#5B8EC9" />
+                    <stop offset="68%" stopColor="#162D46" />
+                    <stop offset="100%" stopColor="#08101A" />
+                  </linearGradient>
+
+                  {/* Rivet specular gradient */}
+                  <radialGradient id="hw4RivetGrad" cx="35%" cy="35%" r="65%">
+                    <stop offset="0%" stopColor="#E2EEFC" />
+                    <stop offset="45%" stopColor="#8BB8E8" />
+                    <stop offset="100%" stopColor="#1E3854" />
+                  </radialGradient>
+
+                  {/* Shade interior / depth glow */}
+                  <radialGradient id="hw4ShadeGlow" cx="48%" cy="75%" r="65%">
+                    <stop offset="0%" stopColor="#1E3D62" />
+                    <stop offset="40%" stopColor="#0E2137" />
+                    <stop offset="75%" stopColor="#071320" />
+                    <stop offset="100%" stopColor="#03080F" />
+                  </radialGradient>
+
+                  {/* Shade exterior specular highlight */}
+                  <linearGradient id="hw4ShadeHighlight" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#06111D" stopOpacity="0.9" />
+                    <stop offset="22%" stopColor="#1B3C61" stopOpacity="0.95" />
+                    <stop offset="38%" stopColor="#4C84BE" stopOpacity="0.85" />
+                    <stop offset="46%" stopColor="#8EC1F2" stopOpacity="0.9" />
+                    <stop offset="55%" stopColor="#224872" stopOpacity="0.9" />
+                    <stop offset="80%" stopColor="#0D2034" stopOpacity="0.95" />
+                    <stop offset="100%" stopColor="#040B13" stopOpacity="1" />
+                  </linearGradient>
+
+                  {/* Bottom rim edge highlight stroke */}
+                  <linearGradient id="hw4RimStroke" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#1B3550" />
+                    <stop offset="28%" stopColor="#5E96CE" />
+                    <stop offset="48%" stopColor="#A2CDFA" />
+                    <stop offset="70%" stopColor="#3A6C9E" />
+                    <stop offset="100%" stopColor="#102336" />
+                  </linearGradient>
+
+                  {/* Unlit bulb: soft muted ice-white glass dome */}
+                  <radialGradient id="hw4BulbOff" cx="50%" cy="40%" r="55%">
+                    <stop offset="0%" stopColor="#D9E6F5" />
+                    <stop offset="50%" stopColor="#91ADC8" />
+                    <stop offset="85%" stopColor="#4B6682" />
+                    <stop offset="100%" stopColor="#213448" />
+                  </radialGradient>
+
+                  {/* Lit bulb: EXACT COLOR MATCH to favicon orange! */}
+                  <radialGradient id="hw4BulbLit" cx="50%" cy="35%" r="60%">
+                    <stop offset="0%" stopColor="#FFFFFF" />
+                    <stop offset="18%" stopColor="#FFF4E6" />
+                    <stop offset="40%" stopColor="#FFC588" />
+                    <stop offset="65%" stopColor="#FFA033" />
+                    <stop offset="85%" stopColor="#F07108" />
+                    <stop offset="100%" stopColor="#C95400" />
+                  </radialGradient>
+
+                  {/* Radiant orange glow filter for lit bulb - softly dimmed */}
+                  <filter id="hw4OrangeBulbGlow" x="-100%" y="-100%" width="300%" height="300%">
+                    <feDropShadow dx="0" dy="3" stdDeviation="5" floodColor="#FFA033" floodOpacity="0.70" />
+                    <feDropShadow dx="0" dy="6" stdDeviation="12" floodColor="#F07108" floodOpacity="0.50" />
+                  </filter>
+
+                  {/* Pull handle pearl metallic gradient */}
+                  <linearGradient id="hw4HandleGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#BAC4D1" />
+                    <stop offset="35%" stopColor="#FFFFFF" />
+                    <stop offset="70%" stopColor="#E2E8F0" />
+                    <stop offset="100%" stopColor="#8E9AA8" />
+                  </linearGradient>
+
+                  {/* Volumetric Spotlight Beam Cone Gradient (Dimmed Soft Warm Orange) */}
+                  <linearGradient id="hw4VolumetricBeam" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.55" />
+                    <stop offset="4%" stopColor="#FFEAD4" stopOpacity="0.40" />
+                    <stop offset="12%" stopColor="#FFA033" stopOpacity="0.25" />
+                    <stop offset="30%" stopColor="#F07108" stopOpacity="0.14" />
+                    <stop offset="60%" stopColor="#D95800" stopOpacity="0.05" />
+                    <stop offset="85%" stopColor="#9C3A00" stopOpacity="0.015" />
+                    <stop offset="100%" stopColor="#5E2000" stopOpacity="0" />
+                  </linearGradient>
+
+                  {/* Soft edge blur for atmospheric light beam */}
+                  <filter id="hw4BeamFeather" x="-50%" y="-20%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="12" />
+                  </filter>
+
+                  {/* Inner shade cavity mouth glow - softer dim light */}
+                  <radialGradient id="hw4MouthFlare" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.65" />
+                    <stop offset="30%" stopColor="#FFEAD4" stopOpacity="0.40" />
+                    <stop offset="65%" stopColor="#FFA033" stopOpacity="0.18" />
+                    <stop offset="100%" stopColor="#F07108" stopOpacity="0" />
+                  </radialGradient>
+                </defs>
+
+                {/* Volumetric Spotlight Beam Cone (Welded to shade mouth opening) */}
+                <g className="hw4-beam-group">
+                  <path
+                    d="M 17 319.5
+                       C 50 324.5, 227 324.5, 260 319.5
+                       L 680 1480
+                       L -400 1480
+                       Z"
+                    fill="url(#hw4VolumetricBeam)"
+                    filter="url(#hw4BeamFeather)"
+                  />
+                  <ellipse cx="138.5" cy="320" rx="118" ry="7" fill="url(#hw4MouthFlare)" filter="blur(4px)" />
+                </g>
+
+                {/* Strain relief rubber gland */}
+                <path d="M 136 190 L 141 190 L 142.5 200 L 134.5 200 Z" fill="#182738" />
+                <rect x="134" y="198" width="9" height="4" rx="1.5" fill="#2E4D70" />
+
+                {/* Socket cylinder body */}
+                <rect x="122" y="202" width="33" height="34" rx="6" fill="url(#hw4SocketGrad)" />
+                <line
+                  x1="131"
+                  y1="204"
+                  x2="131"
+                  y2="234"
+                  stroke="#8EC1F2"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  opacity="0.9"
                 />
-              ))}
+
+                {/* Stepped collar ring with rivets */}
+                <path d="M 98 236 L 179 236 L 184 250 L 93 250 Z" fill="url(#hw4CollarGrad)" />
+                <circle cx="102" cy="243" r="4" fill="url(#hw4RivetGrad)" stroke="#0A1624" strokeWidth="0.8" />
+                <circle cx="175" cy="243" r="4" fill="url(#hw4RivetGrad)" stroke="#0A1624" strokeWidth="0.8" />
+
+                {/* Bulb Base (peeks out underneath shade rim) */}
+                <ellipse cx="138.5" cy="317" rx="22" ry="10" fill="url(#hw4BulbOff)" opacity="0.85" />
+
+                {/* Glowing Radiant-Orange Lit Bulb & Bloom Filter */}
+                <g className="hw4-bulb-glow">
+                  <ellipse cx="138.5" cy="318" rx="34" ry="15" fill="rgba(240, 113, 8, 0.25)" filter="blur(10px)" />
+                  <ellipse
+                    cx="138.5"
+                    cy="317"
+                    rx="22"
+                    ry="11"
+                    fill="url(#hw4BulbLit)"
+                    filter="url(#hw4OrangeBulbGlow)"
+                  />
+                  <ellipse cx="138.5" cy="316" rx="14" ry="6" fill="#FFFFFF" />
+                </g>
+
+                {/* Conical Warehouse Bell Shade (exact Figma shape & gradients) */}
+                <path
+                  d="M 97 250
+                     C 95 264, 48 300, 20 314
+                     C 14 316.5, 13 318, 17 319.5
+                     C 46 324, 231 324, 260 319.5
+                     C 264 318, 263 316.5, 257 314
+                     C 229 300, 182 264, 180 250
+                     Z"
+                  fill="url(#hw4ShadeGlow)"
+                />
+                <path
+                  d="M 97 250
+                     C 95 264, 48 300, 20 314
+                     C 14 316.5, 13 318, 17 319.5
+                     C 46 324, 231 324, 260 319.5
+                     C 264 318, 263 316.5, 257 314
+                     C 229 300, 182 264, 180 250
+                     Z"
+                  fill="url(#hw4ShadeHighlight)"
+                />
+
+                {/* Bottom rim edge stroke */}
+                <path
+                  d="M 17 319.5 C 50 324.5, 227 324.5, 260 319.5"
+                  stroke="url(#hw4RimStroke)"
+                  strokeWidth="2.6"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+                {/* Inner shade mouth shadow */}
+                <ellipse cx="138.5" cy="319" rx="114" ry="5" fill="#040910" opacity="0.8" />
+              </svg>
+
+              {/* Suspended pull cord attached directly to shade collar */}
+              <button
+                ref={cordRef}
+                type="button"
+                className={`hw4-cord ${pulled ? 'was-pulled' : ''}`}
+                aria-label={lit ? 'Click to turn off lamp' : 'Click to turn on lamp'}
+                onClick={toggleLamp}
+              >
+                <span className="hw4-cord-sway">
+                  <span className="hw4-cord-line" />
+                  <span className="hw4-cord-knob" />
+                </span>
+                {/* Figma Frame 366 'Click Here' tooltip badge */}
+                <span className="hw4-click-badge" aria-hidden="true">
+                  Click Here
+                </span>
+              </button>
             </div>
           </div>
-          <svg viewBox="0 0 320 260" className="hw4-lamp-svg" aria-hidden="true">
-            <defs>
-              <linearGradient id="hw4Metal" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#4A5266" />
-                <stop offset="0.5" stopColor="#262B38" />
-                <stop offset="1" stopColor="#151821" />
-              </linearGradient>
-              <linearGradient id="hw4Shade" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stopColor="#1A1E29" />
-                <stop offset="0.45" stopColor="#3A4152" />
-                <stop offset="1" stopColor="#141720" />
-              </linearGradient>
-              <radialGradient id="hw4Bulb" cx="0.5" cy="0.5" r="0.5">
-                <stop offset="0" stopColor="#FFFBEF" />
-                <stop offset="0.5" stopColor="#FFD9A0" />
-                <stop offset="1" stopColor="#F7801E" />
-              </radialGradient>
-            </defs>
-            {/* ceiling mount + rod */}
-            <rect x="138" y="0" width="44" height="9" rx="3" fill="url(#hw4Metal)" />
-            <rect x="157" y="8" width="6" height="52" rx="3" fill="url(#hw4Metal)" />
-            {/* articulated arms with tension springs */}
-            <path d="M160 60 L214 118" stroke="url(#hw4Metal)" strokeWidth="7" strokeLinecap="round" />
-            <path d="M166 70 L218 126" stroke="#5B6478" strokeWidth="1.4" strokeDasharray="2 3" />
-            <path d="M214 118 L160 168" stroke="url(#hw4Metal)" strokeWidth="7" strokeLinecap="round" />
-            <path d="M208 112 L154 162" stroke="#5B6478" strokeWidth="1.4" strokeDasharray="2 3" />
-            <circle cx="160" cy="60" r="7" fill="#2E3443" stroke="#6B7590" strokeWidth="1.5" />
-            <circle cx="214" cy="118" r="7" fill="#2E3443" stroke="#6B7590" strokeWidth="1.5" />
-            <circle cx="160" cy="168" r="7" fill="#2E3443" stroke="#6B7590" strokeWidth="1.5" />
-            {/* shade */}
-            <path d="M140 176 Q160 168 180 176 L214 230 Q160 246 106 230 Z" fill="url(#hw4Shade)" />
-            <path d="M140 176 Q160 168 180 176" stroke="#7B86A3" strokeWidth="1.2" fill="none" opacity="0.6" />
-            {/* mouth + bulb (glow only when on) */}
-            <ellipse cx="160" cy="232" rx="54" ry="9" fill="#0A0C12" />
-            <ellipse className="hw4-bulb" cx="160" cy="231" rx="48" ry="7" fill="url(#hw4Bulb)" />
-          </svg>
-
-          {/* Pull cord hangs from the shade rim */}
-          <button
-            ref={cordRef}
-            type="button"
-            className={`hw4-cord ${pulled ? 'was-pulled' : ''}`}
-            aria-label={lit ? 'Pull to switch the lamp off' : 'Pull to switch the lamp on'}
-            aria-pressed={lit}
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerCancel={onPointerUp}
-            onKeyDown={onKeyDown}
-            onPointerEnter={() => setCordHover(true)}
-            onPointerLeave={() => setCordHover(false)}
-          >
-            <span className="hw4-cord-sway">
-              <span className="hw4-cord-line" />
-              <span className="hw4-cord-knob" />
-            </span>
-            {/* Paper tag tied to the bead: talks to the visitor while they pull */}
-            <span className="hw4-tag-wrap" aria-hidden="true">
-              <span className={`hw4-tag is-${tagState}`}>
-                <span className="hw4-tag-hole" />
-                {TAG_TEXT[tagState]}
-              </span>
-            </span>
-          </button>
         </div>
 
-        {/* The desk */}
-        <div className="hw4-desk">
-          <div className="hw4-cards" onPointerLeave={aimHome}>
-            {workflowSteps.map((s, i) => {
-              const Icon = s.icon
-              // Light sweeps away from the lamp (right to left)
-              return (
-                <article key={s.step} className="hw4-card" onPointerEnter={aimAt} style={{ '--d': `${0.55 + (workflowSteps.length - 1 - i) * 0.18}s` }}>
-                  <div className="hw4-card-top">
-                    <span className="hw4-card-num">{s.step}</span>
-                    <span className="hw4-card-icon">
-                      <Icon style={{ width: '22px', height: '22px' }} />
-                    </span>
-                  </div>
-                  <h3 className="hw4-card-title">{s.title}</h3>
-                  <p className="hw4-card-desc">{s.desc}</p>
-                  <ul className="hw4-card-list">
-                    {s.deliverables.map((d) => (
-                      <li key={d}>{d}</li>
-                    ))}
-                  </ul>
-                </article>
-              )
-            })}
-          </div>
-          <div className="hw4-surface" aria-hidden="true" />
+        {/* 4 Cards in 2x2 Staggered Orbital Constellation (Flow 15) */}
+        <div className="hw4-constellation">
+          {workflowSteps.map((step) => {
+            const isSpotlight = isCardSpotlight(step.num)
+            return (
+              <article
+                key={step.num}
+                className={`hw4-card hw4-card--${step.num} ${
+                  isSpotlight ? 'hw4-card--spotlight' : ''
+                }`}
+                onMouseEnter={() => handleCardEnter(step.num)}
+                onMouseLeave={handleCardLeave}
+              >
+                <div className="hw4-card-header">
+                  <span className="hw4-card-num-box">{step.num}</span>
+                  <h3 className="hw4-card-title">{step.title}</h3>
+                </div>
+                <div className="hw4-card-divider" />
+                <p className="hw4-card-desc">{step.desc}</p>
+              </article>
+            )
+          })}
         </div>
       </div>
     </section>

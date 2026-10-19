@@ -1,33 +1,23 @@
-import { Compass, Cpu, Palette, Rocket } from 'lucide-react'
-
-// Shared content for every "How We Work" variant
+// Flow 15: Exact workflow steps from Figma prototype
 export const workflowSteps = [
   {
-    step: '01',
-    title: 'Discovery & Vision',
-    icon: Compass,
-    desc: 'Deep-dive into brand architecture, competitive moats, audience psychology, and strategic positioning.',
-    deliverables: ['Brand & market audit', 'Audience research', 'Strategy roadmap'],
+    num: '1',
+    title: 'Discover',
+    desc: 'We map your goals, audience, and real market advantages before touching any canvas.',
   },
   {
-    step: '02',
-    title: 'Art Direction & 3D',
-    icon: Palette,
-    desc: 'Crafting bespoke typography, 3D assets, high-fidelity wireframes, and fluid micro-interaction systems.',
-    deliverables: ['Moodboards & style', 'Wireframes & prototypes', '3D & motion assets'],
+    num: '2',
+    title: 'Design',
+    desc: 'Interactive prototypes and clean design systems shaped through open, weekly reviews.',
   },
   {
-    step: '03',
-    title: 'Modern Engineering',
-    icon: Cpu,
-    desc: 'Building responsive WebGL interfaces, buttery smooth animations, and AI-accelerated automated integrations.',
-    deliverables: ['Responsive build', 'Animations & WebGL', 'Integrations & automation'],
+    num: '3',
+    title: 'Build',
+    desc: 'Reliable, clean code built for speed, responsive screens, and steady growth.',
   },
   {
-    step: '04',
-    title: 'Launch & Expansion',
-    icon: Rocket,
-    desc: 'Multi-device performance optimization, SEO infrastructure, analytics tracking, and continuous scaling.',
-    deliverables: ['Performance & SEO', 'Analytics setup', 'Ongoing growth support'],
+    num: '4',
+    title: 'Launch',
+    desc: "We test thoroughly, launch smoothly, and stay with you well past launch day.",
   },
 ]

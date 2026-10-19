@@ -100,7 +100,7 @@ export default function PricingSection() {
           Services &amp; <span className="accent">Pricing</span>
         </h3>
         <p className="pricing-subtitle">
-          Creative, design, strategy and digital solutions — structured around your business requirements.
+          Creative design, strategy, and digital solutions structured around your business goals.
         </p>
       </div>
 
