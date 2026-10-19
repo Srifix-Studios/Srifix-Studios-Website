@@ -1,5 +1,6 @@
 import React from 'react'
 import { useLenis } from './hooks/useLenis'
+import Preloader from './components/Preloader'
 import HeroSection from './components/HeroSection'
 import AboutUsSection from './components/AboutUsSection'
 import FeaturesSection from './components/FeaturesSection'
@@ -19,6 +20,7 @@ export default function App() {
 
   return (
     <>
+      <Preloader />
       <MouseTrail />
       <ChatBot />
       <main>
