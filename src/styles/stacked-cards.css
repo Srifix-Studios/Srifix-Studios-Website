@@ -1,0 +1,377 @@
+/* ==========================================================================
+   Client Review Section — Figma Version 5 Spec + 3D Zoom Cards Animation
+   Matches Frame #1542:1973 with canyon backdrop, vector watermark & glass cards
+   ========================================================================== */
+
+.tv-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #0F0F1C;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+/* Atmospheric Canyon Backdrop + Figma Version 5 Vignettes */
+.tv-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.tv-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.45;
+}
+
+.tv-vignette-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(100px, 15vh, 180px);
+  background: linear-gradient(180deg, #0F0F1C 25%, rgba(15, 15, 28, 0.85) 60%, rgba(15, 15, 28, 0) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tv-portal-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: min(780px, 90vw);
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(39, 83, 227, 0.45) 0%, rgba(39, 83, 227, 0.16) 45%, rgba(15, 15, 28, 0) 72%);
+  filter: blur(52px);
+  pointer-events: none;
+  animation: tvPortalPulse 4.5s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes tvPortalPulse {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+.tv-vignette-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: clamp(180px, 26vh, 320px);
+  background: linear-gradient(0deg, #0F0F1C 35%, rgba(15, 15, 28, 0.85) 65%, rgba(15, 15, 28, 0) 100%);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Figma Version 5 Vector Watermark (#1542:1974) */
+.tv-watermark-wrap {
+  position: absolute;
+  top: clamp(10px, 2.2vh, 32px);
+  left: 50%;
+  translate: -50% 0;
+  width: min(1234px, 92vw);
+  max-width: 1234px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+.tv-watermark-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Inner Layout */
+.tv-inner {
+  position: relative;
+  z-index: 10;
+  max-width: 1320px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(40px, 6vh, 80px) 24px 30px;
+  box-sizing: border-box;
+}
+
+/* Headline: Syne Bold 84px #FFFFFF + #2753E3 (#1542:2018) */
+.tv-headline {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 4.8vw, 5.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: #FFFFFF;
+  margin: 0 0 clamp(24px, 3.8vh, 46px) 0;
+  text-align: center;
+  text-shadow: 0 0 32px rgba(39, 83, 227, 0.35);
+}
+
+.tv-accent {
+  color: #2753E3;
+  text-shadow: 0 0 28px rgba(39, 83, 227, 0.65);
+}
+
+/* 3D Zoom Cards Stage */
+.tv-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1240px;
+  height: clamp(360px, 46vh, 420px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+/* Card: 438px x 350px, border-radius 26px, border 1px solid rgba(92, 92, 92, 0.65) */
+.tv-stage .tv-card {
+  position: absolute;
+  width: clamp(340px, 29vw, 438px);
+  min-height: 350px;
+  height: auto;
+  margin: 0;
+  border-radius: 26px;
+  border: 1px solid rgba(92, 92, 92, 0.65);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform-origin: center center;
+  will-change: transform, opacity, visibility;
+  box-sizing: border-box;
+  text-align: left;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  translate: none !important;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.tv-stage .tv-card:hover {
+  translate: none !important;
+  border-color: rgba(39, 83, 227, 0.75);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.75), 0 0 35px rgba(39, 83, 227, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Card Header: 100px Flag + Author details, divider 1px solid rgba(92, 92, 92, 0.65) */
+.tv-stage .tv-card-head {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  min-height: 92px;
+  border-bottom: 1px solid rgba(92, 92, 92, 0.65);
+  box-sizing: border-box;
+}
+
+.tv-stage .tv-card-flag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid rgba(92, 92, 92, 0.65);
+  padding: 14px 10px;
+  box-sizing: border-box;
+}
+
+.tv-stage .tv-flag-img {
+  width: 76px;
+  height: 46px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  display: block;
+}
+
+.tv-stage .tv-card-who {
+  padding: 14px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  box-sizing: border-box;
+}
+
+/* Author Name: Syne Bold 28px #FFFFFF */
+.tv-stage .tv-card-name {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-weight: 700;
+  font-size: clamp(20px, 1.7vw, 28px);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+/* Author Role: Inter Regular 12px #2753E3 */
+.tv-stage .tv-card-role {
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.25;
+  color: #2753E3;
+  margin: 0;
+}
+
+/* Card Body */
+.tv-stage .tv-card-body {
+  padding: 20px 24px 26px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 14px;
+  box-sizing: border-box;
+}
+
+/* Stars: 5 stars in pure #FFFFFF matching Figma spec */
+.tv-stage .tv-stars {
+  font-size: 14px;
+  letter-spacing: 0.35em;
+  color: #FFFFFF;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.tv-stage .tv-star {
+  display: inline-block;
+  color: #FFFFFF;
+}
+
+/* Quote: Inter Regular 22px / 28px #FFFFFF (#1542:1984) */
+.tv-stage .tv-quote {
+  margin: 0;
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  font-weight: 400;
+  font-size: clamp(15px, 1.2vw, 20px);
+  line-height: 1.45;
+  color: #FFFFFF;
+}
+
+.tv-stage .tv-hl {
+  background: transparent;
+  color: #FFFFFF;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+}
+
+/* Interactive Cursor Radial Spotlight */
+.tv-stage .tv-spot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: radial-gradient(350px circle at var(--sx, -999px) var(--sy, -999px), rgba(39, 83, 227, 0.16), transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tv-stage .tv-card:hover .tv-spot {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Responsive Adaptations (Mobile & Tablet <= 860px)
+   ========================================================================== */
+@media (max-width: 860px) {
+  .tv-section {
+    padding: 0;
+  }
+
+  .tv-inner {
+    padding: 30px 16px 20px;
+    justify-content: center;
+  }
+
+  .tv-watermark-wrap {
+    top: 12px;
+    width: 94vw;
+  }
+
+  .tv-headline {
+    font-size: clamp(2rem, 7.5vw, 3rem);
+    margin-bottom: 20px;
+  }
+
+  .tv-stage {
+    height: clamp(340px, 48vh, 390px);
+  }
+
+  .tv-stage .tv-card {
+    width: min(350px, calc(100vw - 32px));
+    min-height: 330px;
+  }
+
+  .tv-stage .tv-card-head {
+    grid-template-columns: 82px 1fr;
+    min-height: 80px;
+  }
+
+  .tv-stage .tv-card-flag {
+    padding: 10px 8px;
+  }
+
+  .tv-stage .tv-flag-img {
+    width: 62px;
+    height: 38px;
+  }
+
+  .tv-stage .tv-card-who {
+    padding: 10px 14px;
+  }
+
+  .tv-stage .tv-card-name {
+    font-size: 20px;
+  }
+
+  .tv-stage .tv-card-role {
+    font-size: 11px;
+  }
+
+  .tv-stage .tv-card-body {
+    padding: 16px 18px 20px;
+    gap: 10px;
+  }
+
+  .tv-stage .tv-quote {
+    font-size: 14.5px;
+    line-height: 1.45;
+  }
+}

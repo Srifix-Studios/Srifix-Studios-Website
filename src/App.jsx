@@ -11,6 +11,7 @@ import FaqSection from './components/FaqSection'
 import CtaSection from './components/CtaSection'
 import Footer from './components/Footer'
 import MouseTrail from './components/MouseTrail'
+import ChatBot from './components/ChatBot/ChatBot'
 
 // Hero (Version 5) → About Us (Version 5) → Features → How We Work → Why Us → Client Review → Pricing → Questions → CTA → Footer
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
   return (
     <>
       <MouseTrail />
+      <ChatBot />
       <main>
         <HeroSection />
         <AboutUsSection />
