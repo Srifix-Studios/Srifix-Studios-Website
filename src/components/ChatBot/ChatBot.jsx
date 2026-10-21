@@ -33,7 +33,7 @@ function WhatsAppIcon({ size = 15, className = '' }) {
 
 const WHATSAPP_NUMBER = '+91 9625038790'
 const WHATSAPP_URL = 'https://wa.me/919625038790?text=Hi%20Srifix%20Studios%2C%20I%20would%20like%20to%20discuss%20a%20project'
-const STUDIO_EMAIL = 'info@srifixstudios.com'
+const STUDIO_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'info@srifix.srifixstudios.com'
 
 const SUGGESTIONS = [
   'Connect on WhatsApp',
@@ -71,7 +71,6 @@ export default function ChatBot() {
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
-  // Auto-dismiss initial tooltip after 8 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowTooltip(false)
@@ -79,7 +78,6 @@ export default function ChatBot() {
     return () => clearTimeout(timer)
   }, [])
 
-  // Auto scroll to bottom of chat
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
@@ -89,7 +87,6 @@ export default function ChatBot() {
       scrollToBottom()
       setUnreadCount(0)
       setShowTooltip(false)
-      // Focus input
       setTimeout(() => {
         inputRef.current?.focus()
       }, 100)
@@ -126,7 +123,6 @@ export default function ChatBot() {
   const generateBotResponse = (userText) => {
     const query = userText.toLowerCase().trim()
 
-    // 1. WhatsApp / Direct Chat / Messaging
     if (
       query.includes('whatsapp') ||
       query.includes('whats app') ||
@@ -145,7 +141,6 @@ export default function ChatBot() {
       }
     }
 
-    // 2. Pricing / Cost / Budget
     if (
       query.includes('price') ||
       query.includes('cost') ||
@@ -165,7 +160,6 @@ export default function ChatBot() {
       }
     }
 
-    // 3. Services / What do you do / Offerings
     if (
       query.includes('service') ||
       query.includes('what do you do') ||
@@ -188,7 +182,6 @@ export default function ChatBot() {
       }
     }
 
-    // 4. Process / Workflow / How we work
     if (
       query.includes('process') ||
       query.includes('workflow') ||
@@ -207,7 +200,6 @@ export default function ChatBot() {
       }
     }
 
-    // 5. Tech stack / Tools / Technologies
     if (
       query.includes('tech') ||
       query.includes('stack') ||
@@ -229,7 +221,6 @@ export default function ChatBot() {
       }
     }
 
-    // 6. Contact / Booking / Email / Call / Start
     if (
       query.includes('contact') ||
       query.includes('call') ||
@@ -252,7 +243,6 @@ export default function ChatBot() {
       }
     }
 
-    // 7. Timeline / How fast / Turnaround
     if (
       query.includes('time') ||
       query.includes('fast') ||
@@ -272,7 +262,6 @@ export default function ChatBot() {
       }
     }
 
-    // 8. Location / International clients
     if (
       query.includes('where') ||
       query.includes('location') ||
@@ -292,7 +281,6 @@ export default function ChatBot() {
       }
     }
 
-    // 9. Support / Maintenance / After Launch
     if (
       query.includes('support') ||
       query.includes('maintain') ||
@@ -310,7 +298,6 @@ export default function ChatBot() {
       }
     }
 
-    // 10. Default smart fallback
     return {
       text: "Thanks for reaching out! Whether you need a fresh brand identity, an interactive custom website, or growth marketing, our studio team is here to help.\n\nFeel free to explore our sections, message us on WhatsApp, or send an inquiry directly.",
       actions: [
@@ -339,7 +326,6 @@ export default function ChatBot() {
     setInputValue('')
     setIsTyping(true)
 
-    // Realistic typing delay (600ms - 900ms)
     setTimeout(() => {
       const response = generateBotResponse(text)
       const botMessage = {
@@ -372,7 +358,6 @@ export default function ChatBot() {
 
   return (
     <div className="srifix-chatbot-container">
-      {/* Floating Launcher Button */}
       <div className="srifix-chatbot-launcher-wrapper">
         {showTooltip && !isOpen && (
           <div
@@ -421,10 +406,8 @@ export default function ChatBot() {
         </button>
       </div>
 
-      {/* Chat Window Panel */}
       {isOpen && (
         <div className="srifix-chatbot-window" role="dialog" aria-modal="true" aria-label="Srifix Studio Assistant">
-          {/* Header */}
           <div className="srifix-chat-header">
             <div className="srifix-chat-header-info">
               <div className="srifix-chat-avatar">
@@ -471,7 +454,6 @@ export default function ChatBot() {
             </div>
           </div>
 
-          {/* Quick WhatsApp Connect Banner */}
           <a
             href={WHATSAPP_URL}
             target="_blank"
@@ -497,7 +479,6 @@ export default function ChatBot() {
             </div>
           </a>
 
-          {/* Messages Body */}
           <div className="srifix-chat-body">
             {messages.map((msg) => (
               <div
@@ -546,7 +527,6 @@ export default function ChatBot() {
               </div>
             ))}
 
-            {/* Typing Indicator */}
             {isTyping && (
               <div className="srifix-message-row is-bot">
                 <div className="srifix-msg-avatar">
@@ -567,7 +547,6 @@ export default function ChatBot() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Suggestions */}
           <div className="srifix-chat-suggestions">
             <span className="srifix-suggestions-label">Quick Inquiries:</span>
             <div className="srifix-suggestions-scroll">
@@ -586,7 +565,6 @@ export default function ChatBot() {
             </div>
           </div>
 
-          {/* Input Footer */}
           <form
             className="srifix-chat-input-row"
             onSubmit={(e) => {
@@ -613,7 +591,6 @@ export default function ChatBot() {
             </button>
           </form>
 
-          {/* Micro Footer Note */}
           <div className="srifix-chat-micro-footer">
             <span>Direct Studio Desk • {STUDIO_EMAIL} • WhatsApp: {WHATSAPP_NUMBER}</span>
           </div>

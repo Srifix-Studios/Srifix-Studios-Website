@@ -14,7 +14,6 @@
     position: absolute;
 }
 
-
 .card::before {
     width: 200%;
     height: 200%;
@@ -36,7 +35,6 @@
     animation: border-animation 4s linear infinite;
 }
 
-
 .card::after {
     inset: var(--inset);
     background: var(--bg-card);
@@ -45,7 +43,6 @@
     z-index: -1;
 }
 
-/* Pause the rotation while the card is hovered */
 .card:hover::before {
     animation-play-state: paused;
 }
@@ -60,11 +57,6 @@
     }
 }
 
-
-
-/* Scroll-driven entry animations for the ported sections.
-   animation-timeline is only supported in Chromium browsers — without this
-   @supports guard, unsupported browsers would fall back to a 0s animation. */
 @supports (animation-timeline: view()) {
     .pricing-section, .question-section , .cta-section ,.footer{
         animation: enter-in linear both;

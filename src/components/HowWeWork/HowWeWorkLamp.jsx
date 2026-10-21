@@ -6,10 +6,6 @@ import '../../styles/howwework.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Compound Aim configuration for each card
-// ropeRot: suspension cable swing angle from ceiling anchor
-// shadeRot: lamp shade tilt angle at socket joint
-// haloX, haloY: spotlight bloom center coordinates over the target card
 const AIM_CONFIG = {
   '1': {
     ropeRot: '22deg',
@@ -55,7 +51,6 @@ export default function HowWeWorkLamp() {
   const litRef = useRef(false)
   litRef.current = lit
 
-  // Lamp elastic pendulum swing animation on cord pull
   const swing = useCallback(() => {
     const stage = stageRef.current
     if (!stage) return
@@ -72,7 +67,6 @@ export default function HowWeWorkLamp() {
     )
   }, [])
 
-  // Aim lamp at a specific card with compound rope + shade kinematics
   const aimLamp = useCallback((cardKey) => {
     const conf = AIM_CONFIG[cardKey] || AIM_CONFIG.default
     const stage = stageRef.current
@@ -89,7 +83,6 @@ export default function HowWeWorkLamp() {
     })
   }, [])
 
-  // Card hover handlers
   const handleCardEnter = (cardNum) => {
     setHoveredCard(cardNum)
     if (litRef.current) {
@@ -106,7 +99,6 @@ export default function HowWeWorkLamp() {
     }
   }
 
-  // Direct toggle on click/tap
   const toggleLamp = () => {
     setLit((prev) => {
       const next = !prev
@@ -171,9 +163,6 @@ export default function HowWeWorkLamp() {
           return
         }
 
-        // INITIAL BLACKOUT STATE:
-        // Whole screen is black. ONLY the lamp and cord are visible.
-        // Cards, dashed trail, watermark, and beam start hidden in total darkness.
         gsap.set('.hw4-bulb-glow', { opacity: 0 })
         gsap.set('.hw4-beam-group', { opacity: 0 })
         gsap.set('.hw4-spotlight-bloom', { opacity: 0 })
@@ -189,12 +178,6 @@ export default function HowWeWorkLamp() {
           '--halo-y': AIM_CONFIG['1'].haloY,
         })
 
-        // Step-by-Step Pinned ScrollTrigger Sequence:
-        // 1. First scroll -> Wire pulls, Lamp turns ON in favicon orange & aims at Card 1 (only Card 1 visible)
-        // 2. Second scroll -> Lamp swings to Card 2, Card 1 dims, only Card 2 visible
-        // 3. Third scroll -> Lamp swings to Card 3, Card 2 dims, only Card 3 visible
-        // 4. Fourth scroll -> Lamp swings to Card 4, Card 3 dims, only Card 4 visible
-        // 5. Fifth scroll -> Wire pulls, Lamp turns OFF into pure darkness, cleanly unpins into next section
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
@@ -221,9 +204,6 @@ export default function HowWeWorkLamp() {
           },
         })
 
-        // -------------------------------------------------------------
-        // STEP 1: First scroll -> Wire pulls, Lamp turns ON in orange, illuminates Card 1
-        // -------------------------------------------------------------
         tl.to(cord, { '--pull': '46px', duration: 0.035, ease: 'power1.inOut' }, 0)
           .to(cord, { '--pull': '0px', duration: 0.025, ease: 'elastic.out(1.2, 0.4)' }, 0.035)
           .to(
@@ -238,26 +218,20 @@ export default function HowWeWorkLamp() {
             },
             0.04
           )
-          // Lamp ignites with radiant favicon orange light
           .to('.hw4-bulb-glow', { opacity: 1, duration: 0.04, ease: 'power2.out' }, 0.04)
           .to('.hw4-beam-group', { opacity: 1, duration: 0.04, ease: 'power2.out' }, 0.04)
           .to('.hw4-spotlight-bloom', { opacity: 1, duration: 0.04, ease: 'power2.out' }, 0.04)
           .to('.hw4-watermark-title', { opacity: 0.25, duration: 0.04, ease: 'power2.out' }, 0.04)
           .to('.hw4-dashed-path', { opacity: 0.85, duration: 0.04, ease: 'power2.out' }, 0.04)
           .to('.hw4-orbit-rings', { opacity: 0.35, duration: 0.04, ease: 'power2.out' }, 0.04)
-          // Card 1 illuminates into view
           .fromTo(
             '.hw4-card--1',
             { opacity: 0, y: 16 },
             { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' },
             0.05
           )
-          // Reading hold on Card 1 (Cards 2, 3, 4 are dark)
           .to({}, { duration: 0.13 }, 0.10)
 
-        // -------------------------------------------------------------
-        // STEP 2: Second scroll -> Lamp swings to Card 2, Card 2 illuminates
-        // -------------------------------------------------------------
         tl.to('.hw4-card--1', { opacity: 0, y: -10, duration: 0.04, ease: 'power2.in' }, 0.23)
           .to(
             stage,
@@ -277,12 +251,8 @@ export default function HowWeWorkLamp() {
             { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' },
             0.27
           )
-          // Reading hold on Card 2 (Cards 1, 3, 4 are dark)
           .to({}, { duration: 0.13 }, 0.32)
 
-        // -------------------------------------------------------------
-        // STEP 3: Third scroll -> Lamp swings to Card 3, Card 3 illuminates
-        // -------------------------------------------------------------
         tl.to('.hw4-card--2', { opacity: 0, y: -10, duration: 0.04, ease: 'power2.in' }, 0.45)
           .to(
             stage,
@@ -302,12 +272,8 @@ export default function HowWeWorkLamp() {
             { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' },
             0.49
           )
-          // Reading hold on Card 3 (Cards 1, 2, 4 are dark)
           .to({}, { duration: 0.13 }, 0.54)
 
-        // -------------------------------------------------------------
-        // STEP 4: Fourth scroll -> Lamp swings to Card 4, Card 4 illuminates
-        // -------------------------------------------------------------
         tl.to('.hw4-card--3', { opacity: 0, y: -10, duration: 0.04, ease: 'power2.in' }, 0.67)
           .to(
             stage,
@@ -327,12 +293,8 @@ export default function HowWeWorkLamp() {
             { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' },
             0.71
           )
-          // Reading hold on Card 4 (Cards 1, 2, 3 are dark)
           .to({}, { duration: 0.13 }, 0.76)
 
-        // -------------------------------------------------------------
-        // STEP 5: Final scroll -> Lamp cord triggers OFF, light goes out, section unpins
-        // -------------------------------------------------------------
         tl.to(cord, { '--pull': '36px', duration: 0.03, ease: 'power1.inOut' }, 0.89)
           .to(cord, { '--pull': '0px', duration: 0.02, ease: 'elastic.out(1.2, 0.4)' }, 0.92)
           .to('.hw4-card--4', { opacity: 0, y: -10, duration: 0.04, ease: 'power2.in' }, 0.89)
@@ -365,7 +327,6 @@ export default function HowWeWorkLamp() {
     return () => mm.revert()
   }, [aimLamp])
 
-  // Helper to determine if a card should have active spotlight glow
   const isCardSpotlight = (cardNum) => {
     if (!lit) return false
     if (hoveredCard) return hoveredCard === cardNum
@@ -380,12 +341,10 @@ export default function HowWeWorkLamp() {
       aria-label="How We Work Process"
     >
       <div className="hw4-stage" ref={stageRef}>
-        {/* Central Display Watermark matching Figma Flow 15 */}
         <h2 className="hw4-watermark-title" aria-hidden="true">
           How We Work
         </h2>
 
-        {/* Background Orbit Rings Wireframe matching Figma */}
         <svg
           className="hw4-orbit-rings"
           viewBox="0 0 1440 900"
@@ -419,7 +378,6 @@ export default function HowWeWorkLamp() {
           />
         </svg>
 
-        {/* White Dashed Connection Trail connecting 1 Discover -> 2 Design -> 3 Build -> 4 Launch */}
         <svg
           className="hw4-dashed-path"
           viewBox="0 0 1440 900"
@@ -437,14 +395,10 @@ export default function HowWeWorkLamp() {
           />
         </svg>
 
-        {/* Radiant Blue Spotlight Bloom on Active / Resting Target */}
         <div className="hw4-spotlight-bloom" aria-hidden="true" />
 
-        {/* Exact Figma Pendant Warehouse Bell Lamp with Kinematic Rope & Attached Pull Wire */}
         <div className="hw4-lamp-anchor">
-          {/* 1. Rope Pivot from ceiling anchor */}
           <div className="hw4-rope-pivot">
-            {/* Hanging ceiling cable */}
             <svg viewBox="0 0 280 440" className="hw4-rope-svg" aria-hidden="true">
               <defs>
                 <linearGradient id="hw4CableGrad" x1="0" y1="0" x2="1" y2="0">
@@ -456,16 +410,13 @@ export default function HowWeWorkLamp() {
               <rect x="137" y="0" width="3" height="198" fill="url(#hw4CableGrad)" />
             </svg>
 
-            {/* 2. Shade Pivot at socket joint */}
             <div className="hw4-shade-pivot">
-              {/* Figma Pendant Lamp & Volumetric Beam SVG */}
               <svg
                 viewBox="0 0 280 440"
                 className="hw4-lamp-svg"
                 aria-hidden="true"
               >
                 <defs>
-                  {/* Socket cylinder metallic gradient */}
                   <linearGradient id="hw4SocketGrad" x1="0" y1="0" x2="1" y2="0">
                     <stop offset="0%" stopColor="#0E1D2D" />
                     <stop offset="25%" stopColor="#244569" />
@@ -474,7 +425,6 @@ export default function HowWeWorkLamp() {
                     <stop offset="100%" stopColor="#0A1522" />
                   </linearGradient>
 
-                  {/* Collar ring gradient */}
                   <linearGradient id="hw4CollarGrad" x1="0" y1="0" x2="1" y2="0">
                     <stop offset="0%" stopColor="#0B1724" />
                     <stop offset="20%" stopColor="#1C3857" />
@@ -483,14 +433,12 @@ export default function HowWeWorkLamp() {
                     <stop offset="100%" stopColor="#08101A" />
                   </linearGradient>
 
-                  {/* Rivet specular gradient */}
                   <radialGradient id="hw4RivetGrad" cx="35%" cy="35%" r="65%">
                     <stop offset="0%" stopColor="#E2EEFC" />
                     <stop offset="45%" stopColor="#8BB8E8" />
                     <stop offset="100%" stopColor="#1E3854" />
                   </radialGradient>
 
-                  {/* Shade interior / depth glow */}
                   <radialGradient id="hw4ShadeGlow" cx="48%" cy="75%" r="65%">
                     <stop offset="0%" stopColor="#1E3D62" />
                     <stop offset="40%" stopColor="#0E2137" />
@@ -498,7 +446,6 @@ export default function HowWeWorkLamp() {
                     <stop offset="100%" stopColor="#03080F" />
                   </radialGradient>
 
-                  {/* Shade exterior specular highlight */}
                   <linearGradient id="hw4ShadeHighlight" x1="0" y1="0" x2="1" y2="0">
                     <stop offset="0%" stopColor="#06111D" stopOpacity="0.9" />
                     <stop offset="22%" stopColor="#1B3C61" stopOpacity="0.95" />
@@ -509,7 +456,6 @@ export default function HowWeWorkLamp() {
                     <stop offset="100%" stopColor="#040B13" stopOpacity="1" />
                   </linearGradient>
 
-                  {/* Bottom rim edge highlight stroke */}
                   <linearGradient id="hw4RimStroke" x1="0" y1="0" x2="1" y2="0">
                     <stop offset="0%" stopColor="#1B3550" />
                     <stop offset="28%" stopColor="#5E96CE" />
@@ -518,7 +464,6 @@ export default function HowWeWorkLamp() {
                     <stop offset="100%" stopColor="#102336" />
                   </linearGradient>
 
-                  {/* Unlit bulb: soft muted ice-white glass dome */}
                   <radialGradient id="hw4BulbOff" cx="50%" cy="40%" r="55%">
                     <stop offset="0%" stopColor="#D9E6F5" />
                     <stop offset="50%" stopColor="#91ADC8" />
@@ -526,7 +471,6 @@ export default function HowWeWorkLamp() {
                     <stop offset="100%" stopColor="#213448" />
                   </radialGradient>
 
-                  {/* Lit bulb: EXACT COLOR MATCH to favicon orange! */}
                   <radialGradient id="hw4BulbLit" cx="50%" cy="35%" r="60%">
                     <stop offset="0%" stopColor="#FFFFFF" />
                     <stop offset="18%" stopColor="#FFF4E6" />
@@ -536,13 +480,11 @@ export default function HowWeWorkLamp() {
                     <stop offset="100%" stopColor="#C95400" />
                   </radialGradient>
 
-                  {/* Radiant orange glow filter for lit bulb - softly dimmed */}
                   <filter id="hw4OrangeBulbGlow" x="-100%" y="-100%" width="300%" height="300%">
                     <feDropShadow dx="0" dy="3" stdDeviation="5" floodColor="#FFA033" floodOpacity="0.70" />
                     <feDropShadow dx="0" dy="6" stdDeviation="12" floodColor="#F07108" floodOpacity="0.50" />
                   </filter>
 
-                  {/* Pull handle pearl metallic gradient */}
                   <linearGradient id="hw4HandleGrad" x1="0" y1="0" x2="1" y2="0">
                     <stop offset="0%" stopColor="#BAC4D1" />
                     <stop offset="35%" stopColor="#FFFFFF" />
@@ -550,7 +492,6 @@ export default function HowWeWorkLamp() {
                     <stop offset="100%" stopColor="#8E9AA8" />
                   </linearGradient>
 
-                  {/* Volumetric Spotlight Beam Cone Gradient (Dimmed Soft Warm Orange) */}
                   <linearGradient id="hw4VolumetricBeam" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.55" />
                     <stop offset="4%" stopColor="#FFEAD4" stopOpacity="0.40" />
@@ -561,12 +502,10 @@ export default function HowWeWorkLamp() {
                     <stop offset="100%" stopColor="#5E2000" stopOpacity="0" />
                   </linearGradient>
 
-                  {/* Soft edge blur for atmospheric light beam */}
                   <filter id="hw4BeamFeather" x="-50%" y="-20%" width="200%" height="200%">
                     <feGaussianBlur stdDeviation="12" />
                   </filter>
 
-                  {/* Inner shade cavity mouth glow - softer dim light */}
                   <radialGradient id="hw4MouthFlare" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.65" />
                     <stop offset="30%" stopColor="#FFEAD4" stopOpacity="0.40" />
@@ -575,7 +514,6 @@ export default function HowWeWorkLamp() {
                   </radialGradient>
                 </defs>
 
-                {/* Volumetric Spotlight Beam Cone (Welded to shade mouth opening) */}
                 <g className="hw4-beam-group">
                   <path
                     d="M 17 319.5
@@ -589,11 +527,9 @@ export default function HowWeWorkLamp() {
                   <ellipse cx="138.5" cy="320" rx="118" ry="7" fill="url(#hw4MouthFlare)" filter="blur(4px)" />
                 </g>
 
-                {/* Strain relief rubber gland */}
                 <path d="M 136 190 L 141 190 L 142.5 200 L 134.5 200 Z" fill="#182738" />
                 <rect x="134" y="198" width="9" height="4" rx="1.5" fill="#2E4D70" />
 
-                {/* Socket cylinder body */}
                 <rect x="122" y="202" width="33" height="34" rx="6" fill="url(#hw4SocketGrad)" />
                 <line
                   x1="131"
@@ -606,15 +542,12 @@ export default function HowWeWorkLamp() {
                   opacity="0.9"
                 />
 
-                {/* Stepped collar ring with rivets */}
                 <path d="M 98 236 L 179 236 L 184 250 L 93 250 Z" fill="url(#hw4CollarGrad)" />
                 <circle cx="102" cy="243" r="4" fill="url(#hw4RivetGrad)" stroke="#0A1624" strokeWidth="0.8" />
                 <circle cx="175" cy="243" r="4" fill="url(#hw4RivetGrad)" stroke="#0A1624" strokeWidth="0.8" />
 
-                {/* Bulb Base (peeks out underneath shade rim) */}
                 <ellipse cx="138.5" cy="317" rx="22" ry="10" fill="url(#hw4BulbOff)" opacity="0.85" />
 
-                {/* Glowing Radiant-Orange Lit Bulb & Bloom Filter */}
                 <g className="hw4-bulb-glow">
                   <ellipse cx="138.5" cy="318" rx="34" ry="15" fill="rgba(240, 113, 8, 0.25)" filter="blur(10px)" />
                   <ellipse
@@ -628,7 +561,6 @@ export default function HowWeWorkLamp() {
                   <ellipse cx="138.5" cy="316" rx="14" ry="6" fill="#FFFFFF" />
                 </g>
 
-                {/* Conical Warehouse Bell Shade (exact Figma shape & gradients) */}
                 <path
                   d="M 97 250
                      C 95 264, 48 300, 20 314
@@ -650,7 +582,6 @@ export default function HowWeWorkLamp() {
                   fill="url(#hw4ShadeHighlight)"
                 />
 
-                {/* Bottom rim edge stroke */}
                 <path
                   d="M 17 319.5 C 50 324.5, 227 324.5, 260 319.5"
                   stroke="url(#hw4RimStroke)"
@@ -658,11 +589,9 @@ export default function HowWeWorkLamp() {
                   fill="none"
                   strokeLinecap="round"
                 />
-                {/* Inner shade mouth shadow */}
                 <ellipse cx="138.5" cy="319" rx="114" ry="5" fill="#040910" opacity="0.8" />
               </svg>
 
-              {/* Suspended pull cord attached directly to shade collar */}
               <button
                 ref={cordRef}
                 type="button"
@@ -674,7 +603,6 @@ export default function HowWeWorkLamp() {
                   <span className="hw4-cord-line" />
                   <span className="hw4-cord-knob" />
                 </span>
-                {/* Figma Frame 366 'Click Here' tooltip badge */}
                 <span className="hw4-click-badge" aria-hidden="true">
                   Click Here
                 </span>
@@ -683,7 +611,6 @@ export default function HowWeWorkLamp() {
           </div>
         </div>
 
-        {/* 4 Cards in 2x2 Staggered Orbital Constellation (Flow 15) */}
         <div className="hw4-constellation">
           {workflowSteps.map((step) => {
             const isSpotlight = isCardSpotlight(step.num)

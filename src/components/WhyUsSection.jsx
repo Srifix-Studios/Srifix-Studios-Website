@@ -13,9 +13,6 @@ const featuresList = [
   'Dedicated post launch support',
 ]
 
-// 4 Hexagons in horizontal chain order: 6 -> 100% -> 48h -> 18
-// In Image 1, all 4 sit in a horizontal row.
-// In Image 2 (start position), only 18 is visible at center; others unchain out as user scrolls.
 const hexagonsData = [
   {
     id: '6',
@@ -55,7 +52,6 @@ const hexagonsData = [
   },
 ]
 
-// Precision Rounded Polygon Path matching Figma borderRadius: 62px (#1604:4219)
 const HEX_PATH =
   'M 115 28 Q 155 5 195 28 L 285 80 Q 305 100 305 130 L 305 208 Q 305 238 285 258 L 195 310 Q 155 333 115 310 L 25 258 Q 5 238 5 208 L 5 130 Q 5 100 25 80 Z'
 
@@ -69,7 +65,6 @@ function RoundedHexagon() {
       aria-hidden="true"
     >
       <defs>
-        {/* Horizontal linear gradient matching Image 1: dark left to royal blue right */}
         <linearGradient id="why-hex-grad" x1="0%" y1="50%" x2="100%" y2="50%">
           <stop offset="0%" stopColor="#0F0F1C" />
           <stop offset="38%" stopColor="#121838" />
@@ -120,7 +115,6 @@ export default function WhyUsSection() {
         const t6 = getTargetX(hexagonsData[0])
 
         if (reduceMotion) {
-          // Reduced motion: directly display full horizontal chain
           gsap.set('.why-hex-card--18', { x: t18, opacity: 1, scale: 1 })
           gsap.set('.why-hex-card--48h', { x: t48, opacity: 1, scale: 1 })
           gsap.set('.why-hex-card--100', { x: t100, opacity: 1, scale: 1 })
@@ -128,29 +122,22 @@ export default function WhyUsSection() {
           return
         }
 
-        // STARTING STATE (Image 2):
-        // Only hexagon "18" is visible in the center (x: 0, opacity: 1).
-        // 48h, 100%, 6 are hidden behind/within the center stack (x: 0, opacity: 0).
         gsap.set('.why-hex-card--18', { x: 0, opacity: 1, scale: 1, zIndex: 1 })
         gsap.set('.why-hex-card--48h', { x: 0, opacity: 0, scale: 0.94, zIndex: 2 })
         gsap.set('.why-hex-card--100', { x: 0, opacity: 0, scale: 0.94, zIndex: 3 })
         gsap.set('.why-hex-card--6', { x: 0, opacity: 0, scale: 0.94, zIndex: 4 })
 
-        // ScrollTrigger pinning timeline:
-        // Section pins as the user scrolls, unfolding the chain smoothly!
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             start: 'top top',
-            end: '+=900', // Scroll distance to unchain
+            end: '+=900', 
             pin: true,
             scrub: 0.8,
             anticipatePin: 1,
           },
         })
 
-        // CHAIN ANIMATION SEQUENCE:
-        // 1. "18" shifts right towards its spot (x: 0 -> t18)
         tl.to(
           '.why-hex-card--18',
           {
@@ -161,7 +148,6 @@ export default function WhyUsSection() {
           0
         )
 
-        // 2. "48h" emerges out from center to its position (x: 0 -> t48)
         tl.to(
           '.why-hex-card--48h',
           {
@@ -174,7 +160,6 @@ export default function WhyUsSection() {
           0.08
         )
 
-        // 3. "100%" emerges out to its position (x: 0 -> t100)
         tl.to(
           '.why-hex-card--100',
           {
@@ -187,7 +172,6 @@ export default function WhyUsSection() {
           0.22
         )
 
-        // 4. "6" emerges out to the far left position (x: 0 -> t6)
         tl.to(
           '.why-hex-card--6',
           {
@@ -200,7 +184,6 @@ export default function WhyUsSection() {
           0.38
         )
 
-        // Hover lift on desktop
         const finePointer = window.matchMedia('(pointer: fine)').matches
         if (finePointer) {
           const cards = stage.querySelectorAll('.why-hex-card')
@@ -220,10 +203,8 @@ export default function WhyUsSection() {
 
   return (
     <section id="why-us" ref={sectionRef} className="why-section">
-      {/* Central atmospheric glow */}
       <div className="why-backdrop-glow" aria-hidden="true" />
 
-      {/* Figma Version 5 Vector Watermark (#1542:1600) */}
       <div className="why-watermark-wrap" aria-hidden="true">
         <img
           src="/figma/why_us_watermark.svg"
@@ -234,19 +215,16 @@ export default function WhyUsSection() {
       </div>
 
       <div className="why-inner">
-        {/* Headline: Syne Bold 84px #FFFFFF + #2753E3 (#1542:1602) */}
         <h2 className="why-headline">
           Studio <span className="why-accent">craft</span>. <br />
           Agency scale.
         </h2>
 
-        {/* Subtitle: Inter 22px / 28px (#1542:1605) */}
         <p className="why-sub">
           We combine high visual craft with the disciplined execution of a full studio,
           giving you dedicated personal attention without slowing your launch down.
         </p>
 
-        {/* 4 Ticks Box: 2x2 checklist (#1542:1606) */}
         <div className="why-ticks-box">
           <ul className="why-ticks-grid">
             {featuresList.map((item) => (
@@ -258,7 +236,6 @@ export default function WhyUsSection() {
           </ul>
         </div>
 
-        {/* Hexagonals Chain Stage (#1604:4219) */}
         <div ref={stageRef} className="why-hexes-stage">
           {hexagonsData.map((hex) => (
             <div

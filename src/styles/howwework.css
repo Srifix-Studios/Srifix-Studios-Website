@@ -1,8 +1,4 @@
-/* ==========================================================================
-   HOW WE WORK — Figma Flow 15 Spec + Scroll-Driven Lamp Ignition
-   Pure black screen entrance, visible hanging lamp, scroll-pulled wire,
-   radiant blue spotlight cone, and 2x2 staggered orbital cards.
-   ========================================================================== */
+
 
 .hw4 {
   position: relative;
@@ -37,9 +33,6 @@
   overflow: hidden;
 }
 
-/* --------------------------------------------------------------------------
-   Watermark Title & Background Rings
-   -------------------------------------------------------------------------- */
 .hw4-watermark-title {
   position: absolute;
   top: 45%;
@@ -88,16 +81,6 @@
   filter: drop-shadow(0 0 12px rgba(240, 113, 8, 0.55));
 }
 
-/* --------------------------------------------------------------------------
-   Articulated Hanging Lamp & Pull Cord
-   -------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------
-   Compound Kinematic Hanging Lamp Assembly:
-   - Rope Pivot: swings from ceiling anchor (138.5px, 40px)
-   - Shade Pivot: tilts from socket joint (138.5px, 195px)
-   - Pull Cord: moves with shade, counter-rotates with gravity
-   - Volumetric Beam Cone: welded to shade rim in SVG
-   -------------------------------------------------------------------------- */
 .hw4-lamp-anchor {
   position: absolute;
   top: -40px;
@@ -108,7 +91,6 @@
   z-index: 5;
 }
 
-/* 1. Rope Pivot from ceiling */
 .hw4-rope-pivot {
   position: absolute;
   top: 0;
@@ -131,7 +113,6 @@
   pointer-events: none;
 }
 
-/* 2. Shade Pivot from socket joint */
 .hw4-shade-pivot {
   position: absolute;
   top: 0;
@@ -155,7 +136,6 @@
   filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.85));
 }
 
-/* Welded Volumetric Beam Cone */
 .hw4-beam-group {
   opacity: 0;
   transition: opacity 0.35s ease;
@@ -166,7 +146,6 @@
   opacity: 0.82;
 }
 
-/* Matching electric blue glowing bulb (peeks under rim) */
 .hw4-bulb-glow {
   opacity: 0;
   transition: opacity 0.25s ease;
@@ -176,7 +155,6 @@
   opacity: 1;
 }
 
-/* Suspended pull cord attached directly to shade collar */
 .hw4-cord {
   --pull: 0px;
   position: absolute;
@@ -230,7 +208,6 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8), 0 0 18px rgba(240, 113, 8, 0.85);
 }
 
-/* Figma Frame 366 'Click Here' Tooltip Badge */
 .hw4-click-badge {
   position: absolute;
   top: calc(70px + var(--pull) + 2px);
@@ -292,9 +269,6 @@
   opacity: 1;
 }
 
-/* --------------------------------------------------------------------------
-   4 Orbital Cards Constellation (Flow 15: 1 Discover -> 2 Design -> 3 Build -> 4 Launch)
-   -------------------------------------------------------------------------- */
 .hw4-constellation {
   position: absolute;
   inset: 0;
@@ -329,7 +303,6 @@
   transform: translateY(-6px);
 }
 
-/* Precise Desktop Constellation Positions - Perfectly Balanced to Fit Screen */
 @media (min-width: 901px) {
   .hw4-card--1 {
     left: 8%;
@@ -352,7 +325,6 @@
   }
 }
 
-/* Subtle, Dimmed Warm Orange Spotlight Card Active Styling for Crystal-Clear Readability */
 .hw4.is-on .hw4-card--spotlight {
   background: linear-gradient(
     180deg,
@@ -371,7 +343,6 @@
   border-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Card Header */
 .hw4-card-header {
   display: flex;
   align-items: center;
@@ -435,7 +406,6 @@
   font-weight: 450;
 }
 
-/* Compact scaling for smaller screens and laptop heights */
 @media (max-height: 800px) and (min-width: 901px) {
   .hw4-card {
     padding: 12px 16px;
@@ -478,9 +448,6 @@
   }
 }
 
-/* --------------------------------------------------------------------------
-   Mobile & Tablet Responsive Adaptations
-   -------------------------------------------------------------------------- */
 @media (max-width: 900px) {
   .hw4 {
     min-height: 100vh;

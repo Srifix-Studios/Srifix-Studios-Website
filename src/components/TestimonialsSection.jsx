@@ -66,7 +66,6 @@ export default function TestimonialsSection() {
 
     const mm = gsap.matchMedia()
 
-    // Parallax background drift for atmospheric depth
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       gsap.fromTo(
         '.tv-bg',
@@ -85,9 +84,7 @@ export default function TestimonialsSection() {
       )
     }, sectionRef)
 
-    // Desktop: 3D zoom cards choreography matching Figma Version 5
     mm.add('(min-width: 861px)', () => {
-      // Initial positions: Card 1 is active; Cards 2 & 3 hidden
       gsap.set(card1, { x: 0, y: 0, scale: 1, autoAlpha: 1, zIndex: 10, pointerEvents: 'auto' })
       gsap.set(card2, { x: -80, y: -10, scale: 0.45, autoAlpha: 0, zIndex: 5, pointerEvents: 'none' })
       gsap.set(card3, { x: 90, y: -10, scale: 0.45, autoAlpha: 0, zIndex: 3, pointerEvents: 'none' })
@@ -103,10 +100,8 @@ export default function TestimonialsSection() {
         },
       })
 
-      // Reading hold on Card 1
       tl.to({}, { duration: 0.5 })
 
-      // Step 1: Card 1 zooms forward toward camera and vanishes cleanly
       tl.to(
         card1,
         {
@@ -120,7 +115,6 @@ export default function TestimonialsSection() {
         .set(card1, { pointerEvents: 'none', zIndex: 1 }, 'step1+=0.4')
         .set(card2, { pointerEvents: 'auto', zIndex: 10 }, 'step1+=0.35')
 
-        // Step 2: Card 2 enters Left Foreground, Card 3 enters Center-Right Background
         .fromTo(
           card2,
           { x: -80, y: -10, scale: 0.45, autoAlpha: 0 },
@@ -148,10 +142,8 @@ export default function TestimonialsSection() {
           'step1+=0.4'
         )
 
-        // Reading hold on Card 2 (and Card 3 in depth)
         .to({}, { duration: 0.8 })
 
-        // Step 3: Card 2 zooms out left and vanishes cleanly
         .to(
           card2,
           {
@@ -166,7 +158,6 @@ export default function TestimonialsSection() {
         .set(card2, { pointerEvents: 'none', zIndex: 1 }, 'step2+=0.4')
         .set(card3, { pointerEvents: 'auto', zIndex: 12 }, 'step2+=0.35')
 
-        // Card 3 scales up into Right Foreground
         .to(
           card3,
           {
@@ -180,11 +171,9 @@ export default function TestimonialsSection() {
           'step2+=0.35'
         )
 
-        // Reading hold on Card 3 before section unpins
         .to({}, { duration: 0.8 })
     }, sectionRef)
 
-    // Mobile / Tablet: centered 3D zoom cards choreography with zero overlapping text
     mm.add('(max-width: 860px)', () => {
       gsap.set(card1, { x: 0, y: 0, scale: 1, autoAlpha: 1, zIndex: 10, pointerEvents: 'auto' })
       gsap.set(card2, { x: 0, y: 25, scale: 0.85, autoAlpha: 0, zIndex: 5, pointerEvents: 'none' })
@@ -201,10 +190,8 @@ export default function TestimonialsSection() {
         },
       })
 
-      // Reading hold on Card 1
       tl.to({}, { duration: 0.5 })
 
-      // Step 1: Card 1 zooms out and vanishes
       tl.to(
         card1,
         {
@@ -231,10 +218,8 @@ export default function TestimonialsSection() {
           'mStep1+=0.4'
         )
 
-        // Reading hold on Card 2
         .to({}, { duration: 0.8 })
 
-        // Step 2: Card 2 zooms out and vanishes
         .to(
           card2,
           {
@@ -261,7 +246,6 @@ export default function TestimonialsSection() {
           'mStep2+=0.4'
         )
 
-        // Reading hold on Card 3 before section unpins
         .to({}, { duration: 0.8 })
     }, sectionRef)
 
@@ -270,7 +254,6 @@ export default function TestimonialsSection() {
 
   return (
     <section id="testimonials" ref={sectionRef} className="tv-section">
-      {/* Canyon backdrop + Figma Version 5 blur vignettes */}
       <div className="tv-backdrop" aria-hidden="true">
         <img src="/figma/canyon_bg.png" alt="" className="tv-bg" draggable="false" />
         <div className="tv-vignette-top" />
@@ -278,7 +261,6 @@ export default function TestimonialsSection() {
         <div className="tv-vignette-bottom" />
       </div>
 
-      {/* Figma Version 5 Vector Watermark */}
       <div className="tv-watermark-wrap" aria-hidden="true">
         <img
           src="/figma/client_review_watermark.svg"
@@ -293,9 +275,7 @@ export default function TestimonialsSection() {
           Trusted <span className="tv-accent">Worldwide</span>
         </h2>
 
-        {/* 3D Zoom Cards Stage */}
         <div className="tv-stage">
-          {/* Card 1: Elena Marsh */}
           <figure
             ref={card1Ref}
             className="tv-card card-1"
@@ -328,7 +308,6 @@ export default function TestimonialsSection() {
             </div>
           </figure>
 
-          {/* Card 2: Priya Nandakumar */}
           <figure
             ref={card2Ref}
             className="tv-card card-2"
@@ -361,7 +340,6 @@ export default function TestimonialsSection() {
             </div>
           </figure>
 
-          {/* Card 3: Daniyar Zholdasbayev */}
           <figure
             ref={card3Ref}
             className="tv-card card-3"

@@ -20,6 +20,7 @@ const socialLinks = [
   { name: 'WhatsApp', href: 'https://wa.me/919625038790' },
   { name: 'Facebook', href: '#' },
 ]
+const STUDIO_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'info@srifix.srifixstudios.com'
 
 function scrollToTop() {
   if (window.lenis) window.lenis.scrollTo(0, { duration: 1.2 })
@@ -53,12 +54,10 @@ export default function Footer({ onOpenContact }) {
   return (
     <>
       <footer className="footer">
-        {/* Background Atmospheric Glow behind Marquee (Figma #1542:1856) */}
         <div className="footer-atmosphere-glow" aria-hidden="true" />
 
         <div className="footer-top">
 
-          {/* Quick Links */}
           <div className="footer-col">
             <h4>QUICK LINKS</h4>
 
@@ -73,7 +72,6 @@ export default function Footer({ onOpenContact }) {
             </ul>
           </div>
 
-          {/* Legal */}
           <div className="footer-col">
             <h4>LEGAL LINK</h4>
 
@@ -84,7 +82,6 @@ export default function Footer({ onOpenContact }) {
             </ul>
           </div>
 
-          {/* Social */}
           <div className="footer-col">
             <h4>STAY CONNECTED</h4>
 
@@ -102,7 +99,6 @@ export default function Footer({ onOpenContact }) {
             </div>
           </div>
 
-          {/* Right Content */}
           <div className="footer-newsletter">
 
             <span className="dispatch">DISPATCH</span>
@@ -119,9 +115,9 @@ export default function Footer({ onOpenContact }) {
             </p>
             <p className="leads">DIRECT STUDIO LEADS</p>
 
-            <a href="mailto:info@srifixstudios.com" className="contact-box">
+            <a href={`mailto:${STUDIO_EMAIL}`} className="contact-box">
               <Mail size={15} color="#A0C9FF" aria-hidden="true" />
-              <span>info@srifixstudios.com</span>
+              <span>{STUDIO_EMAIL}</span>
             </a>
 
             <a href="tel:+919625038790" className="contact-box">
@@ -133,7 +129,6 @@ export default function Footer({ onOpenContact }) {
 
         </div>
 
-        {/* Monumental Oversized Studio Brand Watermark Marquee (Faithful Figma Match #1542:1965) */}
         <div className="footer-marquee" aria-hidden="true">
           <div className="footer-marquee-track">
             <div className="footer-marquee-group">
@@ -149,7 +144,6 @@ export default function Footer({ onOpenContact }) {
           </div>
         </div>
 
-        {/* Bottom Row */}
         <div className="footer-bottom">
 
           <p>
@@ -165,7 +159,6 @@ export default function Footer({ onOpenContact }) {
 
       </footer>
 
-      {/* Dark Bottom Bar */}
       <div className="footer-copyright">
         <div className="footer-copyright-content">
 

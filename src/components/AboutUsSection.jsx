@@ -21,7 +21,6 @@ export default function AboutUsSection({ onOpenContact }) {
         const { isDesktop, reduceMotion } = context.conditions
         if (reduceMotion) return
 
-        // Heading & subtitle fade up
         gsap.from('.about-v5-header', {
           scrollTrigger: {
             trigger: '.about-v5-header',
@@ -33,7 +32,6 @@ export default function AboutUsSection({ onOpenContact }) {
           ease: 'power3.out',
         })
 
-        // Flanking cards & center button entrance
         gsap.from('.about-card-left', {
           scrollTrigger: {
             trigger: '.about-v5-showcase',
@@ -70,7 +68,6 @@ export default function AboutUsSection({ onOpenContact }) {
           ease: 'back.out(1.5)',
         })
 
-        // Background "About Us" text: arrives from downside to up as per scroll (visible & crisp)
         gsap.fromTo(
           '.about-v5-watermark',
           {
@@ -110,15 +107,12 @@ export default function AboutUsSection({ onOpenContact }) {
 
   return (
     <section id="about" ref={sectionRef} className="about-v5-section">
-      {/* Ambient Blue Glow Orb */}
       <div className="about-v5-glow" aria-hidden="true" />
       <div className="about-v5-glow-secondary" aria-hidden="true" />
 
-      {/* Background Graphic Title from Figma */}
       <div className="about-v5-watermark" aria-hidden="true" />
 
       <div className="about-v5-container">
-        {/* Header Text Group */}
         <div className="about-v5-header">
           <h2 className="about-v5-heading">
             We build brands<br />
@@ -131,9 +125,7 @@ export default function AboutUsSection({ onOpenContact }) {
           </p>
         </div>
 
-        {/* 3-Column Showcase: Left Glass Card, Center CTA, Right Glass Card */}
         <div className="about-v5-showcase">
-          {/* Left Card: Art Direction & Brand Craft */}
           <div className="about-v5-card about-card-left">
             <div>
               <div className="about-v5-card-num">01 / ART DIRECTION</div>
@@ -150,7 +142,6 @@ export default function AboutUsSection({ onOpenContact }) {
             </ul>
           </div>
 
-          {/* Center Action Button */}
           <div className="about-v5-center-action">
             <a
               href="#services"
@@ -167,7 +158,6 @@ export default function AboutUsSection({ onOpenContact }) {
             <span className="about-v5-center-sub">Partner with an international digital studio</span>
           </div>
 
-          {/* Right Card: Software Engineering & Scale */}
           <div className="about-v5-card about-card-right">
             <div>
               <div className="about-v5-card-num">02 / ENGINEERING</div>
