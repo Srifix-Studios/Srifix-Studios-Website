@@ -1,7 +1,5 @@
 ﻿
 
-/* ----- Pricing section ----- */
-
 .pricing-section {
   position: relative;
   min-height: 440px;
@@ -53,7 +51,6 @@
 @media (min-width: 1024px) {
   .pricing-grid { grid-template-columns: 1fr 1fr 1fr; }
 }
-
 
 .pricing-header-wrap {
   position: relative;
@@ -173,7 +170,7 @@
   gap: 0.25rem;
   padding-bottom: 1.25rem;
   margin-bottom: 1.25rem;
-  /* border-bottom: 1px solid rgba(255, 255, 255, 0.08); */
+  
 }
 
 .price-prefix {
@@ -221,13 +218,6 @@
   align-items: center;
   gap: 0.6rem;
 }
-
-/* .scope-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-} */
 
 .pricing-card .features {
   list-style: none;
@@ -296,8 +286,6 @@
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-
-/* changed button hover effect */
 .pricing-card .btn:before {
   content: '';
   position: absolute;
@@ -312,7 +300,6 @@
   transition: opacity 0.4s ease;
 }
 
-
 .pricing-card .btn:hover::before {
   opacity: 1;
 } 
@@ -323,7 +310,6 @@
   box-shadow: 0 12px 38px rgba(247, 128, 30, 0.5);
 }
 
-/* Pricing Principle & Policy Banner */
 .pricing-principle-banner {
   position: relative;
   z-index: 10;
@@ -396,11 +382,6 @@
   }
 }
 
-
-/* 
-   FEATURED CARD WAVY AURORA GLOW
- */
-
 .featured {
   position: relative;
   overflow: hidden;
@@ -411,7 +392,6 @@
   z-index: 5;
 }
 
-/* Glow container */
 .glow {
   position: absolute;
   left: 0;
@@ -426,7 +406,6 @@
   z-index: 1;
 }
 
-/* Wave layers */
 .wave {
   position: absolute;
 
@@ -440,13 +419,12 @@
 
   transform: translate3d(0, 0, 0);
 
-  /* Hidden + paused until the card is hovered */
+  
   opacity: 0;
   animation-play-state: paused;
   transition: opacity 0.5s ease;
 }
 
-/* Main purple-blue wave */
 .wave1 {
   background:
     linear-gradient(
@@ -471,7 +449,6 @@
   animation: waveMove 8s linear infinite alternate;
 }
 
-/* Highlight wave */
 .wave2 {
   background:
     linear-gradient(
@@ -499,7 +476,6 @@
     waveSwell 6s ease-in-out infinite alternate;
 }
 
-/* Wave starts only on card hover */
 .pricing-card:hover .wave {
   opacity: 1;
   animation-play-state: running;
@@ -513,7 +489,6 @@
   .wave { animation: none; }
 }
 
-/* Horizontal movement */
 @keyframes waveMove {
   from {
     transform: translateX(0);
@@ -524,7 +499,6 @@
   }
 }
 
-/* Vertical wave motion */
 @keyframes waveSwell {
   0% ,
   100% {
@@ -536,11 +510,6 @@
   }
 }
 
-
-
-
-/* Questions section */
-
 .question-section {
   position: relative;
   min-height: 440px;
@@ -550,7 +519,6 @@
   background: linear-gradient(180deg, rgba(39, 83, 227, 0) 68.27%, #0f0f1c 100%);
   box-shadow: inset 0 -136px 186px -56px #2753e3;
 }
-
 
 .question-bg-text {
   
@@ -586,7 +554,6 @@
   gap: 1rem;
 }
 
-
 @property --ang {
   syntax: "<angle>";
   inherits: false;
@@ -610,7 +577,7 @@
 }
 
 .question-item.open {
-  --ang: 0deg; /* fallback so the conic still parses without @property support */
+  --ang: 0deg; 
   background:
     linear-gradient(#04081c, #04081c) padding-box,
     conic-gradient(
@@ -674,7 +641,6 @@
   border-color: rgba(59, 130, 246, 0.6);
 }
 
-
 .question-a {
   display: grid;
   grid-template-rows: 0fr;
@@ -720,5 +686,4 @@
 @media (min-width: 768px) {
   .question-heading { font-size: 4.5rem; }
 }
-
 

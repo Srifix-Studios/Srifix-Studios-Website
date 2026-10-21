@@ -1,6 +1,4 @@
-/* ==========================================================================
-   VERSION 5 ABOUT US SECTION
-   ========================================================================== */
+
 
 .about-v5-section {
   position: relative;
@@ -12,7 +10,6 @@
   isolation: isolate;
 }
 
-/* Ambient Blue Glow Orb (from Figma #1542:1466) */
 .about-v5-glow {
   position: absolute;
   top: 15%;
@@ -40,7 +37,6 @@
   z-index: 0;
 }
 
-/* Giant Background Watermark (from Figma #1542:1462) */
 .about-v5-watermark {
   position: absolute;
   top: 70px;
@@ -60,7 +56,6 @@
   will-change: transform, opacity;
 }
 
-/* Main Container */
 .about-v5-container {
   max-width: 1320px;
   margin: 0 auto;
@@ -71,14 +66,12 @@
   align-items: center;
 }
 
-/* Header Text Area */
 .about-v5-header {
   text-align: center;
   max-width: 980px;
   margin-bottom: clamp(48px, 6vw, 72px);
 }
 
-/* Big Heading (#1542:1467) */
 .about-v5-heading {
   font-family: var(--font-display, 'Syne', sans-serif);
   font-weight: 700;
@@ -95,7 +88,6 @@
   display: inline-block;
 }
 
-/* Subtitle (#1542:1468) */
 .about-v5-subtitle {
   font-family: var(--font-inter, 'Inter', sans-serif);
   font-weight: 400;
@@ -106,7 +98,6 @@
   margin: 0 auto;
 }
 
-/* Three-Column Grid: Left Card - Center Button - Right Card */
 .about-v5-showcase {
   width: 100%;
   display: grid;
@@ -116,7 +107,6 @@
   margin-top: 20px;
 }
 
-/* Glassmorphism Cards (#1542:1469 & #1542:1470) */
 .about-v5-card {
   position: relative;
   min-height: 400px;
@@ -197,7 +187,6 @@
   color: #E2E8F0;
 }
 
-/* Center Action Area (#1542:1463) */
 .about-v5-center-action {
   display: flex;
   flex-direction: column;
@@ -250,9 +239,6 @@
   letter-spacing: 0.02em;
 }
 
-/* ==========================================================================
-   RESPONSIVE BREAKPOINTS
-   ========================================================================== */
 @media (max-width: 980px) {
   .about-v5-showcase {
     grid-template-columns: 1fr;

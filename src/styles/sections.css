@@ -1,8 +1,5 @@
 @import './variables.css';
 
-/* ==========================================================================
-   RESET & GLOBAL BASE
-   ========================================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -20,7 +17,7 @@ body {
   color: var(--text-white);
   font-family: var(--font-body);
   overflow-x: hidden;
-  overflow-x: clip; /* clip (not hidden) so position: sticky keeps working */
+  overflow-x: clip; 
   position: relative;
   width: 100%;
   max-width: 100vw;
@@ -42,7 +39,6 @@ button, input, textarea, select {
   font-family: inherit;
 }
 
-/* Giant section watermarks: fully visible first, GSAP fades them as the content arrives */
 .features-watermark,
 .why-watermark,
 .tv-watermark {
@@ -52,16 +48,16 @@ button, input, textarea, select {
   right: 0;
   font-family: var(--font-heading);
   font-weight: 600;
-  /* no big minimum: long words (Client Voice, Questions) must fit a phone */
+  
   font-size: clamp(40px, 17.5vw, 340px);
   line-height: 1;
-  /* room below the baseline so descenders (g, Q, y) render inside the clipped box */
+  
   padding-bottom: 0.24em;
   margin-bottom: -0.24em;
   letter-spacing: -0.02em;
   white-space: nowrap;
   text-align: center;
-  /* fades toward the baseline but keeps descenders faintly visible */
+  
   background: linear-gradient(180deg, rgba(128, 132, 150, 0.85) 0%, rgba(92, 96, 114, 0.6) 38%, rgba(60, 63, 80, 0.28) 72%, rgba(50, 52, 68, 0.22) 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -70,7 +66,7 @@ button, input, textarea, select {
   pointer-events: none;
   user-select: none;
   z-index: 1;
-  /* no permanent will-change: GSAP promotes this layer only while it animates */
+  
 }
 
 .about-cta {
@@ -93,7 +89,6 @@ button, input, textarea, select {
   transition: transform 0.3s ease, box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
-/* Logo-orange layer that fades in over the blue on hover */
 .about-cta::before {
   content: '';
   position: absolute;
@@ -115,10 +110,6 @@ button, input, textarea, select {
   opacity: 1;
 }
 
-
-/* ==========================================================================
-   FEATURES SECTION
-   ========================================================================== */
 .features-section {
   position: relative;
   width: 100%;
@@ -147,7 +138,6 @@ button, input, textarea, select {
   margin: clamp(150px, 15vw, 290px) auto 0;
 }
 
-/* Brand mark: continuous slow spin + gentle float */
 .feat-logo-wrap {
   position: absolute;
   left: 50%;
@@ -156,7 +146,7 @@ button, input, textarea, select {
   aspect-ratio: 1;
   translate: -50% -50%;
   z-index: 1;
-  /* no permanent will-change: GSAP promotes this layer only while it animates */
+  
 }
 
 .feat-logo-halo {
@@ -206,7 +196,7 @@ button, input, textarea, select {
   position: absolute;
   z-index: 5;
   width: clamp(300px, 24vw, 440px);
-  /* no permanent will-change: GSAP promotes this layer only while it animates */
+  
 }
 
 .feat-slot-left {
@@ -365,11 +355,6 @@ button, input, textarea, select {
 
 }
 
-/* Why Us section styles are managed exclusively in src/styles/why-us.css */
-
-/* ==========================================================================
-   CLIENT VOICE (testimonials)
-   ========================================================================== */
 .tv-section {
   position: relative;
   width: 100%;
@@ -392,7 +377,6 @@ button, input, textarea, select {
   50% { opacity: 1; }
 }
 
-/* Watermark sits higher here, like the reference */
 .tv-watermark {
   top: clamp(20px, 3vw, 60px);
   transform-origin: 50% 50%;
@@ -438,7 +422,7 @@ button, input, textarea, select {
   text-align: left;
   overflow: hidden;
   transition: translate 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-  /* no permanent will-change: GSAP promotes this layer only while it animates */
+  
 }
 
 .tv-card:hover {
@@ -524,13 +508,11 @@ button, input, textarea, select {
 
 }
 
-/* Canyon melts into the page at the top and bottom edges */
 .tv-backdrop {
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 78%, transparent 100%);
   mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 78%, transparent 100%);
 }
 
-/* Client Voice: photo backdrop (replaces the generated canyon) */
 .tv-bg {
   position: absolute;
   inset: 0;
@@ -542,7 +524,6 @@ button, input, textarea, select {
   will-change: transform;
 }
 
-/* Soft pulse over the portal arch in the image */
 .tv-portal-glow {
   position: absolute;
   left: 50%;
@@ -561,8 +542,6 @@ button, input, textarea, select {
   transform-origin: 50% 50%;
 }
 
-/* Solid layer the middle card fades to while it zooms to full screen,
-   matching the Pricing background so the hand-off is seamless */
 .tv-card {
   position: relative;
 }
@@ -576,8 +555,6 @@ button, input, textarea, select {
   pointer-events: none;
 }
 
-/* Client Voice on desktop is exactly one screen tall, so the pinned zoom-through
-   hands straight over to Pricing with no leftover dark strip */
 @media (min-width: 901px) {
 .tv-section {
     min-height: 100vh;
@@ -587,7 +564,6 @@ button, input, textarea, select {
 
 }
 
-/* Features: second showcase follows the first; card 3 sits mid-left like the design */
 .feat-arena + .feat-arena {
   margin-top: clamp(40px, 5vw, 100px);
 }
@@ -597,7 +573,6 @@ button, input, textarea, select {
   left: 8%;
 }
 
-/* Alternate the rock so the two marks never move in sync */
 .feat-arena--b .feat-logo {
   animation-delay: -4.5s, -3s;
 }
@@ -607,7 +582,6 @@ button, input, textarea, select {
 
 }
 
-/* Interactive 3D logo (Features) */
 .logo3d {
   position: relative;
   width: 100%;
@@ -624,14 +598,10 @@ button, input, textarea, select {
   display: block;
 }
 
-/* Let the logo receive the pointer around the cards */
 .feat-logo-wrap {
   z-index: 2;
 }
 
-/* ==========================================================================
-   CLIENT REVIEW: card polish (stars, highlight, quote mark, cursor spotlight)
-   ========================================================================== */
 .tv-stars {
   display: flex;
   gap: 3px;
@@ -646,7 +616,6 @@ button, input, textarea, select {
   transition-delay: calc(var(--n) * 90ms);
 }
 
-/* Only dimmed while waiting for the reveal (JS adds .stars-pending) */
 .tv-cards.stars-pending .tv-star {
   opacity: 0.18;
   scale: 0.6;
@@ -661,12 +630,10 @@ button, input, textarea, select {
   text-shadow: 0 0 10px rgba(255, 181, 71, 0.55);
 }
 
-/* Each card's stars start a touch later than the previous card's */
 .tv-card:nth-child(2) .tv-star { transition-delay: calc(150ms + var(--n) * 90ms); }
 
 .tv-card:nth-child(3) .tv-star { transition-delay: calc(300ms + var(--n) * 90ms); }
 
-/* Key result in each quote */
 .tv-hl {
   background: none;
   color: #FFFFFF;
@@ -678,7 +645,6 @@ button, input, textarea, select {
   padding: 0 2px;
 }
 
-/* Big decorative quote mark */
 .tv-qmark {
   position: absolute;
   right: 18px;
@@ -691,7 +657,6 @@ button, input, textarea, select {
   user-select: none;
 }
 
-/* Cursor spotlight */
 .tv-spot {
   position: absolute;
   inset: 0;
@@ -712,7 +677,6 @@ button, input, textarea, select {
   z-index: 1;
 }
 
-/* "Client Review" is wider than the other watermarks: size it to fit the screen */
 .tv-watermark {
   font-size: clamp(40px, 15vw, 300px);
 }
@@ -724,7 +688,6 @@ button, input, textarea, select {
 
 .tv-stars { font-size: 17px; }
 
-/* Client Review (desktop): headline + cards centred in the pinned screen */
 @media (min-width: 901px) {
 .tv-section {
     padding-top: 0;
@@ -732,7 +695,7 @@ button, input, textarea, select {
 
 .tv-inner {
     height: 100%;
-    padding-top: 90px; /* clear the fixed navbar */
+    padding-top: 90px; 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -748,7 +711,6 @@ button, input, textarea, select {
 
 }
 
-/* Features logo: inner layer carries the scroll-in scale/opacity */
 .feat-logo-anim {
   position: absolute;
   inset: 0;

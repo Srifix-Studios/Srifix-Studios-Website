@@ -78,7 +78,6 @@ export default function PricingSection({ onOpenContact }) {
     const mm = gsap.matchMedia()
 
     mm.add('(prefers-reduced-motion: no-preference)', () => {
-      // Watermark text fades as grid scrolls in
       gsap.to('.pricing-bg-text', {
         opacity: 0,
         yPercent: -18,
@@ -115,7 +114,6 @@ export default function PricingSection({ onOpenContact }) {
         ))}
       </div>
 
-      {/* Pricing Principle & Policy Banner from official sheet */}
       <div className="pricing-principle-banner">
         <div className="pricing-principle-card">
           <div className="principle-col">

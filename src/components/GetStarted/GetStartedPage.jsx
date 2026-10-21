@@ -1,14 +1,63 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   ArrowLeft,
   ArrowUpRight,
   Check,
   CheckCircle2,
   Mail,
-  Phone
+  Phone,
+  AlertCircle,
+  Loader2
 } from 'lucide-react'
 import Footer from '../Footer'
 import '../../styles/get-started.css'
+
+const DEFAULT_ADMIN_EMAIL = 'info@srifix.srifixstudios.com'
+const DEFAULT_ADMIN_PHONE = '+91 9625038790'
+const DEFAULT_ADMIN_WA = '9625038790'
+
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || DEFAULT_ADMIN_EMAIL
+const ADMIN_PHONE = import.meta.env.VITE_ADMIN_PHONE || DEFAULT_ADMIN_PHONE
+const RAW_ADMIN_WA = import.meta.env.VITE_ADMIN_WHATSAPP_NUMBER || DEFAULT_ADMIN_WA
+
+function normalizeWhatsAppNumber(input) {
+  const digits = String(input || '').replace(/\D/g, '')
+  if (digits.length === 10) {
+    return `91${digits}`
+  }
+  return digits || '919625038790'
+}
+
+const ADMIN_WA_CLEAN = normalizeWhatsAppNumber(RAW_ADMIN_WA)
+
+function saveLeadToLocalStorage(bookingData) {
+  try {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return
+    }
+    const storageKey = 'srifix_meeting_briefs'
+    const rawExisting = localStorage.getItem(storageKey)
+    let briefsList = []
+    if (rawExisting) {
+      try {
+        const parsed = JSON.parse(rawExisting)
+        if (Array.isArray(parsed)) {
+          briefsList = parsed
+        }
+      } catch (parseErr) {
+        console.warn('Failed to parse existing localStorage meeting briefs:', parseErr)
+        briefsList = []
+      }
+    }
+    briefsList.unshift({
+      ...bookingData,
+      backedUpAt: new Date().toISOString(),
+    })
+    localStorage.setItem(storageKey, JSON.stringify(briefsList.slice(0, 30)))
+  } catch (storageErr) {
+    console.warn('localStorage is unavailable or quota exceeded:', storageErr)
+  }
+}
 
 function WhatsAppIcon({ size = 15, className = '' }) {
   return (
@@ -41,7 +90,6 @@ const TIME_WINDOWS = [
 ]
 
 export default function GetStartedPage({ onBack, preselectedService = null }) {
-  // Normalize preselected service
   const initialServices = React.useMemo(() => {
     if (!preselectedService) return ['webdev']
     const match = SERVICES.find((s) => s.id === preselectedService)
@@ -61,9 +109,43 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [emailStatus, setEmailStatus] = useState('idle') 
+  const [validationError, setValidationError] = useState(null)
+  const [submitError, setSubmitError] = useState(null)
   const [minDateString, setMinDateString] = useState('')
 
-  // Set minimum date to tomorrow
+  const selectedServiceLabels = useMemo(() => {
+    return formData.services
+      .map((id) => SERVICES.find((s) => s.id === id)?.label || id)
+      .join(', ')
+  }, [formData.services])
+
+  const selectedTimeWindowLabel = useMemo(() => {
+    return TIME_WINDOWS.find((w) => w.id === formData.timeWindow)?.label || formData.timeWindow
+  }, [formData.timeWindow])
+
+  const buildWhatsAppMessage = () => {
+    const lines = [
+      '*NEW DISCOVERY BOOKING — SRIFIX STUDIOS*',
+      '----------------------------------------',
+      `*Client Name:* ${formData.fullName.trim()}`,
+      `*Work Email:* ${formData.email.trim()}`,
+      `*Phone / WhatsApp:* ${formData.phone.trim()}`,
+      `*Company / Brand:* ${formData.company ? formData.company.trim() : 'N/A'}`,
+      `*Selected Services:* ${selectedServiceLabels}`,
+      `*Meeting Date:* ${formData.meetingDate}`,
+      `*Preferred Time Slot:* ${selectedTimeWindowLabel}`,
+      `*Project Notes:* ${formData.notes ? formData.notes.trim() : 'None provided'}`,
+      '----------------------------------------',
+      '*Sent via Srifix Studios Schedule Desk*'
+    ]
+    return lines.join('\n')
+  }
+
+  const getWhatsAppUrl = () => {
+    return `https://wa.me/${ADMIN_WA_CLEAN}?text=${encodeURIComponent(buildWhatsAppMessage())}`
+  }
+
   useEffect(() => {
     const today = new Date()
     today.setDate(today.getDate() + 1)
@@ -78,7 +160,6 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
     }))
   }, [])
 
-  // Scroll to top on mount
   useEffect(() => {
     if (window.lenis) window.lenis.scrollTo(0, { immediate: true })
     else window.scrollTo({ top: 0, behavior: 'instant' })
@@ -86,10 +167,12 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
+    if (validationError) setValidationError(null)
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const toggleService = (serviceId) => {
+    if (validationError) setValidationError(null)
     setFormData((prev) => {
       const exists = prev.services.includes(serviceId)
       if (exists) {
@@ -100,15 +183,111 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (isSubmitting) return
+
+    setValidationError(null)
+    setSubmitError(null)
+
+    const trimmedName = formData.fullName.trim()
+    const trimmedEmail = formData.email.trim()
+    const trimmedPhone = formData.phone.trim()
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    if (!trimmedName || trimmedName.length < 2) {
+      setValidationError('Please enter your full name (minimum 2 characters).')
+      return
+    }
+
+    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+      setValidationError('Please enter a valid work email address.')
+      return
+    }
+
+    const phoneDigits = trimmedPhone.replace(/\D/g, '')
+    if (!trimmedPhone || phoneDigits.length < 7) {
+      setValidationError('Please enter a valid phone or WhatsApp number (minimum 7 digits).')
+      return
+    }
+
+    if (!formData.services || formData.services.length === 0) {
+      setValidationError('Please select at least one service deliverable.')
+      return
+    }
+
+    if (!formData.meetingDate) {
+      setValidationError('Please select a preferred discovery meeting date.')
+      return
+    }
+
+    const waUrl = getWhatsAppUrl()
+    try {
+      window.open(waUrl, '_blank', 'noopener,noreferrer')
+    } catch (waErr) {
+      console.warn('Could not auto-open WhatsApp tab:', waErr)
+    }
+
     setIsSubmitting(true)
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
-      if (window.lenis) window.lenis.scrollTo(0, { duration: 0.8 })
-      else window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, 700)
+
+    const payload = {
+      name: trimmedName,
+      email: trimmedEmail,
+      phone: trimmedPhone,
+      company: formData.company ? formData.company.trim() : 'N/A',
+      services: selectedServiceLabels,
+      meetingDate: formData.meetingDate,
+      timeWindow: selectedTimeWindowLabel,
+      notes: formData.notes ? formData.notes.trim() : 'None provided',
+      _subject: `New Discovery Booking — Srifix Studios: ${trimmedName}`,
+      _template: 'table',
+      _captcha: 'false',
+    }
+
+    saveLeadToLocalStorage(payload)
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${ADMIN_EMAIL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      let data = null
+      try {
+        data = await response.json()
+      } catch (jsonErr) {
+      }
+
+      if (response.ok && data) {
+        if (data.success === 'true' || data.success === true) {
+          setEmailStatus('delivered')
+        } else if (
+          data.message &&
+          typeof data.message === 'string' &&
+          data.message.toLowerCase().includes('activate')
+        ) {
+          setEmailStatus('activation_pending')
+        } else {
+          setEmailStatus('failed')
+        }
+      } else {
+        setEmailStatus('failed')
+      }
+    } catch (networkErr) {
+      console.error('Email notification network error:', networkErr)
+      setEmailStatus('failed')
+    }
+
+    setIsSubmitting(false)
+    setIsSubmitted(true)
+
+    if (window.lenis) window.lenis.scrollTo(0, { duration: 0.8 })
+    else window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const handleNavClick = (hash) => {
@@ -117,13 +296,10 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
 
   return (
     <div className="gs-page-wrapper">
-      {/* Overhead Neon Tubelight (CtaSection Glow Signature) */}
       <div className="gs-overhead-tubelight" aria-hidden="true" />
 
-      {/* Atmospheric Ambient Glow Orb */}
       <div className="gs-ambient-glow" aria-hidden="true" />
 
-      {/* Top Navbar Matching Hero Specifications */}
       <header className="gs-navbar">
         <div className="gs-navbar-inner">
           <a
@@ -145,7 +321,6 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
             </span>
           </a>
 
-          {/* Section Navigation Links */}
           <ul className="gs-nav-links">
             <li>
               <button
@@ -176,7 +351,6 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
             </li>
           </ul>
 
-          {/* Back Action Button */}
           <button
             type="button"
             onClick={() => handleNavClick('#home')}
@@ -188,16 +362,13 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
         </div>
       </header>
 
-      {/* Watermark Section Header */}
       <div className="gs-watermark-wrap">
         <h2 className="gs-watermark-text" aria-hidden="true">
           Contact
         </h2>
       </div>
 
-      {/* Main 2-Column Studio Discovery Layout */}
       <div className="gs-main-layout">
-        {/* Left Column: Direct Studio Information */}
         <div className="gs-studio-info">
           <span className="gs-info-tag">01 / DISCOVERY SESSION</span>
 
@@ -231,9 +402,9 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
           <div className="gs-direct-leads">
             <span className="gs-leads-title">Direct Studio Leads</span>
 
-            <a href="mailto:info@srifixstudios.com" className="gs-contact-link">
+            <a href={`mailto:${ADMIN_EMAIL}`} className="gs-contact-link">
               <Mail size={15} color="#A0C9FF" />
-              <span>info@srifixstudios.com</span>
+              <span>{ADMIN_EMAIL}</span>
             </a>
 
             <a href="tel:+919625038790" className="gs-contact-link">
@@ -253,7 +424,6 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
           </div>
         </div>
 
-        {/* Right Column: Studio Discovery Form Card */}
         <div className="gs-form-card">
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} className="gs-form">
@@ -262,7 +432,6 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
                 <span className="gs-card-subbadge">CONFIRM YOUR DISCOVERY SLOT</span>
               </div>
 
-              {/* 1. Contact Information */}
               <div className="gs-section-block">
                 <span className="gs-block-title">Your Details</span>
 
@@ -334,7 +503,6 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
                 </div>
               </div>
 
-              {/* 2. Service Deliverables */}
               <div className="gs-section-block">
                 <span className="gs-block-title">Deliverables / Scope</span>
                 <div className="gs-pills-wrap">
@@ -356,7 +524,6 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
                 </div>
               </div>
 
-              {/* 3. Schedule Meeting */}
               <div className="gs-section-block">
                 <span className="gs-block-title">Schedule Discovery Meeting</span>
 
@@ -395,7 +562,6 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
                 </div>
               </div>
 
-              {/* 4. Project Notes */}
               <div className="gs-section-block">
                 <label htmlFor="notes" className="gs-label">
                   Project Notes &amp; Goals
@@ -411,7 +577,13 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
                 />
               </div>
 
-              {/* Submit CTA */}
+              {validationError && (
+                <div className="gs-error-banner" role="alert">
+                  <AlertCircle size={16} />
+                  <span>{validationError}</span>
+                </div>
+              )}
+
               <div className="gs-submit-wrap">
                 <button
                   type="submit"
@@ -419,7 +591,10 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
                   className="gs-submit-btn"
                 >
                   {isSubmitting ? (
-                    <span>Submitting Brief...</span>
+                    <>
+                      <Loader2 size={18} className="gs-spin" />
+                      <span>Transmitting Booking...</span>
+                    </>
                   ) : (
                     <>
                       <span>Confirm &amp; Schedule Meeting</span>
@@ -429,12 +604,11 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
                 </button>
 
                 <p className="gs-submit-footnote">
-                  *All project briefs are strictly confidential. We confirm your meeting invite within one business day.
+                  *All project briefs are strictly confidential. Bookings are backed up locally and forwarded to the studio desk.
                 </p>
               </div>
             </form>
           ) : (
-            /* Confirmation View */
             <div className="gs-success-view">
               <div className="gs-success-icon-wrap">
                 <CheckCircle2 size={40} color="#2753E3" />
@@ -446,35 +620,53 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
 
               <p className="gs-success-desc">
                 Thank you, <strong style={{ color: '#FFFFFF' }}>{formData.fullName || 'Partner'}</strong>. We have received your brief and tentatively reserved your discovery session for{' '}
-                <span className="gs-success-date-highlight">{formData.meetingDate}</span> ({TIME_WINDOWS.find((w) => w.id === formData.timeWindow)?.label || 'Afternoon'}).
+                <span className="gs-success-date-highlight">{formData.meetingDate}</span> ({selectedTimeWindowLabel}).
               </p>
 
               <div className="gs-summary-box">
+                <div className="gs-summary-row">
+                  <span className="gs-summary-k">Client</span>
+                  <span className="gs-summary-v">{formData.fullName}</span>
+                </div>
+                {formData.company && (
+                  <div className="gs-summary-row">
+                    <span className="gs-summary-k">Company</span>
+                    <span className="gs-summary-v">{formData.company}</span>
+                  </div>
+                )}
                 {formData.email && (
                   <div className="gs-summary-row">
-                    <span className="gs-summary-k">Email</span>
+                    <span className="gs-summary-k">Work Email</span>
                     <span className="gs-summary-v">{formData.email}</span>
                   </div>
                 )}
                 {formData.phone && (
                   <div className="gs-summary-row">
-                    <span className="gs-summary-k">Phone</span>
+                    <span className="gs-summary-k">Phone / WA</span>
                     <span className="gs-summary-v">{formData.phone}</span>
                   </div>
                 )}
                 <div className="gs-summary-row">
                   <span className="gs-summary-k">Scope</span>
+                  <span className="gs-summary-v">{selectedServiceLabels}</span>
+                </div>
+                <div className="gs-summary-row">
+                  <span className="gs-summary-k">Meeting Slot</span>
                   <span className="gs-summary-v">
-                    {formData.services
-                      .map((id) => SERVICES.find((s) => s.id === id)?.label || id)
-                      .join(', ')}
+                    {formData.meetingDate} • {selectedTimeWindowLabel}
                   </span>
                 </div>
+                {formData.notes && (
+                  <div className="gs-summary-row gs-summary-notes-row">
+                    <span className="gs-summary-k">Notes</span>
+                    <span className="gs-summary-v gs-summary-notes-text">{formData.notes}</span>
+                  </div>
+                )}
               </div>
 
               <div className="gs-success-actions">
                 <a
-                  href={`https://wa.me/919625038790?text=Hi%20Srifix%20Studios%2C%20I%20just%20submitted%20a%20project%20brief%20for%20${encodeURIComponent(formData.fullName || 'my project')}.`}
+                  href={getWhatsAppUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="gs-btn-wa-direct"
@@ -497,7 +689,6 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
         </div>
       </div>
 
-      {/* Studio Footer */}
       <Footer onOpenContact={() => {}} />
     </div>
   )

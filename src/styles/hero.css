@@ -1,12 +1,4 @@
-/* ==========================================================================
-   VERSION 5 HERO SECTION & NAVBAR
-   Matches Exact Reference Photo:
-   - 100vh Viewport with cosmic sphere video animation
-   - Clean Floating Navbar (Home active in #F07108, no underline/pill border)
-   - "We Transform Ideas Into Digital Experiences" with radiant white & blue glows
-   - Centered "Get started ↗" CTA over the golden rim of the orb
-   - Metrics bar positioned below the 100vh hero in document flow
-   ========================================================================== */
+
 
 .hero-v5-wrapper {
   position: relative;
@@ -16,9 +8,6 @@
   isolation: isolate;
 }
 
-/* ==========================================================================
-   100VH HERO VIEWPORT (EXACT MATCH TO PHOTO)
-   ========================================================================== */
 .hero-v5-viewport {
   position: relative;
   width: 100%;
@@ -41,7 +30,6 @@
   }
 }
 
-/* Cosmic space video animation background */
 .hero-v5-bg {
   position: absolute;
   inset: 0;
@@ -54,9 +42,6 @@
   opacity: 1;
 }
 
-/* ==========================================================================
-   TOP NAVBAR (NAVISLAND)
-   ========================================================================== */
 .navisland-header {
   position: absolute;
   top: 0;
@@ -77,7 +62,6 @@
   width: 100%;
 }
 
-/* Logo */
 .navisland-logo {
   display: flex;
   align-items: center;
@@ -127,7 +111,6 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Center Nav Links (Clean, floating, matching reference photo) */
 .navisland-pill {
   display: flex;
   align-items: center;
@@ -167,7 +150,6 @@
   display: none !important;
 }
 
-/* Right Nav CTA Button */
 .navisland-cta-btn {
   display: inline-flex;
   align-items: center;
@@ -206,7 +188,6 @@
   transform: translate(2px, -2px);
 }
 
-/* Mobile Toggle */
 .navisland-mobile-toggle {
   display: none;
   background: rgba(255, 255, 255, 0.08);
@@ -218,9 +199,6 @@
   z-index: 2;
 }
 
-/* ==========================================================================
-   HERO MAIN CONTENT
-   ========================================================================== */
 .hero-v5-content {
   flex: 1;
   display: flex;
@@ -237,7 +215,6 @@
   box-sizing: border-box;
 }
 
-/* Main Heading */
 .hero-v5-heading {
   font-family: var(--font-display, 'Syne', sans-serif);
   font-weight: 700;
@@ -250,7 +227,6 @@
   align-items: center;
 }
 
-/* Line 1 & Line 2 Common */
 .hero-v5-title-line {
   display: block;
   font-size: clamp(38px, 5.6vw, 84px);
@@ -260,7 +236,6 @@
   filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.5));
 }
 
-/* Line 2: Into [gap] Digital [gap] Experiences */
 .hero-v5-line-2 {
   display: flex;
   align-items: baseline;
@@ -281,7 +256,6 @@
   filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.5));
 }
 
-/* "Digital" Italic Serif Accent */
 .hero-v5-digital {
   font-family: var(--font-serif-italic, 'Playfair Display', Georgia, serif);
   font-style: italic;
@@ -297,7 +271,6 @@
   vertical-align: baseline;
 }
 
-/* Subtitle: Bold and prominently visible */
 .hero-v5-subtitle {
   font-family: var(--font-inter, 'Inter', sans-serif);
   font-weight: 700;
@@ -320,7 +293,6 @@
   display: inline;
 }
 
-/* Central Hero CTA Button ("Get started ↗") */
 .hero-v5-cta-btn {
   display: inline-flex;
   align-items: center;
@@ -359,9 +331,6 @@
   transform: translate(2px, -2px);
 }
 
-/* ==========================================================================
-   MINI INFO BAR (STATS BAR - BELOW 100VH HERO)
-   ========================================================================== */
 .mini-info-wrapper {
   position: relative;
   width: 100%;
@@ -446,9 +415,6 @@
   color: #9CA3AF;
 }
 
-/* ==========================================================================
-   RESPONSIVE BREAKPOINTS
-   ========================================================================== */
 @media (max-width: 1024px) {
   .navisland-pill {
     gap: 18px;

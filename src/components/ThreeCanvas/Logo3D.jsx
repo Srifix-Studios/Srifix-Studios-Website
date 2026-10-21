@@ -3,14 +3,9 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment, Lightformer } from '@react-three/drei'
 import * as THREE from 'three'
 
-// ---------------------------------------------------------------------------
-// Geometry: the Srifix S-hexagon as two extruded hexagonal "hooks".
-// Pointy-top hexagon; the S runs over the top, down the left, across the
-// middle, down the right and around the bottom. Blue = upper hook, orange = lower.
-// ---------------------------------------------------------------------------
-const R = 1.5 // hexagon radius
-const W = 0.74 // band width
-const DEPTH = 0.42 // extrusion depth
+const R = 1.5 
+const W = 0.74 
+const DEPTH = 0.42 
 
 const hex = (deg) => [R * Math.cos((deg * Math.PI) / 180), R * Math.sin((deg * Math.PI) / 180)]
 const V = { top: hex(90), ur: hex(30), lr: hex(-30), bot: hex(-90), ll: hex(-150), ul: hex(150) }
@@ -26,7 +21,6 @@ const mul = (a, s) => [a[0] * s, a[1] * s]
 const len = (a) => Math.hypot(a[0], a[1])
 const norm = (a) => mul(a, 1 / (len(a) || 1))
 
-// Replace each interior corner with a small quadratic fillet
 function roundCorners(pts, radius, seg = 8) {
   const out = [pts[0]]
   for (let i = 1; i < pts.length - 1; i++) {
@@ -43,7 +37,6 @@ function roundCorners(pts, radius, seg = 8) {
   return out
 }
 
-// Thick band around a centerline (mitred joins, flat ends) -> THREE.Shape
 function bandShape(center, width) {
   const pts = roundCorners(center, 0.34)
   const half = width / 2
@@ -78,7 +71,6 @@ function useHookGeometry(path, light, dark) {
     })
     g.translate(0, 0, -DEPTH / 2)
     g.computeVertexNormals()
-    // Diagonal light-to-dark gradient baked into vertex colours (top-left bright)
     const pos = g.attributes.position
     const cols = new Float32Array(pos.count * 3)
     const c1 = new THREE.Color(light), c2 = new THREE.Color(dark), c = new THREE.Color()
@@ -97,7 +89,6 @@ function LogoMesh({ input }) {
   const blueGeo = useHookGeometry(BLUE_PATH, '#4FA8FF', '#1236B8')
   const orangeGeo = useHookGeometry(ORANGE_PATH, '#FFA640', '#D9480F')
 
-  // ExtrudeGeometry groups: 0 = front/back caps, 1 = sides + bevels
   const mats = useMemo(() => {
     const face = (emissive) =>
       new THREE.MeshPhysicalMaterial({ vertexColors: true, emissive, emissiveIntensity: 0.3, metalness: 0.3, roughness: 0.24, clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 1.05 })
@@ -112,7 +103,6 @@ function LogoMesh({ input }) {
     const dt = Math.min(delta, 0.05)
 
     if (!s.dragging) {
-      // Momentum decays back toward the slow auto-rotation
       s.velY = THREE.MathUtils.damp(s.velY, 0.45, 1.6, dt)
       s.velX = THREE.MathUtils.damp(s.velX, 0, 3, dt)
     }
@@ -120,7 +110,6 @@ function LogoMesh({ input }) {
     s.rotX = THREE.MathUtils.clamp(s.rotX + s.velX * dt, -0.9, 0.9)
     if (!s.dragging) s.rotX = THREE.MathUtils.damp(s.rotX, 0, 1.5, dt)
 
-    // Hover tilt toward the pointer, layered on top
     const tiltX = s.hover ? -s.py * 0.35 : 0
     const tiltY = s.hover ? s.px * 0.35 : 0
     g.rotation.x = THREE.MathUtils.damp(g.rotation.x, s.rotX + tiltX, 6, dt)
@@ -131,7 +120,6 @@ function LogoMesh({ input }) {
 
   return (
     <group ref={group}>
-      {/* the logo sits tilted like the brand mark */}
       <group rotation={[0, 0, -0.38]}>
         <mesh geometry={blueGeo} material={mats.blue} position={[0, 0, -0.07]} />
         <mesh geometry={orangeGeo} material={mats.orange} position={[0, 0, 0.07]} />
@@ -145,7 +133,6 @@ export default function Logo3D({ className = '' }) {
   const [visible, setVisible] = useState(false)
   const input = useRef({ rotY: 0.6, rotX: 0, velY: 0.45, velX: 0, dragging: false, hover: false, px: 0, py: 0, lastX: 0, lastY: 0, lastT: 0 })
 
-  // Only render while on screen
   useEffect(() => {
     const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { rootMargin: '100px' })
     if (wrap.current) io.observe(wrap.current)
@@ -193,7 +180,6 @@ export default function Logo3D({ className = '' }) {
     >
       <Canvas
         dpr={[1, 1.5]}
-        // Measure layout size (offsetWidth/Height), ignoring CSS/GSAP transforms on ancestors
         resize={{ offsetSize: true }}
         camera={{ position: [0, 0, 7.4], fov: 35 }}
         gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}

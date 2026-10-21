@@ -3,9 +3,6 @@ import { ArrowUpRight } from 'lucide-react'
 import '../styles/cta.css'
 import '../styles/cta-lit.css'
 
-// "Light on" variant of CtaSection: the section starts as a complete blackout;
-// when it scrolls into view the tubelight flickers on, the blackout lifts and
-
 export default function CtaSection({ onOpenContact }) {
   const [lit, setLit] = useState(false)
   const sectionRef = useRef(null)
@@ -15,7 +12,6 @@ export default function CtaSection({ onOpenContact }) {
       typeof window.matchMedia === 'function' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    // Reduced motion / no IntersectionObserver: the light is simply already on
     if (reduced || typeof IntersectionObserver === 'undefined') {
       setLit(true)
       return
@@ -25,7 +21,7 @@ export default function CtaSection({ onOpenContact }) {
       ([e]) => {
         if (e.isIntersecting) {
           setLit(true)
-          io.disconnect() // ignites once and stays on
+          io.disconnect() 
         }
       },
       { threshold: 0.15 }
@@ -48,7 +44,6 @@ export default function CtaSection({ onOpenContact }) {
     <section id="contact" ref={sectionRef} className={`cta-section${lit ? ' is-lit' : ''}`}>
       <div className="cta-banner">
 
-        {/* Tubelight glow artwork (Figma export) sits behind everything */}
         <img
           src="/assets/Tublight.svg"
           alt=""

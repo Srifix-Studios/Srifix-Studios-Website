@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useLenis } from './hooks/useLenis'
-import Preloader from './components/Preloader'
 import HeroSection from './components/HeroSection'
 import AboutUsSection from './components/AboutUsSection'
 import FeaturesSection from './components/FeaturesSection'
@@ -16,7 +15,6 @@ import ChatBot from './components/ChatBot/ChatBot'
 import GetStartedPage from './components/GetStarted/GetStartedPage'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-// Hero (Version 5) → About Us (Version 5) → Features → How We Work → Why Us → Client Review → Pricing → Questions → CTA → Footer
 export default function App() {
   useLenis()
 
@@ -85,10 +83,8 @@ export default function App() {
     }, 120)
   }
 
-
   return (
     <>
-      <Preloader />
       <MouseTrail />
       <ChatBot />
 

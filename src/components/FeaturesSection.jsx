@@ -6,7 +6,6 @@ import Logo3D from './ThreeCanvas/Logo3D'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Services and starting prices from the "Srifix Studios: Services and Pricing" deck
 const allServices = [
   {
     num: '1',
@@ -34,7 +33,6 @@ const allServices = [
   },
 ]
 
-
 function FeatureCard({ service }) {
   return (
     <div className="feat-card">
@@ -50,7 +48,6 @@ function FeatureCard({ service }) {
   )
 }
 
-// Two showcases, as in the design: [1 top-left, 2 bottom-right], then [3 mid-left, 4 bottom-right]
 const arenas = [
   { cards: [allServices[0], allServices[1]], variant: 'a' },
   { cards: [allServices[2], allServices[3]], variant: 'b' },
@@ -72,7 +69,6 @@ export default function FeaturesSection({ onOpenContact }) {
         const { isDesktop, reduceMotion } = context.conditions
         if (reduceMotion) return
 
-        // Each showcase: cards + logo arrive as it enters the viewport
         gsap.utils.toArray('.feat-arena').forEach((arena) => {
           const leftSlot = arena.querySelector('.feat-slot-left')
           const rightSlot = arena.querySelector('.feat-slot-right')
@@ -92,7 +88,6 @@ export default function FeaturesSection({ onOpenContact }) {
           if (logoAnim) tl.from(logoAnim, { scale: 0.7, opacity: 0.4, ease: 'power2.out' }, 0)
         })
 
-        // "Features" stays fully visible first, then fades once the user scrolls on past it
         gsap.to('.features-watermark', {
           opacity: 0,
           yPercent: -18,
@@ -111,14 +106,11 @@ export default function FeaturesSection({ onOpenContact }) {
     <section id="services" ref={sectionRef} className="features-section">
       <div className="features-glow" aria-hidden="true" />
 
-      {/* Giant "Features" watermark, fades out on scroll */}
       <div className="features-watermark" aria-hidden="true">Features</div>
 
       {arenas.map((arena) => (
         <div key={arena.variant} className={`feat-arena feat-arena--${arena.variant}`}>
-          {/* Interactive 3D brand mark: auto-rotates, tilts to the pointer, drag to spin */}
           <div className="feat-logo-wrap">
-            {/* Inner layer takes the scroll animation, so GSAP never touches the wrapper's centring */}
             <div className="feat-logo-anim">
               <div className="feat-logo-halo" />
               <Logo3D className="feat-logo3d" />

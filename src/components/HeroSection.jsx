@@ -26,7 +26,6 @@ export default function HeroSection({ onOpenContact }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Hero entrance animations
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
       tl.fromTo(
@@ -90,9 +89,7 @@ export default function HeroSection({ onOpenContact }) {
 
   return (
     <div id="home" ref={heroRef} className="hero-v5-wrapper">
-      {/* 100vh Hero Viewport matching exact reference photo */}
       <div className="hero-v5-viewport">
-        {/* Space animation background (kept intact) */}
         <video
           className="hero-v5-bg"
           autoPlay
@@ -108,10 +105,8 @@ export default function HeroSection({ onOpenContact }) {
           />
         </video>
 
-        {/* Top Navbar */}
         <header className="navisland-header">
           <div className="navisland-inner">
-            {/* Logo */}
             <a href="#home" onClick={(e) => handleNavLinkClick(e, '#home')} className="navisland-logo">
               <img
                 src="/assets/favicon-logo.png"
@@ -124,7 +119,6 @@ export default function HeroSection({ onOpenContact }) {
               </span>
             </a>
 
-            {/* Center Navigation Links (Floating cleanly as in reference photo) */}
             <ul className="navisland-pill" role="navigation">
               {navLinks.map((link) => (
                 <li key={link.name}>
@@ -139,7 +133,6 @@ export default function HeroSection({ onOpenContact }) {
               ))}
             </ul>
 
-            {/* Right Nav CTA Button */}
             <a
               href="#contact"
               onClick={handleCtaClick}
@@ -149,7 +142,6 @@ export default function HeroSection({ onOpenContact }) {
               <span className="navisland-cta-arrow">↗</span>
             </a>
 
-            {/* Mobile Menu Toggle Button */}
             <button
               type="button"
               className="navisland-mobile-toggle"
@@ -160,7 +152,6 @@ export default function HeroSection({ onOpenContact }) {
             </button>
           </div>
 
-          {/* Mobile Dropdown Menu */}
           {mobileMenuOpen && (
             <ul className="navisland-mobile-menu">
               {navLinks.map((link) => (
@@ -178,7 +169,6 @@ export default function HeroSection({ onOpenContact }) {
           )}
         </header>
 
-        {/* Hero Main Content Area */}
         <section className="hero-v5-content">
           <h1 className="hero-v5-heading">
             <span className="hero-v5-title-line">We Transform Ideas</span>
@@ -208,7 +198,6 @@ export default function HeroSection({ onOpenContact }) {
         </section>
       </div>
 
-      {/* Mini Info (Key Metrics Bar - positioned in document flow below the 100vh hero) */}
       <div className="mini-info-wrapper">
         <div className="mini-info-container">
           {stats.map((stat, i) => (

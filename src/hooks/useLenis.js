@@ -18,24 +18,15 @@ export function useLenis() {
       infinite: false,
     })
 
-    // Expose the instance so components (e.g. Footer's "Back to Top") can
-    // drive programmatic smooth scrolling instead of fighting Lenis with
-    // raw window.scrollTo jumps.
     window.lenis = lenis
 
-    // Synchronize Lenis with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update)
 
-    // Named callback so cleanup removes the exact function that was added
-    // (an anonymous one leaks and stacks on every HMR / remount)
     const update = (time) => lenis.raf(time * 1000)
     gsap.ticker.add(update)
 
     gsap.ticker.lagSmoothing(0)
 
-    // Keep every ScrollTrigger's start/end in sync with the real layout. Late-loading
-    // fonts, images and 3D canvases change the page height after the triggers were
-    // measured, which made scroll animations (e.g. section watermarks) fire early.
     let lastHeight = 0
     let refreshTimer = 0
     const scheduleRefresh = () => {

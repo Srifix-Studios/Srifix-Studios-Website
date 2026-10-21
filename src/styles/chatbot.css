@@ -1,23 +1,18 @@
-/* ==========================================================================
-   SRIFIX STUDIOS — GLOBAL AI CHATBOT WIDGET
-   Obsidian Glassmorphism + Studio Orange (#F07108) Accents
-   ========================================================================== */
 
-/* Main Fixed Container */
+
 .srifix-chatbot-container {
   position: fixed;
   bottom: 26px;
   right: 26px;
   z-index: 99999;
   font-family: var(--font-body, 'Plus Jakarta Sans', -apple-system, sans-serif);
-  pointer-events: none; /* children enable pointer events */
+  pointer-events: none; 
 }
 
 .srifix-chatbot-container * {
   box-sizing: border-box;
 }
 
-/* Launcher Wrapper */
 .srifix-chatbot-launcher-wrapper {
   position: relative;
   display: flex;
@@ -26,7 +21,6 @@
   pointer-events: auto;
 }
 
-/* Tooltip Callout */
 .srifix-chatbot-tooltip {
   display: flex;
   align-items: center;
@@ -87,7 +81,6 @@
   color: #FFFFFF;
 }
 
-/* Floating Launcher Button */
 .srifix-chatbot-launcher {
   position: relative;
   width: 60px;
@@ -172,9 +165,6 @@
   z-index: 3;
 }
 
-/* ==========================================================================
-   CHAT WINDOW PANEL
-   ========================================================================== */
 .srifix-chatbot-window {
   position: absolute;
   bottom: 74px;
@@ -197,7 +187,6 @@
   transform-origin: bottom right;
 }
 
-/* Subtle border highlight */
 .srifix-chatbot-window::before {
   content: '';
   position: absolute;
@@ -211,7 +200,6 @@
   pointer-events: none;
 }
 
-/* Header */
 .srifix-chat-header {
   display: flex;
   align-items: center;
@@ -315,7 +303,6 @@
   color: #F87171;
 }
 
-/* Quick WhatsApp Connect Banner */
 .srifix-chat-whatsapp-banner {
   display: flex;
   align-items: center;
@@ -407,7 +394,6 @@
   color: #06070B;
 }
 
-/* Chat Body */
 .srifix-chat-body {
   flex: 1;
   overflow-y: auto;
@@ -428,7 +414,6 @@
   border-radius: 4px;
 }
 
-/* Message Rows */
 .srifix-message-row {
   display: flex;
   align-items: flex-end;
@@ -512,7 +497,6 @@
   padding: 0 4px;
 }
 
-/* Action Buttons inside Bot Message */
 .srifix-msg-actions {
   display: flex;
   flex-wrap: wrap;
@@ -565,7 +549,6 @@
   color: #FFFFFF;
 }
 
-/* Typing Indicator Animation */
 .srifix-msg-bubble.typing {
   padding: 10px 14px;
 }
@@ -588,7 +571,6 @@
 .srifix-typing-dots span:nth-child(2) { animation-delay: -0.16s; }
 .srifix-typing-dots span:nth-child(3) { animation-delay: 0s; }
 
-/* Quick Suggestion Pills */
 .srifix-chat-suggestions {
   padding: 8px 16px 10px;
   background: rgba(14, 17, 26, 0.5);
@@ -650,7 +632,6 @@
   color: #F07108;
 }
 
-/* WhatsApp suggestion pill */
 .srifix-suggestion-pill.is-wa-pill {
   background: rgba(37, 211, 102, 0.09);
   border-color: rgba(37, 211, 102, 0.35);
@@ -676,7 +657,6 @@
   color: #25D366;
 }
 
-/* Input Row */
 .srifix-chat-input-row {
   display: flex;
   align-items: center;
@@ -738,7 +718,6 @@
   box-shadow: none;
 }
 
-/* Micro Footer */
 .srifix-chat-micro-footer {
   padding: 6px 16px 8px;
   background: rgba(9, 12, 18, 0.98);
@@ -749,9 +728,6 @@
   border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-/* ==========================================================================
-   ANIMATIONS & KEYFRAMES
-   ========================================================================== */
 @keyframes srifixWindowEnter {
   from {
     opacity: 0;
@@ -816,9 +792,6 @@
   }
 }
 
-/* ==========================================================================
-   RESPONSIVE (MOBILE)
-   ========================================================================== */
 @media (max-width: 640px) {
   .srifix-chatbot-container {
     bottom: 18px;

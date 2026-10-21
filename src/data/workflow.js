@@ -1,4 +1,3 @@
-// Flow 15: Exact workflow steps from Figma prototype
 export const workflowSteps = [
   {
     num: '1',

@@ -1,10 +1,5 @@
 
 
-
-/* 
-   CTA SECTION
- */
-
 .cta-section {
   width: 100%;
   padding: 110px 24px 150px;
@@ -13,9 +8,6 @@
   display: flex;
   justify-content: center;
 }
-
-
-/* Main CTA box */
 
 .cta-banner {
   position: relative;
@@ -36,7 +28,7 @@
  
 
   
-  /* Fallback while the SVG loads*/
+  
   background: radial-gradient(
     120% 90% at 50% 0%,
     #2753e3 0%,
@@ -48,13 +40,6 @@
      
     
 }
-
-
-
-
-/* 
-   BACKGROUND ARTWORK
-*/
 
 .cta-banner-bg {
   position: absolute;
@@ -71,11 +56,6 @@
   pointer-events: none;
   user-select: none;
 }
-
-
-/* =========================
-   TUBE LIGHT
-========================= */
 
 .cta-tubelight {
   position: absolute;
@@ -104,12 +84,6 @@
   
 }
 
-
-
-/* =========================
-   CTA CONTENT
-========================= */
-
 .cta-content {
   position: relative;
   z-index: 3;
@@ -120,7 +94,6 @@
   flex-direction: column;
   align-items: center;
 }
-
 
 .cta-content h2 {
   margin: 0;
@@ -136,7 +109,6 @@
   color: #ffffff;
 }
 
-
 .cta-content p {
   margin: 24px 0 38px;
 
@@ -148,8 +120,6 @@
 
   color: rgba(255, 255, 255, 0.7);
 }
-
-
 
 .cta-btn {
   width: 282px;
@@ -185,7 +155,6 @@
     background 0.3s ease;
 }
 
-
 .cta-btn svg {
   width: 30px;
   height: 30px;
@@ -193,17 +162,11 @@
   stroke-width: 2.5;
 }
 
-
-/* Button hover */
-
 .cta-btn:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0px 15px 30px rgba(178, 162, 211, 0.549);
 
 }
-
-
-
 
 @media (max-width: 768px) {
 
@@ -217,7 +180,7 @@
   }
 
   .cta-tubelight {
-    /* top: 25px; */
+    
     width: 80%;
   }
 
@@ -235,11 +198,6 @@
 
 }
 
-
-
-/* ==========================================================================
-   FOOTER (Figma Node #1542:1852 Reference Match)
-   ========================================================================== */
 .footer {
   position: relative;
   overflow: hidden;
@@ -255,7 +213,6 @@
   color: white;
 }
 
-/* Background Atmospheric Glow behind Marquee (Figma #1542:1856) */
 .footer-atmosphere-glow {
   position: absolute;
   left: 50%;
@@ -400,9 +357,6 @@
   color: #FFFFFF;
 }
 
-/* ==========================================================================
-   MONUMENTAL OVERSIZED STUDIO BRAND WATERMARK MARQUEE (FIGMA #1542:1965)
-   ========================================================================== */
 .footer-marquee {
   position: relative;
   overflow: hidden;
@@ -468,9 +422,6 @@
   }
 }
 
-/* ==========================================================================
-   SUB-FOOTER MICRO UTILITY BAR (FIGMA #1542:1951)
-   ========================================================================== */
 .footer-bottom {
   display: flex;
   justify-content: space-between;
@@ -517,9 +468,6 @@
   box-shadow: 0 4px 16px rgba(39, 83, 227, 0.35);
 }
 
-/* ==========================================================================
-   DARK BOTTOM COPYRIGHT BAR (FIGMA #1542:1966)
-   ========================================================================== */
 .footer-copyright {
   background: #0F0F1C;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -560,9 +508,6 @@
   margin: 0;
 }
 
-/* ==========================================================================
-   RESPONSIVE DESIGN
-   ========================================================================== */
 @media (max-width: 900px) {
   .footer {
     padding: 70px 32px 36px;
@@ -625,5 +570,4 @@
     gap: 16px;
   }
 }
-
 
