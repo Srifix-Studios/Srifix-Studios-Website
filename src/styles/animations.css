@@ -19,7 +19,7 @@
     height: 200%;
     inset: -50%;
     z-index: -2;
-    
+
      background-image: var(
         --border-conic,
         conic-gradient(
@@ -29,8 +29,7 @@
             var(--gradcolor) 180deg,
             transparent 240deg
         )
-    ); 
-    
+    );
 
     animation: border-animation 4s linear infinite;
 }

@@ -1,12 +1,11 @@
 :root {
-  
+
   --bg-primary: #06070B;
   --bg-secondary: #0A0C13;
   --bg-tertiary: #101420;
   --bg-card: rgba(16, 20, 32, 0.65);
   --bg-card-hover: rgba(22, 28, 45, 0.85);
-  
-  
+
   --accent-blue: #2563EB;
   --accent-blue-light: #38BDF8;
   --accent-blue-glow: rgba(56, 189, 248, 0.45);
@@ -19,7 +18,6 @@
   --accent-indigo: #4F46E5;
   --accent-violet: #8B5CF6;
 
-  
   --text-white: #FFFFFF;
   --text-heading: #F8FAFC;
   --text-body: #94A3B8;
@@ -28,7 +26,6 @@
   --text-ghost: rgba(255, 255, 255, 0.04);
   --text-ghost-border: rgba(255, 255, 255, 0.08);
 
-  
   --glass-bg: rgba(255, 255, 255, 0.035);
   --glass-bg-hover: rgba(255, 255, 255, 0.07);
   --glass-border: rgba(255, 255, 255, 0.1);
@@ -36,14 +33,12 @@
   --glass-border-blue: rgba(56, 189, 248, 0.35);
   --glass-blur: 16px;
 
-  
   --bg-v5: #0F0F1C;
   --accent-v5-blue: #2753E3;
   --accent-v5-blue-glow: rgba(39, 83, 227, 0.45);
   --accent-v5-orange: #F07108;
   --accent-v5-orange-glow: rgba(240, 113, 8, 0.35);
 
-  
   --font-display: 'Syne', sans-serif;
   --font-logo: 'Syne', sans-serif;
   --font-heading: 'Plus Jakarta Sans', sans-serif;
@@ -52,7 +47,6 @@
   --font-mono: 'Space Grotesk', monospace;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  
   --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -69,7 +63,7 @@ html {
   color: var(--text-white);
   overflow-x: hidden;
   overflow-x: clip;
-  scroll-behavior: auto; 
+  scroll-behavior: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -1,17 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Menu, X } from 'lucide-react'
+import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import Navbar from './Navbar/Navbar'
 import '../styles/hero.css'
-
-const navLinks = [
-  { name: 'Home', href: '#home', active: true },
-  { name: 'Services', href: '#services' },
-  { name: 'Work', href: '#how-we-work' },
-  { name: 'Blog', href: '#blog' },
-  { name: 'Careers', href: '#careers' },
-  { name: 'Contact', href: '#contact' },
-  { name: 'About', href: '#about' },
-]
 
 const stats = [
   { value: '120+', label: 'Projects Delivered' },
@@ -21,7 +11,6 @@ const stats = [
 ]
 
 export default function HeroSection({ onOpenContact }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const heroRef = useRef(null)
 
   useEffect(() => {
@@ -56,28 +45,26 @@ export default function HeroSection({ onOpenContact }) {
     return () => ctx.revert()
   }, [])
 
-  const handleCtaClick = (e) => {
-    e.preventDefault()
+  const handleCtaClick = () => {
     if (onOpenContact) {
       onOpenContact()
     } else {
-      const contactSection = document.getElementById('contact')
-      if (contactSection) {
-        if (window.lenis) {
-          window.lenis.scrollTo(contactSection, { duration: 1.2 })
-        } else {
-          contactSection.scrollIntoView({ behavior: 'smooth' })
-        }
-      }
+      window.location.hash = '#get-started'
     }
   }
 
-  const handleNavLinkClick = (e, href) => {
+  const handleNavLinkClick = (href) => {
+    if (href === '#services') {
+      window.location.hash = '#services'
+      return
+    }
+    if (href === '#contact') {
+      handleCtaClick()
+      return
+    }
     if (href && href.startsWith('#')) {
       const target = document.querySelector(href)
       if (target) {
-        e.preventDefault()
-        setMobileMenuOpen(false)
         if (window.lenis) {
           window.lenis.scrollTo(target, { duration: 1.2 })
         } else {
@@ -105,69 +92,11 @@ export default function HeroSection({ onOpenContact }) {
           />
         </video>
 
-        <header className="navisland-header">
-          <div className="navisland-inner">
-            <a href="#home" onClick={(e) => handleNavLinkClick(e, '#home')} className="navisland-logo">
-              <img
-                src="/assets/favicon-logo.png"
-                alt="Srifix Studios Logo"
-                className="navisland-logo-img"
-              />
-              <span className="navisland-logo-text">
-                <span className="logo-srifix">SRIFIX</span>{' '}
-                <span className="logo-studios">STUDIOS</span>
-              </span>
-            </a>
-
-            <ul className="navisland-pill" role="navigation">
-              {navLinks.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className={`navisland-link ${link.active ? 'active' : ''}`}
-                    onClick={(e) => handleNavLinkClick(e, link.href)}
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            <a
-              href="#contact"
-              onClick={handleCtaClick}
-              className="navisland-cta-btn"
-            >
-              <span>Get started</span>
-              <span className="navisland-cta-arrow">↗</span>
-            </a>
-
-            <button
-              type="button"
-              className="navisland-mobile-toggle"
-              aria-label="Toggle navigation menu"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
-          </div>
-
-          {mobileMenuOpen && (
-            <ul className="navisland-mobile-menu">
-              {navLinks.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className={`navisland-link ${link.active ? 'active' : ''}`}
-                    onClick={(e) => handleNavLinkClick(e, link.href)}
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
-        </header>
+        <Navbar
+          activePage="home"
+          onNavigate={handleNavLinkClick}
+          onOpenContact={handleCtaClick}
+        />
 
         <section className="hero-v5-content">
           <h1 className="hero-v5-heading">

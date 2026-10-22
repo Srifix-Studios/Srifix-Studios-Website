@@ -3,9 +3,9 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment, Lightformer } from '@react-three/drei'
 import * as THREE from 'three'
 
-const R = 1.5 
-const W = 0.74 
-const DEPTH = 0.42 
+const R = 1.5
+const W = 0.74
+const DEPTH = 0.42
 
 const hex = (deg) => [R * Math.cos((deg * Math.PI) / 180), R * Math.sin((deg * Math.PI) / 180)]
 const V = { top: hex(90), ur: hex(30), lr: hex(-30), bot: hex(-90), ll: hex(-150), ul: hex(150) }

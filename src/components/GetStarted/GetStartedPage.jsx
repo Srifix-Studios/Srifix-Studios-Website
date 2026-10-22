@@ -10,6 +10,7 @@ import {
   Loader2
 } from 'lucide-react'
 import Footer from '../Footer'
+import Navbar from '../Navbar/Navbar'
 import '../../styles/get-started.css'
 
 const DEFAULT_ADMIN_EMAIL = 'info@srifix.srifixstudios.com'
@@ -109,7 +110,7 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [emailStatus, setEmailStatus] = useState('idle') 
+  const [emailStatus, setEmailStatus] = useState('idle')
   const [validationError, setValidationError] = useState(null)
   const [submitError, setSubmitError] = useState(null)
   const [minDateString, setMinDateString] = useState('')
@@ -291,7 +292,24 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
   }
 
   const handleNavClick = (hash) => {
+    if (hash === '#contact' || hash === '#get-started') {
+      const el = document.getElementById('fullName') || document.querySelector('.gs-form-col')
+      if (el) {
+        if (window.lenis) window.lenis.scrollTo(el, { duration: 1.0 })
+        else el.scrollIntoView({ behavior: 'smooth' })
+      }
+      return
+    }
     if (onBack) onBack(hash)
+    else window.location.hash = hash
+  }
+
+  const handleScrollToForm = () => {
+    const el = document.getElementById('fullName') || document.querySelector('.gs-form-col')
+    if (el) {
+      if (window.lenis) window.lenis.scrollTo(el, { duration: 1.0 })
+      else el.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
@@ -300,67 +318,11 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
 
       <div className="gs-ambient-glow" aria-hidden="true" />
 
-      <header className="gs-navbar">
-        <div className="gs-navbar-inner">
-          <a
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault()
-              handleNavClick('#home')
-            }}
-            className="navisland-logo"
-          >
-            <img
-              src="/assets/favicon-logo.png"
-              alt="Srifix Studios Logo"
-              className="navisland-logo-img"
-            />
-            <span className="navisland-logo-text">
-              <span className="logo-srifix">SRIFIX</span>{' '}
-              <span className="logo-studios">STUDIOS</span>
-            </span>
-          </a>
-
-          <ul className="gs-nav-links">
-            <li>
-              <button
-                type="button"
-                onClick={() => handleNavClick('#about')}
-                className="gs-nav-btn"
-              >
-                About Us
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                onClick={() => handleNavClick('#features')}
-                className="gs-nav-btn"
-              >
-                Services
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                onClick={() => handleNavClick('#pricing')}
-                className="gs-nav-btn"
-              >
-                Pricing
-              </button>
-            </li>
-          </ul>
-
-          <button
-            type="button"
-            onClick={() => handleNavClick('#home')}
-            className="gs-nav-back-btn"
-          >
-            <ArrowLeft size={14} />
-            <span>Back to Home</span>
-          </button>
-        </div>
-      </header>
+      <Navbar
+        activePage="get-started"
+        onNavigate={handleNavClick}
+        onOpenContact={handleScrollToForm}
+      />
 
       <div className="gs-watermark-wrap">
         <h2 className="gs-watermark-text" aria-hidden="true">

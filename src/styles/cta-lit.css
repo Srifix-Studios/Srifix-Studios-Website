@@ -78,7 +78,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  
+
   .cta-section {
     background: #0d0d19;
     transition: none;

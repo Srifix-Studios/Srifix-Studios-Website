@@ -6,7 +6,7 @@
   right: 26px;
   z-index: 99999;
   font-family: var(--font-body, 'Plus Jakarta Sans', -apple-system, sans-serif);
-  pointer-events: none; 
+  pointer-events: none;
 }
 
 .srifix-chatbot-container * {

@@ -1,4 +1,4 @@
-﻿
+
 
 .pricing-section {
   position: relative;
@@ -11,7 +11,6 @@
 }
 
 .pricing-bg-text {
-  
 
   position: relative;
    padding-bottom: 0.24em;
@@ -23,7 +22,7 @@
   font-weight: 600;
    letter-spacing: -0.02em;
    line-height: 1;
- 
+
   font-size: clamp(40px, 17.5vw, 340px);
   white-space: nowrap;
  background: linear-gradient(180deg, rgba(128, 132, 150, 0.85) 0%, rgba(92, 96, 114, 0.6) 38%, rgba(60, 63, 80, 0.28) 72%, rgba(50, 52, 68, 0.22) 100%);
@@ -92,13 +91,13 @@
   flex-direction: column;
   min-height: 580px;
   padding: 2.25rem 2rem;
-  overflow: hidden; 
+  overflow: hidden;
   border-radius: 40px;
 
   --inset: 6px;
   --border-radius: 40px;
   --bg-card: #04081c;
- 
+
   --border-conic: conic-gradient(
     #470cec 0deg,
     #bb79e1 90deg,
@@ -111,12 +110,14 @@
     linear-gradient(#04081c, #04081c) padding-box,
     linear-gradient(180deg, #161b2a 41.35%, #534daf 65.87%, #bb79e1 82.21%, #9cb0f2 100%) border-box;
   box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(0px);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  will-change: transform;
 }
 
 .pricing-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 45px rgba(39, 83, 227, 0.2);
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-8px);
+  box-shadow: 0 20px 50px rgba(39, 83, 227, 0.28), 0 0 60px rgba(59, 130, 246, 0.18);
 }
 
 .pricing-card.featured {
@@ -170,7 +171,7 @@
   gap: 0.25rem;
   padding-bottom: 1.25rem;
   margin-bottom: 1.25rem;
-  
+
 }
 
 .price-prefix {
@@ -260,9 +261,40 @@
 
 .btn-wrap {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 10px;
   padding-top: 2rem;
   margin-top: auto;
+  width: 100%;
+}
+
+.card-details-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 282px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: #94a3b8;
+  font-family: var(--font-inter, sans-serif);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.card-details-trigger:hover {
+  color: #FFFFFF;
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.12);
+  transform: translateY(-2px);
 }
 
 .pricing-card .btn {
@@ -292,17 +324,16 @@
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-   
+
  background: linear-gradient(90deg, #FF9A3C 0%, #F7801E 45%, #E8650F 100%);
-      
-     
+
   opacity: 0;
   transition: opacity 0.4s ease;
 }
 
 .pricing-card .btn:hover::before {
   opacity: 1;
-} 
+}
 
 .pricing-card .btn:hover {
   transform: translateY(-3px) scale(1.02);
@@ -387,9 +418,29 @@
   overflow: hidden;
 }
 
-.pricing-card > *:not(.glow) {
+.pricing-card > *:not(.glow):not(.card-cursor-spotlight) {
   position: relative;
   z-index: 5;
+}
+
+.card-cursor-spotlight {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(99, 102, 241, 0.22),
+    rgba(39, 83, 227, 0.08) 45%,
+    transparent 75%
+  );
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.pricing-card:hover .card-cursor-spotlight {
+  opacity: 1;
 }
 
 .glow {
@@ -419,7 +470,6 @@
 
   transform: translate3d(0, 0, 0);
 
-  
   opacity: 0;
   animation-play-state: paused;
   transition: opacity 0.5s ease;
@@ -455,7 +505,7 @@
       180deg,
       rgba(23, 140, 230, 0.9),
       rgba(131, 54, 203, 0.5)
-     
+
     );
 
   -webkit-mask:
@@ -521,7 +571,7 @@
 }
 
 .question-bg-text {
-  
+
   position: relative;
    padding-bottom: 0.24em;
   margin-bottom: -0.24em;
@@ -532,7 +582,7 @@
   font-weight: 600;
    letter-spacing: -0.02em;
    line-height: 1;
- 
+
   font-size: clamp(40px, 17.5vw, 340px);
   white-space: nowrap;
  background: linear-gradient(180deg, rgba(128, 132, 150, 0.85) 0%, rgba(92, 96, 114, 0.6) 38%, rgba(60, 63, 80, 0.28) 72%, rgba(50, 52, 68, 0.22) 100%);
@@ -577,7 +627,7 @@
 }
 
 .question-item.open {
-  --ang: 0deg; 
+  --ang: 0deg;
   background:
     linear-gradient(#04081c, #04081c) padding-box,
     conic-gradient(
@@ -677,7 +727,7 @@
   margin: 3rem 0 2.5rem;
   padding: 0 1.5rem;
   font-size: 3rem;
-  
+
   font-family: var(--font-display);
   font-weight: 600;
   color: #FFFFFF;

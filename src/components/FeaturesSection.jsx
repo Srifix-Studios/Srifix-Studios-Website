@@ -103,7 +103,7 @@ export default function FeaturesSection({ onOpenContact }) {
   }, [])
 
   return (
-    <section id="services" ref={sectionRef} className="features-section">
+    <section id="features" ref={sectionRef} className="features-section">
       <div className="features-glow" aria-hidden="true" />
 
       <div className="features-watermark" aria-hidden="true">Features</div>
@@ -126,7 +126,12 @@ export default function FeaturesSection({ onOpenContact }) {
       ))}
 
       <div className="feat-footer">
-        <button onClick={onOpenContact} className="about-cta">
+        <button
+          onClick={() => {
+            window.location.hash = '#services'
+          }}
+          className="about-cta"
+        >
           <span>Explore all Services</span>
           <ArrowUpRight style={{ width: '26px', height: '26px' }} strokeWidth={2.4} />
         </button>

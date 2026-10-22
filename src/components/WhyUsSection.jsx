@@ -131,7 +131,7 @@ export default function WhyUsSection() {
           scrollTrigger: {
             trigger: section,
             start: 'top top',
-            end: '+=900', 
+            end: '+=900',
             pin: true,
             scrub: 0.8,
             anticipatePin: 1,

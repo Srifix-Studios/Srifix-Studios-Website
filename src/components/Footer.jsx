@@ -39,6 +39,14 @@ export default function Footer({ onOpenContact }) {
       return
     }
 
+    if (href === '#services') {
+      e.preventDefault()
+      window.location.hash = '#services'
+      if (window.lenis) window.lenis.scrollTo(0, { immediate: true })
+      else window.scrollTo({ top: 0, behavior: 'instant' })
+      return
+    }
+
     if (href.startsWith('#')) {
       const target = document.querySelector(href)
       if (target) {
