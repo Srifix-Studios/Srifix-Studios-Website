@@ -13,6 +13,7 @@ import Footer from './components/Footer'
 import MouseTrail from './components/MouseTrail'
 import ChatBot from './components/ChatBot/ChatBot'
 import GetStartedPage from './components/GetStarted/GetStartedPage'
+import ServicesPage from './components/Services/ServicesPage'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default function App() {
@@ -20,7 +21,9 @@ export default function App() {
 
   const [currentPage, setCurrentPage] = useState(() => {
     if (typeof window !== 'undefined') {
-      return window.location.hash === '#get-started' ? 'get-started' : 'home'
+      if (window.location.hash === '#get-started') return 'get-started'
+      if (window.location.hash === '#services') return 'services'
+      return 'home'
     }
     return 'home'
   })
@@ -30,6 +33,10 @@ export default function App() {
     const handleHashChange = () => {
       if (window.location.hash === '#get-started') {
         setCurrentPage('get-started')
+        if (window.lenis) window.lenis.scrollTo(0, { immediate: true })
+        else window.scrollTo({ top: 0, behavior: 'instant' })
+      } else if (window.location.hash === '#services') {
+        setCurrentPage('services')
         if (window.lenis) window.lenis.scrollTo(0, { immediate: true })
         else window.scrollTo({ top: 0, behavior: 'instant' })
       } else {
@@ -64,6 +71,13 @@ export default function App() {
   }
 
   const handleBackToHome = (targetHash = '') => {
+    if (targetHash === '#services') {
+      window.location.hash = '#services'
+      setCurrentPage('services')
+      if (window.lenis) window.lenis.scrollTo(0, { immediate: true })
+      else window.scrollTo({ top: 0, behavior: 'instant' })
+      return
+    }
     window.location.hash = targetHash || ''
     setCurrentPage('home')
     if (targetHash && targetHash !== '#home') {
@@ -92,6 +106,11 @@ export default function App() {
         <GetStartedPage
           onBack={handleBackToHome}
           preselectedService={preselectedService}
+        />
+      ) : currentPage === 'services' ? (
+        <ServicesPage
+          onBack={handleBackToHome}
+          onOpenContact={(srv) => handleOpenGetStarted(srv)}
         />
       ) : (
         <>

@@ -1,12 +1,11 @@
-﻿
+
 
 .light{
- 
+
   top:0;
   left:0;
   z-index:9999;
- 
-  
+
   position: fixed;
   width: 40px;
   height: 40px;

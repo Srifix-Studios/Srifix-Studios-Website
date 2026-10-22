@@ -75,7 +75,12 @@ export default function ChatBot() {
     const timer = setTimeout(() => {
       setShowTooltip(false)
     }, 8000)
-    return () => clearTimeout(timer)
+    const handleOpen = () => setIsOpen(true)
+    window.addEventListener('open-chatbot', handleOpen)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('open-chatbot', handleOpen)
+    }
   }, [])
 
   const scrollToBottom = () => {

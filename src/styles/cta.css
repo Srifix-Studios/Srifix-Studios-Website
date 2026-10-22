@@ -23,12 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
- 
 
- 
-
-  
-  
   background: radial-gradient(
     120% 90% at 50% 0%,
     #2753e3 0%,
@@ -36,9 +31,6 @@
     #020014 100%
   );
 
-   
-     
-    
 }
 
 .cta-banner-bg {
@@ -60,7 +52,7 @@
 .cta-tubelight {
   position: absolute;
 
-  top: 25px; 
+  top: 25px;
   left: 50%;
 
   transform: translateX(-50%);
@@ -70,7 +62,7 @@
 
   border-radius: 0 0 20px 20px;
 
-   background: #70c7ff; 
+   background: #70c7ff;
 
   box-shadow:
     0 0 8px #6cc8ff,
@@ -81,7 +73,6 @@
 
   z-index: 2;
 
-  
 }
 
 .cta-content {
@@ -180,7 +171,7 @@
   }
 
   .cta-tubelight {
-    
+
     width: 80%;
   }
 

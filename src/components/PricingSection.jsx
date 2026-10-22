@@ -10,6 +10,30 @@ gsap.registerPlugin(ScrollTrigger)
 function PricingCard({ plan, onOpenContact }) {
   const isCustomPrice = plan.price.toLowerCase().includes('requirement')
 
+  const handleCardMouseMove = (e) => {
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    card.style.setProperty('--mouse-x', `${x}px`)
+    card.style.setProperty('--mouse-y', `${y}px`)
+
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+    const rotateX = ((y - centerY) / centerY) * -5
+    const rotateY = ((x - centerX) / centerX) * 5
+    card.style.setProperty('--tilt-x', `${rotateX.toFixed(2)}deg`)
+    card.style.setProperty('--tilt-y', `${rotateY.toFixed(2)}deg`)
+  }
+
+  const handleCardMouseLeave = (e) => {
+    const card = e.currentTarget
+    card.style.setProperty('--mouse-x', `-999px`)
+    card.style.setProperty('--mouse-y', `-999px`)
+    card.style.setProperty('--tilt-x', `0deg`)
+    card.style.setProperty('--tilt-y', `0deg`)
+  }
+
   const handleCtaClick = (e) => {
     e.preventDefault()
     if (onOpenContact) {
@@ -28,12 +52,17 @@ function PricingCard({ plan, onOpenContact }) {
   }
 
   return (
-    <div className={plan.featured ? 'pricing-card featured card' : 'pricing-card card'}>
-      <div className="glow">
+    <div
+      className={plan.featured ? 'pricing-card featured card' : 'pricing-card card'}
+      onMouseMove={handleCardMouseMove}
+      onMouseLeave={handleCardMouseLeave}
+    >
+      <div className="glow" aria-hidden="true">
         <div className="wave wave1" />
         <div className="wave wave2" />
       </div>
-    
+
+      <div className="card-cursor-spotlight" aria-hidden="true" />
 
       <div className="card-top">
         <span className="card-num">{plan.num} / {plan.category || 'SERVICE'}</span>

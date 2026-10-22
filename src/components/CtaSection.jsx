@@ -21,7 +21,7 @@ export default function CtaSection({ onOpenContact }) {
       ([e]) => {
         if (e.isIntersecting) {
           setLit(true)
-          io.disconnect() 
+          io.disconnect()
         }
       },
       { threshold: 0.15 }
