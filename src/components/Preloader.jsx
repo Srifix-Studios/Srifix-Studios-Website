@@ -1,185 +1,179 @@
-import { useEffect, useRef, useState } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import '../styles/preloader.css'
-
-gsap.registerPlugin(ScrollTrigger)
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import "../styles/preloader.css";
 
 export default function Preloader() {
-  const [mounted, setMounted] = useState(true)
-
-  const rootRef = useRef(null)
-  const counterRef = useRef(null)
- 
-  const iconFillRef = useRef(null)
+  const [mounted, setMounted] = useState(true);
+  const rootRef = useRef(null);
+  const hudRef = useRef(null);
+  const counterRef = useRef(null);
+  const iconFillRef = useRef(null);
 
   useEffect(() => {
-    const root = rootRef.current
-    if (!root) return
+    if (!mounted) return undefined;
 
-    document.body.style.overflow = 'hidden'
-    window.lenis?.stop()
+    const root = rootRef.current;
+    const hud = hudRef.current;
+    const previousOverflow = document.body.style.overflow;
+    let active = true;
+    let tickerAdded = false;
 
-    const reducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches
+    // Keep the page still while the preloader is visible.
+    document.body.style.overflow = "hidden";
+    window.lenis?.stop?.();
 
-    const state = { value: 0 }
-    let exitTl = null
-    let cancelled = false
+    const progressState = { value: 0 };
 
-    const unlock = () => {
-      document.body.style.overflow = ''
-      window.lenis?.start()
-      requestAnimationFrame(() => ScrollTrigger.refresh())
-    }
+   
+const renderProgress = () => {
+  const progress = Math.max(
+    0,
+    Math.min(100, progressState.value)
+  );
 
-    const render = () => {
-      const progress = Math.min(100, Math.max(0, state.value))
+  if (counterRef.current) {
+    counterRef.current.textContent = `${Math.round(progress)}%`;
+  }
 
-      if (counterRef.current) {
-        counterRef.current.textContent = Math.round(progress)
-      }
+  if (!iconFillRef.current) return;
 
-     
+  if (progress >= 100) {
+    iconFillRef.current.style.clipPath = "inset(0 0 0 0)";
+    return;
+  }
 
-     if (iconFillRef.current) {
+  const phase = performance.now() / 350;
+  const amplitude = 3;
+  const points = [];
+
+  for (let x = 0; x <= 100; x += 2) {
+    const wave =
+      Math.sin((x / 100) * Math.PI * 4 + phase) * amplitude;
+
+    const y = 100 - progress + wave;
+
+    points.push(`${x}% ${y}%`);
+  }
+
   iconFillRef.current.style.clipPath =
-    `inset(${100 - progress}% 0 0 0)`
-}
+    `polygon(0% 100%, 100% 100%, ${points.reverse().join(", ")})`;
+};
 
-// Wave fill animation sync
-if (iconFillRef.current) {
-  iconFillRef.current.style.animationDuration = `${8 * (progress / 85)}s`
-}
 
-    }
+    gsap.ticker.add(renderProgress);
+    tickerAdded = true;
 
-    const countTo = (target, duration, ease) =>
+    const waitForPageReady = async () => {
+      const pageLoad =
+        document.readyState === "complete"
+          ? Promise.resolve()
+          : new Promise((resolve) => {
+              window.addEventListener("load", resolve, { once: true });
+            });
+
+      const fontsReady = document.fonts?.ready ?? Promise.resolve();
+      await Promise.all([pageLoad, fontsReady]);
+    };
+
+    const tweenProgress = (target, duration) =>
       new Promise((resolve) => {
-        gsap.to(state, {
+        gsap.to(progressState, {
           value: target,
           duration,
-          ease,
-          onUpdate: render,
+          ease: "power1.out",
+          onUpdate: renderProgress,
           onComplete: resolve,
-        })
-      })
+        });
+      });
 
-    const finishPreloader = () => {
-      if (cancelled) return
+    const runPreloader = async () => {
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
 
-      exitTl = gsap.timeline({
+      if (reduceMotion) {
+        progressState.value = 100;
+        renderProgress();
+      } else {
+        await tweenProgress(85, 4);
+        if (!active) return;
+
+        await waitForPageReady();
+        if (!active) return;
+
+        await tweenProgress(100, 1.2);
+        if (!active) return;
+      }
+
+      if (tickerAdded) {
+        gsap.ticker.remove(renderProgress);
+        tickerAdded = false;
+      }
+
+      gsap.to(hud, {
+        autoAlpha: 0,
+        duration: 0.35,
+        ease: "power1.out",
+      });
+
+      gsap.to(root, {
+        autoAlpha: 0,
+        duration: 0.6,
+        delay: 0.15,
+        ease: "power2.out",
         onComplete: () => {
-          unlock()
-          setMounted(false)
+          if (active) setMounted(false);
         },
-      })
+      });
+    };
 
-      exitTl
-        .to('.preloader-hud', {
-          opacity: 0,
-          y: -20,
-          duration: 0.35,
-          ease: 'power2.inOut',
-        })
-        .to(root, {
-          opacity: 0,
-          duration: 0.4,
-          ease: 'power2.inOut',
-        }, '-=0.08')
-    }
-
-    const waitForPage = () => {
-      if (document.readyState === 'complete') {
-        return Promise.resolve()
-      }
-
-      return new Promise((resolve) => {
-        window.addEventListener('load', resolve, { once: true })
-      })
-    }
-
-    const run = async () => {
-      render()
-
-      if (reducedMotion) {
-        await countTo(100, 0.3, 'none')
-        finishPreloader()
-        return
-      }
-
-      // Animate while the page is loading.
-      const pageReady = Promise.all([
-        waitForPage(),
-        document.fonts?.ready ?? Promise.resolve(),
-      ])
-
-      await countTo(85, 4, 'power1.inOut')
-
-      // Wait for actual page readiness.
-      await pageReady
-
-      if (cancelled) return
-
-      await countTo(100, 1.2, 'power2.inOut')
-      finishPreloader()
-    }
-
-    const ctx = gsap.context(() => {
-      run()
-    }, root)
+    runPreloader();
 
     return () => {
-      cancelled = true
-      ctx.revert()
-      exitTl?.kill()
-      gsap.killTweensOf(state)
-      unlock()
-    }
-  }, [])
+      active = false;
+      if (tickerAdded) gsap.ticker.remove(renderProgress);
+      gsap.killTweensOf(progressState);
+      gsap.killTweensOf(hud);
+      gsap.killTweensOf(root);
+      document.body.style.overflow = previousOverflow;
+      window.lenis?.start?.();
+    };
+  }, [mounted]);
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
   return (
-    <div
-      className="preloader"
-      ref={rootRef}
-      role="status"
-      aria-label="Loading website"
-    >
-      <div className="preloader-hud">
+    <div className="preloader" ref={rootRef} aria-label="Loading" role="status">
+    <div className="preloader-hud" ref={hudRef}>
+  <div className="preloader-brand">
+    <span className="brand-sri">SRIFIX</span>{" "}
+    <span className="brand-studios">STUDIOS</span>
+  </div>
+
 
         <div className="preloader-icon">
           <img
             src="/assets/favicon-logo.png"
             className="preloader-icon-base"
             alt=""
+            aria-hidden="true"
           />
 
-          <div
-            className="preloader-icon-fill"
-            ref={iconFillRef}
-          >
-            <img src="/assets/favicon-logo.png" alt="" />
+          <div className="preloader-icon-fill" ref={iconFillRef}>
+            <img
+              src="/assets/favicon-logo.png"
+              className="preloader-icon-fill-image"
+              alt=""
+              aria-hidden="true"
+            />
           </div>
         </div>
 
-        <span className="preloader-brand">
-          SRIFIX <span className="brand-name">STUDIOS</span>
-        </span>
-
-        <div className="preloader-counter">
-          <span ref={counterRef}>0</span>
-          <span className="preloader-percent">%</span>
+        <div className="preloader-progress">
+          <span ref={counterRef}>0%</span>
+          <span className="preloader-loading-label">LOADING EXPERIENCE</span>
         </div>
-
-      
-        <span className="preloader-label">
-          LOADING EXPERIENCE
-        </span>
-
       </div>
     </div>
-  )
+  );
 }

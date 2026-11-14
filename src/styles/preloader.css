@@ -1,27 +1,18 @@
 @import './variables.css';
-
-/* PRELOADER OVERLAY */
+/* Full-screen preloader */
 .preloader {
   position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100vh;
   z-index: 99999;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #050505;
+  display: grid;
+  place-items: center;
+  background: #080808;
+  color: #fff;
   opacity: 1;
   visibility: visible;
 }
 
-/* HUD */
 .preloader-hud {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,233 +22,115 @@
   text-align: center;
   pointer-events: none;
   padding: 0 2rem;
-
-  opacity: 1;
-  visibility: visible;
 }
 
-/* FAVICON CONTAINER */
+.preloader-brand {
+  font-size: 18px;
+  font-family: var( --font-logo);
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.brand-sri {
+  color:var(--accent-orange);
+ 
+}
+
+.brand-studios {
+   color:var(--accent-blue);
+}
+
+/* Both layers use the same original, already-coloured PNG. */
+
 .preloader-icon {
   position: relative;
-  width: 260px;
-  height: 260px;
-  margin-bottom: 38px;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
 }
 
-/* BOTH LOGO IMAGES */
-.preloader-icon-base,
-.preloader-icon-fill img {
+.preloader-icon-base {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  display: block;
+
+  /* Make the unfilled logo subtle */
+  filter: grayscale(1);
+  opacity: 0;
 }
 
-/* DIMMED LOGO */
-.preloader-icon-base {
-  opacity: 0.01;
-}
-
-/* COLOR FILL LAYER */
 .preloader-icon-fill {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  z-index: 2;
   overflow: hidden;
-
   clip-path: inset(100% 0 0 0);
   will-change: clip-path;
 }
 
-/* WAVE FILL LAYER - creates the liquid wave effect */
-.preloader-wave-fill {
+.preloader-icon-fill-image {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  object-fit: contain;
 
-  /* Wave fill using clip-path - animates from 100% to 0% */
-  animation: waveFill 8s ease-out forwards;
-  will-change: clip-path;
-  pointer-events: none;
-}
-
-/* WAVE MASK - decorative wave overlay */
-.preloader-wave-mask {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.6;
-  transform: scaleX(1.05);
-}
-
-/* WAVE OVERLAY - gradient overlay for liquid look */
-.preloader-wave-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(180deg,
-    var(--accent-orange) 0%,
-    transparent 100%);
-  opacity: 0.35;
-}
-
-/* WAVE FILL KEYFRAMES */
-@keyframes waveFill {
-  0% {
-    clip-path: inset(100% 0 0 0);
-  }
-  100% {
-    clip-path: inset(0% 0 0 0);
-  }
-}
-
-/* MOBILE - wave elements */
-@media (max-width: 640px) {
-  .preloader-wave-fill,
-  .preloader-wave-mask,
-  .preloader-wave-overlay {
-    width: 125px;
-    height: 125px;
-  }
-}
-
-/* COLOR FILL LAYER */
-/* COLOR FILL LAYER */
-.preloader-icon-fill {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-
-  clip-path: inset(100% 0 0 0);
-  will-change: clip-path;
-}
-
-/* WAVE FILL LAYER - creates the liquid wave effect */
-.preloader-wave-fill {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-
-  /* Wave fill using clip-path - animates from 100% to 0% */
-  animation: waveFill 8s ease-out forwards;
-  will-change: clip-path;
-  pointer-events: none;
-}
-
-/* WAVE MASK - decorative wave overlay */
-.preloader-wave-mask {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.6;
-  transform: scaleX(1.05);
-}
-
-/* WAVE OVERLAY - gradient overlay for liquid look */
-.preloader-wave-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(180deg,
-    var(--accent-orange) 0%,
-    transparent 100%);
-  opacity: 0.35;
-}
-
-/* WAVE FILL KEYFRAMES */
-@keyframes waveFill {
-  0% {
-    clip-path: inset(100% 0 0 0);
-  }
-  100% {
-    clip-path: inset(0% 0 0 0);
-  }
-}
-
-/* MOBILE - wave elements */
-@media (max-width: 640px) {
-  .preloader-wave-fill,
-  .preloader-wave-mask,
-  .preloader-wave-overlay {
-    width: 125px;
-    height: 125px;
-  }
+  /* Keep the original PNG colours */
+  filter: none;
 }
 
 
-
-/* MOBILE */
-@media (max-width: 640px) {
-  .preloader-icon {
-    width: 125px;
-    height: 125px;
-    margin-bottom: 32px;
-  }
-}
-/* SRIFIX STUDIOS */
-.preloader-brand {
-  font-family: var(--font-logo);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--accent-orange);
-}
-.preloader .brand-name{
-  color: var(--accent-word);
-}
-/* PERCENTAGE COUNTER */
-.preloader-counter {
-  font-family: var(--font-logo);
-  font-size: 52px;
-  font-weight: 400;
-  letter-spacing: -0.06em;
-  font-variant-numeric: tabular-nums;
-  color: var(--accent-word);
+.preloader-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+ 
 }
 
-/* LOADING EXPERIENCE */
-.preloader-label {
+.preloader-progress > span:first-child {
+  font-size: 28px;
+  font-weight: 600;
+  font-family: var( --font-display);
+  color: var(--accent-v5-blue);
+}
+
+.preloader-loading-label {
   font-family: var(--font-heading);
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
-/* MOBILE */
 @media (max-width: 640px) {
   .preloader-brand {
     font-size: 11px;
   }
 
-  .preloader-counter {
-    font-size: 42px;
+  .preloader-progress > span:first-child {
+    font-size: 20px;
   }
 
-  .preloader-label {
+  .preloader-loading-label {
     font-size: 8px;
+  }
+
+  .preloader-icon {
+    width: clamp(105px, 32vw, 140px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .preloader,
+  .preloader-hud,
+  .preloader-icon-fill {
+    animation: none !important;
+    transition: none !important;
   }
 }
