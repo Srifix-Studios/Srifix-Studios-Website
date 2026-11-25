@@ -8,7 +8,6 @@ import '../styles/pricing.css'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function FaqSection() {
-  // Accordion: only one question open at a time; clicking the open one closes it.
   const [openIndex, setOpenIndex] = useState(null)
   const sectionRef = useRef(null)
 
@@ -16,7 +15,6 @@ export default function FaqSection() {
     const mm = gsap.matchMedia()
 
     mm.add('(prefers-reduced-motion: no-preference)', () => {
-      // "Questions" is fully visible first; as the questions scroll up into view it fades away.
       gsap.to('.question-bg-text', {
         opacity: 0,
         yPercent: -18,

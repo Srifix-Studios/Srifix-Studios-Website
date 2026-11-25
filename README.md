@@ -215,7 +215,7 @@ npm run preview
 
 Ready to build something premium? Contact the team directly:
 
-- **Email:** [info@srifixstudios.com](mailto:info@srifixstudios.com)
+- **Email:** [info@srifix.srifixstudios.com](mailto:info@srifix.srifixstudios.com)
 - **Phone / WhatsApp:** [+91 9625038790](https://wa.me/919625038790)
 - **Headquarters:** Srifix Studios LLC
 

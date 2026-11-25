@@ -1,12 +1,4 @@
-/* ==========================================================================
-   VERSION 5 HERO SECTION & NAVBAR
-   Matches Exact Reference Photo:
-   - 100vh Viewport with cosmic sphere video animation
-   - Clean Floating Navbar (Home active in #F07108, no underline/pill border)
-   - "We Transform Ideas Into Digital Experiences" with radiant white & blue glows
-   - Centered "Get started ↗" CTA over the golden rim of the orb
-   - Metrics bar positioned below the 100vh hero in document flow
-   ========================================================================== */
+@import './navbar.css';
 
 .hero-v5-wrapper {
   position: relative;
@@ -16,9 +8,6 @@
   isolation: isolate;
 }
 
-/* ==========================================================================
-   100VH HERO VIEWPORT (EXACT MATCH TO PHOTO)
-   ========================================================================== */
 .hero-v5-viewport {
   position: relative;
   width: 100%;
@@ -41,7 +30,6 @@
   }
 }
 
-/* Cosmic space video animation background */
 .hero-v5-bg {
   position: absolute;
   inset: 0;
@@ -54,173 +42,6 @@
   opacity: 1;
 }
 
-/* ==========================================================================
-   TOP NAVBAR (NAVISLAND)
-   ========================================================================== */
-.navisland-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  padding: clamp(16px, 2.5vh, 28px) clamp(20px, 4vw, 56px);
-  background: transparent;
-  box-sizing: border-box;
-}
-
-.navisland-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-/* Logo */
-.navisland-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.navisland-logo-img {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.navisland-logo:hover .navisland-logo-img {
-  transform: rotate(-3deg) scale(1.04);
-}
-
-.navisland-logo-text {
-  font-family: var(--font-display, 'Syne', sans-serif);
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 24px;
-  letter-spacing: 0.045em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.logo-srifix {
-  color: #F07108;
-  background: linear-gradient(135deg, #F07108 0%, #FF9A3D 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.logo-studios {
-  color: #2753E3;
-  background: linear-gradient(135deg, #4A7AFF 0%, #2753E3 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Center Nav Links (Clean, floating, matching reference photo) */
-.navisland-pill {
-  display: flex;
-  align-items: center;
-  gap: clamp(18px, 2.2vw, 32px);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.navisland-link {
-  font-family: var(--font-inter, 'Inter', sans-serif);
-  font-weight: 500;
-  font-size: clamp(14px, 1.05vw, 16px);
-  line-height: 20px;
-  color: #E5E7EB;
-  text-decoration: none;
-  transition: color 0.25s ease, opacity 0.25s ease;
-  position: relative;
-  display: inline-block;
-}
-
-.navisland-link:hover {
-  color: #FFFFFF;
-}
-
-.navisland-link.active {
-  color: #F07108;
-  font-weight: 600;
-}
-
-.navisland-link.active::after {
-  display: none !important;
-}
-
-/* Right Nav CTA Button */
-.navisland-cta-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 46px;
-  padding: 0 24px;
-  border-radius: 999px;
-  background: rgba(15, 15, 28, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(39, 83, 227, 0.8);
-  box-shadow: 0 0 20px rgba(39, 83, 227, 0.35);
-  color: #FFFFFF;
-  font-family: var(--font-inter, 'Inter', sans-serif);
-  font-weight: 600;
-  font-size: 15px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.navisland-cta-btn:hover {
-  border-color: rgba(39, 83, 227, 1);
-  box-shadow: 0 0 28px rgba(39, 83, 227, 0.65);
-  transform: translateY(-1px);
-}
-
-.navisland-cta-arrow {
-  font-size: 16px;
-  line-height: 1;
-  transition: transform 0.25s ease;
-}
-
-.navisland-cta-btn:hover .navisland-cta-arrow {
-  transform: translate(2px, -2px);
-}
-
-/* Mobile Toggle */
-.navisland-mobile-toggle {
-  display: none;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 10px;
-  color: #FFFFFF;
-  cursor: pointer;
-  z-index: 2;
-}
-
-/* ==========================================================================
-   HERO MAIN CONTENT
-   ========================================================================== */
 .hero-v5-content {
   flex: 1;
   display: flex;
@@ -237,7 +58,6 @@
   box-sizing: border-box;
 }
 
-/* Main Heading */
 .hero-v5-heading {
   font-family: var(--font-display, 'Syne', sans-serif);
   font-weight: 700;
@@ -250,7 +70,6 @@
   align-items: center;
 }
 
-/* Line 1 & Line 2 Common */
 .hero-v5-title-line {
   display: block;
   font-size: clamp(38px, 5.6vw, 84px);
@@ -260,7 +79,6 @@
   filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.5));
 }
 
-/* Line 2: Into [gap] Digital [gap] Experiences */
 .hero-v5-line-2 {
   display: flex;
   align-items: baseline;
@@ -281,7 +99,6 @@
   filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.5));
 }
 
-/* "Digital" Italic Serif Accent */
 .hero-v5-digital {
   font-family: var(--font-serif-italic, 'Playfair Display', Georgia, serif);
   font-style: italic;
@@ -297,7 +114,6 @@
   vertical-align: baseline;
 }
 
-/* Subtitle: Bold and prominently visible */
 .hero-v5-subtitle {
   font-family: var(--font-inter, 'Inter', sans-serif);
   font-weight: 700;
@@ -320,7 +136,6 @@
   display: inline;
 }
 
-/* Central Hero CTA Button ("Get started ↗") */
 .hero-v5-cta-btn {
   display: inline-flex;
   align-items: center;
@@ -345,8 +160,9 @@
 
 .hero-v5-cta-btn:hover {
   transform: translateY(-2px) scale(1.02);
-  border-color: rgba(39, 83, 227, 1);
-  box-shadow: 0 0 36px rgba(39, 83, 227, 0.75), inset 0 0 16px rgba(39, 83, 227, 0.35);
+  background: linear-gradient(90deg, #FF9A3C 0%, #F7801E 45%, #E8650F 100%);
+  border-color: rgba(255, 214, 170, 0.95);
+  box-shadow: 0 12px 36px rgba(247, 128, 30, 0.52), inset 0 0 14px rgba(255, 214, 170, 0.25);
 }
 
 .hero-v5-cta-arrow {
@@ -359,9 +175,6 @@
   transform: translate(2px, -2px);
 }
 
-/* ==========================================================================
-   MINI INFO BAR (STATS BAR - BELOW 100VH HERO)
-   ========================================================================== */
 .mini-info-wrapper {
   position: relative;
   width: 100%;
@@ -446,51 +259,7 @@
   color: #9CA3AF;
 }
 
-/* ==========================================================================
-   RESPONSIVE BREAKPOINTS
-   ========================================================================== */
-@media (max-width: 1024px) {
-  .navisland-pill {
-    gap: 18px;
-  }
-}
-
 @media (max-width: 860px) {
-  .navisland-pill {
-    display: none;
-  }
-
-  .navisland-mobile-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .navisland-mobile-menu {
-    position: fixed;
-    top: 76px;
-    left: 20px;
-    right: 20px;
-    background: rgba(15, 15, 28, 0.96);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 24px;
-    padding: 24px;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-    z-index: 100;
-    list-style: none;
-  }
-
-  .navisland-mobile-menu .navisland-link {
-    font-size: 18px;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
   .hero-v5-line-2 {
     flex-wrap: wrap;
     justify-content: center;
@@ -513,22 +282,6 @@
 }
 
 @media (max-width: 540px) {
-  .navisland-header {
-    padding: 16px 20px;
-  }
-
-  .navisland-logo-img {
-    width: 38px;
-    height: 38px;
-  }
-
-  .navisland-logo-text {
-    font-size: 16px;
-  }
-
-  .navisland-cta-btn {
-    display: none;
-  }
 
   .hero-v5-content {
     margin-top: 20px;

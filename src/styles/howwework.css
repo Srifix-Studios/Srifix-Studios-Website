@@ -1,8 +1,4 @@
-/* ==========================================================================
-   HOW WE WORK — Figma Flow 15 Spec + Scroll-Driven Lamp Ignition
-   Pure black screen entrance, visible hanging lamp, scroll-pulled wire,
-   radiant blue spotlight cone, and 2x2 staggered orbital cards.
-   ========================================================================== */
+
 
 .hw4 {
   position: relative;
@@ -37,9 +33,6 @@
   overflow: hidden;
 }
 
-/* --------------------------------------------------------------------------
-   Watermark Title & Background Rings
-   -------------------------------------------------------------------------- */
 .hw4-watermark-title {
   position: absolute;
   top: 45%;
@@ -85,19 +78,9 @@
 }
 
 .hw4.is-on .hw4-dashed-path path {
-  filter: drop-shadow(0 0 12px rgba(240, 113, 8, 0.55));
+  stroke: #ffd8b0;
 }
 
-/* --------------------------------------------------------------------------
-   Articulated Hanging Lamp & Pull Cord
-   -------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------
-   Compound Kinematic Hanging Lamp Assembly:
-   - Rope Pivot: swings from ceiling anchor (138.5px, 40px)
-   - Shade Pivot: tilts from socket joint (138.5px, 195px)
-   - Pull Cord: moves with shade, counter-rotates with gravity
-   - Volumetric Beam Cone: welded to shade rim in SVG
-   -------------------------------------------------------------------------- */
 .hw4-lamp-anchor {
   position: absolute;
   top: -40px;
@@ -108,7 +91,6 @@
   z-index: 5;
 }
 
-/* 1. Rope Pivot from ceiling */
 .hw4-rope-pivot {
   position: absolute;
   top: 0;
@@ -131,7 +113,6 @@
   pointer-events: none;
 }
 
-/* 2. Shade Pivot from socket joint */
 .hw4-shade-pivot {
   position: absolute;
   top: 0;
@@ -152,10 +133,9 @@
   height: 440px;
   overflow: visible !important;
   pointer-events: none;
-  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.85));
+  transform: translateZ(0);
 }
 
-/* Welded Volumetric Beam Cone */
 .hw4-beam-group {
   opacity: 0;
   transition: opacity 0.35s ease;
@@ -166,7 +146,6 @@
   opacity: 0.82;
 }
 
-/* Matching electric blue glowing bulb (peeks under rim) */
 .hw4-bulb-glow {
   opacity: 0;
   transition: opacity 0.25s ease;
@@ -176,7 +155,6 @@
   opacity: 1;
 }
 
-/* Suspended pull cord attached directly to shade collar */
 .hw4-cord {
   --pull: 0px;
   position: absolute;
@@ -230,7 +208,6 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8), 0 0 18px rgba(240, 113, 8, 0.85);
 }
 
-/* Figma Frame 366 'Click Here' Tooltip Badge */
 .hw4-click-badge {
   position: absolute;
   top: calc(70px + var(--pull) + 2px);
@@ -269,22 +246,21 @@
   position: absolute;
   top: var(--halo-y, 52%);
   left: var(--halo-x, 78%);
-  transform: translate(-50%, -50%);
-  width: 580px;
-  height: 580px;
+  transform: translate3d(-50%, -50%, 0);
+  width: 680px;
+  height: 680px;
   border-radius: 50%;
   background: radial-gradient(
     circle at center,
-    rgba(255, 160, 51, 0.18) 0%,
-    rgba(240, 113, 8, 0.08) 38%,
-    rgba(217, 88, 0, 0.02) 58%,
+    rgba(255, 160, 51, 0.2) 0%,
+    rgba(240, 113, 8, 0.09) 32%,
+    rgba(217, 88, 0, 0.025) 56%,
     transparent 74%
   );
-  filter: blur(52px);
   opacity: 0;
   pointer-events: none;
   z-index: 3;
-  will-change: left, top, opacity;
+  will-change: opacity, transform;
   transition: opacity 0.3s ease;
 }
 
@@ -292,9 +268,6 @@
   opacity: 1;
 }
 
-/* --------------------------------------------------------------------------
-   4 Orbital Cards Constellation (Flow 15: 1 Discover -> 2 Design -> 3 Build -> 4 Launch)
-   -------------------------------------------------------------------------- */
 .hw4-constellation {
   position: absolute;
   inset: 0;
@@ -309,27 +282,26 @@
   width: clamp(250px, 18.5vw, 305px);
   padding: clamp(16px, 1.5vw, 22px);
   border-radius: 16px;
-  background: rgba(12, 13, 18, 0.90);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: rgba(12, 13, 18, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75);
   pointer-events: auto;
   opacity: 0;
   box-sizing: border-box;
   text-align: left;
+  will-change: transform, opacity;
   transition:
-    border-color 0.4s ease,
-    box-shadow 0.4s ease,
-    background 0.4s ease,
-    transform 0.35s ease;
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background 0.35s ease;
 }
 
 .hw4-card:hover {
   transform: translateY(-6px);
 }
 
-/* Precise Desktop Constellation Positions - Perfectly Balanced to Fit Screen */
 @media (min-width: 901px) {
   .hw4-card--1 {
     left: 8%;
@@ -352,7 +324,6 @@
   }
 }
 
-/* Subtle, Dimmed Warm Orange Spotlight Card Active Styling for Crystal-Clear Readability */
 .hw4.is-on .hw4-card--spotlight {
   background: linear-gradient(
     180deg,
@@ -371,7 +342,6 @@
   border-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Card Header */
 .hw4-card-header {
   display: flex;
   align-items: center;
@@ -435,7 +405,6 @@
   font-weight: 450;
 }
 
-/* Compact scaling for smaller screens and laptop heights */
 @media (max-height: 800px) and (min-width: 901px) {
   .hw4-card {
     padding: 12px 16px;
@@ -478,9 +447,6 @@
   }
 }
 
-/* --------------------------------------------------------------------------
-   Mobile & Tablet Responsive Adaptations
-   -------------------------------------------------------------------------- */
 @media (max-width: 900px) {
   .hw4 {
     min-height: 100vh;

@@ -1,0 +1,70 @@
+<svg width="1440" height="900" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Blue Gradient (Upper-Left Mission) -->
+    <linearGradient id="missionBlue" x1="0%" y1="0%" x2="60%" y2="80%">
+      <stop offset="0%" stop-color="#0a1538"/>
+      <stop offset="35%" stop-color="#112c82"/>
+      <stop offset="70%" stop-color="#1c44c9"/>
+      <stop offset="100%" stop-color="#2753e3"/>
+    </linearGradient>
+
+    <!-- Orange Gradient (Lower-Right Vision) -->
+    <linearGradient id="visionOrange" x1="40%" y1="20%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#401802"/>
+      <stop offset="35%" stop-color="#7a3004"/>
+      <stop offset="70%" stop-color="#ba5207"/>
+      <stop offset="100%" stop-color="#f07108"/>
+    </linearGradient>
+
+    <!-- Radial Glows for Atmospheric Depth -->
+    <radialGradient id="blueGlow" cx="25%" cy="30%" r="45%">
+      <stop offset="0%" stop-color="#3d6bff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#2753e3" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="orangeGlow" cx="80%" cy="75%" r="45%">
+      <stop offset="0%" stop-color="#ff8e36" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#f07108" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Ribbon White Bloom -->
+    <filter id="ribbonGlow" x="-10%" y="-20%" width="120%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="12" flood-color="#ffffff" flood-opacity="0.6"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="24" flood-color="#ffffff" flood-opacity="0.3"/>
+    </filter>
+
+    <!-- Card Clip Path -->
+    <clipPath id="cardClip">
+      <rect x="0" y="0" width="1440" height="900" rx="32"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#cardClip)">
+    <!-- Base Background Fill -->
+    <rect width="1440" height="900" fill="#080b16"/>
+
+    <!-- ── 1. BLUE REGION (Upper-Left: Everything Above S-Curve) ── -->
+    <path d="M 0 0 L 1440 0 L 1440 410 L 860 410 C 720 410, 720 600, 580 600 L 0 600 Z" fill="url(#missionBlue)"/>
+    <rect width="1440" height="900" fill="url(#blueGlow)" pointer-events="none"/>
+
+    <!-- ── 2. ORANGE REGION (Lower-Right: Everything Below S-Curve) ── -->
+    <path d="M 0 600 L 580 600 C 720 600, 720 410, 860 410 L 1440 410 L 1440 900 L 0 900 Z" fill="url(#visionOrange)"/>
+    <rect width="1440" height="900" fill="url(#orangeGlow)" pointer-events="none"/>
+
+    <!-- ── 3. LUMINOUS WHITE S-CURVED YIN-YANG RIBBON ── -->
+    <path d="M -20 600 L 580 600 C 720 600, 720 410, 860 410 L 1460 410"
+          stroke="#FFFFFF"
+          stroke-width="28"
+          stroke-linecap="round"
+          filter="url(#ribbonGlow)"/>
+
+    <!-- Core Crisp White Centerline -->
+    <path d="M -20 600 L 580 600 C 720 600, 720 410, 860 410 L 1460 410"
+          stroke="#FFFFFF"
+          stroke-width="26"
+          stroke-linecap="round"/>
+
+    <!-- ── 4. EDGE VIGNETTE (Atmospheric Obsidian Rim) ── -->
+    <rect width="1440" height="900" rx="32" stroke="rgba(255,255,255,0.18)" stroke-width="2" fill="none"/>
+  </g>
+</svg>

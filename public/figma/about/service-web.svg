@@ -1,0 +1,79 @@
+<svg width="600" height="380" viewBox="0 0 600 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="webCardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c1020"/>
+      <stop offset="100%" stop-color="#05070e"/>
+    </linearGradient>
+    <linearGradient id="glowLinear" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2753e3"/>
+      <stop offset="50%" stop-color="#142c82"/>
+      <stop offset="100%" stop-color="#f07108"/>
+    </linearGradient>
+    <filter id="webBloom" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="20" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" mode="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="600" height="380" rx="16" fill="url(#webCardBg)"/>
+  <rect width="600" height="380" rx="16" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+
+  <!-- Atmospheric Glow -->
+  <circle cx="480" cy="100" r="120" fill="#2753e3" opacity="0.25" filter="url(#webBloom)"/>
+  <circle cx="120" cy="280" r="90" fill="#f07108" opacity="0.15" filter="url(#webBloom)"/>
+
+  <!-- Browser / Dark Window Frame -->
+  <g transform="translate(40, 36)">
+    <!-- Window Bar -->
+    <rect width="520" height="308" rx="14" fill="#090c17" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+    <rect width="520" height="38" rx="14" fill="rgba(255,255,255,0.03)"/>
+    <line x1="0" y1="38" x2="520" y2="38" stroke="rgba(255,255,255,0.08)"/>
+
+    <!-- Traffic Lights -->
+    <circle cx="24" cy="19" r="5" fill="#ff5f56"/>
+    <circle cx="40" cy="19" r="5" fill="#ffbd2e"/>
+    <circle cx="56" cy="19" r="5" fill="#27c93f"/>
+
+    <!-- Address Bar -->
+    <rect x="90" y="8" width="340" height="22" rx="6" fill="rgba(255,255,255,0.05)"/>
+    <text x="180" y="23" font-family="'Inter', sans-serif" font-size="10" fill="rgba(255,255,255,0.5)">srifix.com/interactive-3d</text>
+
+    <!-- Speed / Performance Pill -->
+    <rect x="444" y="9" width="62" height="20" rx="10" fill="rgba(39,201,63,0.15)"/>
+    <text x="454" y="23" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#27c93f">⚡ 100/100</text>
+
+    <!-- Inner Viewport: 3D Spatial Canvas Simulation -->
+    <g transform="translate(20, 54)">
+      <!-- Spatial Card 1 -->
+      <rect width="300" height="150" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)"/>
+      <circle cx="70" cy="65" r="45" fill="url(#glowLinear)" opacity="0.6"/>
+      <text x="135" y="55" font-family="'Syne', sans-serif" font-weight="700" font-size="18" fill="#ffffff">Spatial Physics</text>
+      <text x="135" y="78" font-family="'Inter', sans-serif" font-size="11" fill="rgba(255,255,255,0.6)">WebGL · Three.js · 60 FPS</text>
+      <rect x="135" y="94" width="130" height="6" rx="3" fill="rgba(255,255,255,0.1)"/>
+      <rect x="135" y="94" width="95" height="6" rx="3" fill="#2753e3"/>
+
+      <!-- Right Code / Terminal Card -->
+      <g transform="translate(320, 0)">
+        <rect width="160" height="150" rx="10" fill="#04060b" stroke="rgba(39,83,227,0.3)"/>
+        <text x="16" y="28" font-family="'Courier', monospace" font-size="10" fill="#6085ff">&lt;Canvas3D&gt;</text>
+        <text x="26" y="48" font-family="'Courier', monospace" font-size="10" fill="rgba(255,255,255,0.7)">camera={{ fov: 45 }}</text>
+        <text x="26" y="68" font-family="'Courier', monospace" font-size="10" fill="rgba(255,255,255,0.7)">physics={{ fps: 60 }}</text>
+        <text x="26" y="88" font-family="'Courier', monospace" font-size="10" fill="#f07108">ssr={true}</text>
+        <text x="16" y="108" font-family="'Courier', monospace" font-size="10" fill="#6085ff">&lt;/Canvas3D&gt;</text>
+        <rect x="16" y="122" width="70" height="16" rx="4" fill="rgba(39,83,227,0.2)"/>
+        <text x="22" y="134" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6085ff">NEXT.js 15</text>
+      </g>
+
+      <!-- Bottom Status Bar -->
+      <g transform="translate(0, 168)">
+        <rect width="480" height="64" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)"/>
+        <circle cx="28" cy="32" r="8" fill="#2753e3"/>
+        <text x="46" y="28" font-family="'Inter', sans-serif" font-weight="600" font-size="12" fill="#ffffff">Sub-Second Load Latency</text>
+        <text x="46" y="46" font-family="'Inter', sans-serif" font-size="11" fill="rgba(255,255,255,0.5)">Edge Cached · Zero Layout Shift · Fluid Motion</text>
+        <rect x="390" y="22" width="74" height="22" rx="11" fill="#2753e3"/>
+        <text x="403" y="36" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#ffffff">EXPLORE</text>
+      </g>
+    </g>
+  </g>
+</svg>

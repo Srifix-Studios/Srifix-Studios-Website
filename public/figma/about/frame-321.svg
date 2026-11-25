@@ -1,0 +1,24 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1440" height="957" viewBox="0 0 1440 957" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Frame 368" clip-path="url(#clip0_0_682)">
+<g id="Ellipse 173" filter="url(#filter0_i_0_682)">
+<ellipse cx="720" cy="213" rx="797" ry="744" fill="#0F0F1C"/>
+</g>
+<ellipse id="Ellipse 174" opacity="0.18" cx="720" cy="213" rx="797" ry="744"/>
+</g>
+<defs>
+<filter id="filter0_i_0_682" x="-77" y="-563" width="1594" height="1520" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="7" operator="erode" in="SourceAlpha" result="effect1_innerShadow_0_682"/>
+<feOffset dy="-32"/>
+<feGaussianBlur stdDeviation="51.1"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.152941 0 0 0 0 0.32549 0 0 0 0 0.890196 0 0 0 1 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_0_682"/>
+</filter>
+<clipPath id="clip0_0_682">
+<rect width="1440" height="957" fill="white"/>
+</clipPath>
+</defs>
+</svg>

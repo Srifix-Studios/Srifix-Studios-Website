@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react'
-import { ArrowUpRight } from 'lucide-react'
+import React, { useRef, useEffect, useState } from 'react'
+import { ArrowUpRight, ChevronDown, ChevronUp } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { pricingPlans, pricingPrinciple } from '../data/pricing'
@@ -9,6 +9,30 @@ gsap.registerPlugin(ScrollTrigger)
 
 function PricingCard({ plan, onOpenContact }) {
   const isCustomPrice = plan.price.toLowerCase().includes('requirement')
+
+  const handleCardMouseMove = (e) => {
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    card.style.setProperty('--mouse-x', `${x}px`)
+    card.style.setProperty('--mouse-y', `${y}px`)
+
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+    const rotateX = ((y - centerY) / centerY) * -5
+    const rotateY = ((x - centerX) / centerX) * 5
+    card.style.setProperty('--tilt-x', `${rotateX.toFixed(2)}deg`)
+    card.style.setProperty('--tilt-y', `${rotateY.toFixed(2)}deg`)
+  }
+
+  const handleCardMouseLeave = (e) => {
+    const card = e.currentTarget
+    card.style.setProperty('--mouse-x', `-999px`)
+    card.style.setProperty('--mouse-y', `-999px`)
+    card.style.setProperty('--tilt-x', `0deg`)
+    card.style.setProperty('--tilt-y', `0deg`)
+  }
 
   const handleCtaClick = (e) => {
     e.preventDefault()
@@ -28,12 +52,17 @@ function PricingCard({ plan, onOpenContact }) {
   }
 
   return (
-    <div className={plan.featured ? 'pricing-card featured card' : 'pricing-card card'}>
-      <div className="glow">
+    <div
+      className={plan.featured ? 'pricing-card featured card' : 'pricing-card card'}
+      onMouseMove={handleCardMouseMove}
+      onMouseLeave={handleCardMouseLeave}
+    >
+      <div className="glow" aria-hidden="true">
         <div className="wave wave1" />
         <div className="wave wave2" />
       </div>
-    
+
+      <div className="card-cursor-spotlight" aria-hidden="true" />
 
       <div className="card-top">
         <span className="card-num">{plan.num} / {plan.category || 'SERVICE'}</span>
@@ -73,12 +102,21 @@ function PricingCard({ plan, onOpenContact }) {
 
 export default function PricingSection({ onOpenContact }) {
   const sectionRef = useRef(null)
+  const [showAll, setShowAll] = useState(false)
+
+  const visiblePlans = showAll ? pricingPlans : pricingPlans.slice(0, 3)
+
+  const handleToggleShowAll = () => {
+    setShowAll((prev) => !prev)
+    setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 100)
+  }
 
   useEffect(() => {
     const mm = gsap.matchMedia()
 
     mm.add('(prefers-reduced-motion: no-preference)', () => {
-      // Watermark text fades as grid scrolls in
       gsap.to('.pricing-bg-text', {
         opacity: 0,
         yPercent: -18,
@@ -110,33 +148,46 @@ export default function PricingSection({ onOpenContact }) {
       </div>
 
       <div className="pricing-grid">
-        {pricingPlans.map((plan) => (
+        {visiblePlans.map((plan) => (
           <PricingCard key={plan.title} plan={plan} onOpenContact={onOpenContact} />
         ))}
       </div>
 
-      {/* Pricing Principle & Policy Banner from official sheet */}
-      <div className="pricing-principle-banner">
-        <div className="pricing-principle-card">
-          <div className="principle-col">
-            <h4>
-              <span className="principle-tag">PRINCIPLE</span>
-              {pricingPrinciple.heading}
-            </h4>
-            <p>{pricingPrinciple.description}</p>
-          </div>
+      {showAll && (
+        <div className="pricing-principle-banner">
+          <div className="pricing-principle-card">
+            <div className="principle-col">
+              <h4>
+                <span className="principle-tag">PRINCIPLE</span>
+                {pricingPrinciple.heading}
+              </h4>
+              <p>{pricingPrinciple.description}</p>
+            </div>
 
-          <div className="principle-col">
-            <h4>
-              <span className="principle-tag">POLICY</span>
-              {pricingPrinciple.policyHeading}
-            </h4>
-            <p>{pricingPrinciple.policyDescription}</p>
-            <p className="production-subnote">
-              <strong>{pricingPrinciple.productionHeading}:</strong> {pricingPrinciple.productionDescription}
-            </p>
+            <div className="principle-col">
+              <h4>
+                <span className="principle-tag">POLICY</span>
+                {pricingPrinciple.policyHeading}
+              </h4>
+              <p>{pricingPrinciple.policyDescription}</p>
+              <p className="production-subnote">
+                <strong>{pricingPrinciple.productionHeading}:</strong> {pricingPrinciple.productionDescription}
+              </p>
+            </div>
           </div>
         </div>
+      )}
+
+      <div className="pricing-see-more-wrap">
+        <button
+          type="button"
+          className="pricing-see-more-btn"
+          onClick={handleToggleShowAll}
+          aria-expanded={showAll}
+        >
+          <span>{showAll ? 'Show Less' : 'See More Plans & Details'}</span>
+          {showAll ? <ChevronUp size={18} aria-hidden="true" /> : <ChevronDown size={18} aria-hidden="true" />}
+        </button>
       </div>
     </section>
   )

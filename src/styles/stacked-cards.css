@@ -1,7 +1,4 @@
-/* ==========================================================================
-   Client Review Section — Figma Version 5 Spec + 3D Zoom Cards Animation
-   Matches Frame #1542:1973 with canyon backdrop, vector watermark & glass cards
-   ========================================================================== */
+
 
 .tv-section {
   position: relative;
@@ -17,7 +14,6 @@
   padding: 0;
 }
 
-/* Atmospheric Canyon Backdrop + Figma Version 5 Vignettes */
 .tv-backdrop {
   position: absolute;
   inset: 0;
@@ -88,7 +84,6 @@
   z-index: 1;
 }
 
-/* Figma Version 5 Vector Watermark (#1542:1974) */
 .tv-watermark-wrap {
   position: absolute;
   top: clamp(10px, 2.2vh, 32px);
@@ -110,7 +105,6 @@
   display: block;
 }
 
-/* Inner Layout */
 .tv-inner {
   position: relative;
   z-index: 10;
@@ -126,7 +120,6 @@
   box-sizing: border-box;
 }
 
-/* Headline: Syne Bold 84px #FFFFFF + #2753E3 (#1542:2018) */
 .tv-headline {
   font-family: var(--font-display, 'Syne', sans-serif);
   font-weight: 700;
@@ -144,7 +137,6 @@
   text-shadow: 0 0 28px rgba(39, 83, 227, 0.65);
 }
 
-/* 3D Zoom Cards Stage */
 .tv-stage {
   position: relative;
   width: 100%;
@@ -156,7 +148,6 @@
   perspective: 1200px;
 }
 
-/* Card: 438px x 350px, border-radius 26px, border 1px solid rgba(92, 92, 92, 0.65) */
 .tv-stage .tv-card {
   position: absolute;
   width: clamp(340px, 29vw, 438px);
@@ -187,7 +178,6 @@
   box-shadow: 0 28px 70px rgba(0, 0, 0, 0.75), 0 0 35px rgba(39, 83, 227, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Card Header: 100px Flag + Author details, divider 1px solid rgba(92, 92, 92, 0.65) */
 .tv-stage .tv-card-head {
   display: grid;
   grid-template-columns: 100px 1fr;
@@ -223,7 +213,6 @@
   box-sizing: border-box;
 }
 
-/* Author Name: Syne Bold 28px #FFFFFF */
 .tv-stage .tv-card-name {
   font-family: var(--font-display, 'Syne', sans-serif);
   font-weight: 700;
@@ -234,7 +223,6 @@
   margin: 0;
 }
 
-/* Author Role: Inter Regular 12px #2753E3 */
 .tv-stage .tv-card-role {
   font-family: var(--font-inter, 'Inter', sans-serif);
   font-weight: 400;
@@ -244,7 +232,6 @@
   margin: 0;
 }
 
-/* Card Body */
 .tv-stage .tv-card-body {
   padding: 20px 24px 26px;
   flex: 1;
@@ -255,7 +242,6 @@
   box-sizing: border-box;
 }
 
-/* Stars: 5 stars in pure #FFFFFF matching Figma spec */
 .tv-stage .tv-stars {
   font-size: 14px;
   letter-spacing: 0.35em;
@@ -271,7 +257,6 @@
   color: #FFFFFF;
 }
 
-/* Quote: Inter Regular 22px / 28px #FFFFFF (#1542:1984) */
 .tv-stage .tv-quote {
   margin: 0;
   font-family: var(--font-inter, 'Inter', sans-serif);
@@ -289,7 +274,6 @@
   margin: 0;
 }
 
-/* Interactive Cursor Radial Spotlight */
 .tv-stage .tv-spot {
   position: absolute;
   top: 0;
@@ -307,9 +291,6 @@
   opacity: 1;
 }
 
-/* ==========================================================================
-   Responsive Adaptations (Mobile & Tablet <= 860px)
-   ========================================================================== */
 @media (max-width: 860px) {
   .tv-section {
     padding: 0;

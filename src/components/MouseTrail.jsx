@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import '../styles/mousetrail.css'
 
-// ---- Mouse trail: cyan → blue → violet → purple → orange → gold ----
 const TRAIL_COLORS = ['cyan', 'blue', 'violet', 'purple', 'orange', 'gold']
 
 export default function MouseTrail() {
