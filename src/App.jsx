@@ -131,7 +131,7 @@ export default function App() {
 
   return (
     <>
-    <Preloader/>
+      <Preloader />
       <MouseTrail />
       <ChatBot />
 

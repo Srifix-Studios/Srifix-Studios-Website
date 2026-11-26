@@ -298,7 +298,33 @@ export default function HowWeWorkLamp() {
             { opacity: 1, y: 0, duration: 0.05, ease: 'power2.out' },
             0.71
           )
-          .to({}, { duration: 0.24 }, 0.76)
+          .to({}, { duration: 0.13 }, 0.76)
+
+        tl.to(cord, { '--pull': '36px', duration: 0.03, ease: 'power1.inOut' }, 0.89)
+          .to(cord, { '--pull': '0px', duration: 0.02, ease: 'elastic.out(1.2, 0.4)' }, 0.92)
+          .to('.hw4-card--4', { opacity: 0, y: -10, duration: 0.04, ease: 'power2.in' }, 0.89)
+          .to(
+            [
+              '.hw4-bulb-glow',
+              '.hw4-beam-group',
+              '.hw4-spotlight-bloom',
+              '.hw4-watermark-title',
+              '.hw4-dashed-path',
+              '.hw4-orbit-rings',
+            ],
+            { opacity: 0, duration: 0.04, ease: 'power2.in' },
+            0.91
+          )
+          .to(
+            stage,
+            {
+              '--rope-rot': '0deg',
+              '--shade-rot': '0deg',
+              duration: 0.05,
+            },
+            0.91
+          )
+          .to({}, { duration: 0.04 }, 0.96)
       },
       sectionRef
     )
