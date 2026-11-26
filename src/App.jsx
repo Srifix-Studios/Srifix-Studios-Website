@@ -17,6 +17,7 @@ import GetStartedPage from './components/GetStarted/GetStartedPage'
 import ServicesPage from './components/Services/ServicesPage'
 import AboutPage from './components/AboutPage'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Preloader from './components/Preloader'
 
 function getPageFromLocation() {
   if (typeof window === 'undefined') return 'home'
@@ -130,6 +131,7 @@ export default function App() {
 
   return (
     <>
+    <Preloader/>
       <MouseTrail />
       <ChatBot />
 
