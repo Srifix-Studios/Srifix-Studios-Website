@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react'
-import { ArrowUpRight } from 'lucide-react'
+import React, { useRef, useEffect, useState } from 'react'
+import { ArrowUpRight, ChevronDown, ChevronUp } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { pricingPlans, pricingPrinciple } from '../data/pricing'
@@ -102,6 +102,16 @@ function PricingCard({ plan, onOpenContact }) {
 
 export default function PricingSection({ onOpenContact }) {
   const sectionRef = useRef(null)
+  const [showAll, setShowAll] = useState(false)
+
+  const visiblePlans = showAll ? pricingPlans : pricingPlans.slice(0, 3)
+
+  const handleToggleShowAll = () => {
+    setShowAll((prev) => !prev)
+    setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 100)
+  }
 
   useEffect(() => {
     const mm = gsap.matchMedia()
@@ -138,32 +148,46 @@ export default function PricingSection({ onOpenContact }) {
       </div>
 
       <div className="pricing-grid">
-        {pricingPlans.map((plan) => (
+        {visiblePlans.map((plan) => (
           <PricingCard key={plan.title} plan={plan} onOpenContact={onOpenContact} />
         ))}
       </div>
 
-      <div className="pricing-principle-banner">
-        <div className="pricing-principle-card">
-          <div className="principle-col">
-            <h4>
-              <span className="principle-tag">PRINCIPLE</span>
-              {pricingPrinciple.heading}
-            </h4>
-            <p>{pricingPrinciple.description}</p>
-          </div>
+      {showAll && (
+        <div className="pricing-principle-banner">
+          <div className="pricing-principle-card">
+            <div className="principle-col">
+              <h4>
+                <span className="principle-tag">PRINCIPLE</span>
+                {pricingPrinciple.heading}
+              </h4>
+              <p>{pricingPrinciple.description}</p>
+            </div>
 
-          <div className="principle-col">
-            <h4>
-              <span className="principle-tag">POLICY</span>
-              {pricingPrinciple.policyHeading}
-            </h4>
-            <p>{pricingPrinciple.policyDescription}</p>
-            <p className="production-subnote">
-              <strong>{pricingPrinciple.productionHeading}:</strong> {pricingPrinciple.productionDescription}
-            </p>
+            <div className="principle-col">
+              <h4>
+                <span className="principle-tag">POLICY</span>
+                {pricingPrinciple.policyHeading}
+              </h4>
+              <p>{pricingPrinciple.policyDescription}</p>
+              <p className="production-subnote">
+                <strong>{pricingPrinciple.productionHeading}:</strong> {pricingPrinciple.productionDescription}
+              </p>
+            </div>
           </div>
         </div>
+      )}
+
+      <div className="pricing-see-more-wrap">
+        <button
+          type="button"
+          className="pricing-see-more-btn"
+          onClick={handleToggleShowAll}
+          aria-expanded={showAll}
+        >
+          <span>{showAll ? 'Show Less' : 'See More Plans & Details'}</span>
+          {showAll ? <ChevronUp size={18} aria-hidden="true" /> : <ChevronDown size={18} aria-hidden="true" />}
+        </button>
       </div>
     </section>
   )

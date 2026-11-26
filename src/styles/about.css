@@ -218,8 +218,9 @@
 
 .about-v5-btn:hover {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 15px 45px rgba(39, 83, 227, 0.7);
-  border-color: #FFFFFF;
+  background: linear-gradient(90deg, #FF9A3C 0%, #F7801E 45%, #E8650F 100%);
+  border-color: rgba(255, 214, 170, 0.95);
+  box-shadow: 0 15px 45px rgba(247, 128, 30, 0.55);
 }
 
 .about-v5-btn-icon {

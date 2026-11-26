@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Menu, X } from 'lucide-react'
 import '../../styles/navbar.css'
 
 const NAV_ITEMS = [
-  { name: 'Home', href: '#home', id: 'home' },
-  { name: 'Services', href: '#services', id: 'services' },
+  { name: 'Home', href: '/', id: 'home' },
+  { name: 'Services', href: '/services', id: 'services' },
   { name: 'Work', href: '#how-we-work', id: 'work' },
   { name: 'Blog', href: '#blog', id: 'blog' },
   { name: 'Careers', href: '#careers', id: 'careers' },
-  { name: 'Contact', href: '#contact', id: 'contact' },
-  { name: 'About', href: '#about', id: 'about' },
+  { name: 'Contact', href: '/get-started', id: 'contact' },
+  { name: 'About', href: '/about', id: 'about' },
 ]
 
 export default function Navbar({
@@ -19,40 +19,71 @@ export default function Navbar({
   className = '',
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const progressBarRef = useRef(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0
+      setScrolled(scrollY > 20)
+
+      if (progressBarRef.current) {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight
+        const progress = docHeight > 0 ? Math.min(1, Math.max(0, scrollY / docHeight)) : 0
+        progressBarRef.current.style.transform = `scaleX(${progress})`
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll, { passive: true })
+    if (window.lenis) {
+      window.lenis.on('scroll', handleScroll)
+    }
+    handleScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+      if (window.lenis) {
+        window.lenis.off('scroll', handleScroll)
+      }
+    }
+  }, [activePage])
 
   const handleLinkClick = (e, link) => {
     e.preventDefault()
     setMobileMenuOpen(false)
 
-    if (onNavigate) {
-      onNavigate(link.href)
+    if (link.href === '/services' || link.href === '#services') {
+      if (onNavigate) onNavigate('/services')
       return
     }
 
-    if (link.href === '#services') {
-      window.location.hash = '#services'
+    if (link.href === '/about' || link.href === '#about') {
+      if (onNavigate) onNavigate('/about')
       return
     }
 
-    if (link.href === '#contact') {
-      if (onOpenContact) {
-        onOpenContact()
-      } else {
-        window.location.hash = '#get-started'
-      }
+    if (link.href === '/get-started' || link.href === '#contact' || link.href === '#get-started') {
+      if (onOpenContact) onOpenContact()
+      else if (onNavigate) onNavigate('/get-started')
+      return
+    }
+
+    if (link.href === '/' || link.href === '#home') {
+      if (onNavigate) onNavigate('/')
       return
     }
 
     if (link.href && link.href.startsWith('#')) {
-      const target = document.querySelector(link.href)
-      if (target) {
-        if (window.lenis) {
-          window.lenis.scrollTo(target, { duration: 1.2 })
-        } else {
-          target.scrollIntoView({ behavior: 'smooth' })
-        }
+      if (onNavigate) {
+        onNavigate('/', link.href)
       } else {
-        window.location.hash = link.href
+        const target = document.querySelector(link.href)
+        if (target) {
+          if (window.lenis) window.lenis.scrollTo(target, { duration: 1.2 })
+          else target.scrollIntoView({ behavior: 'smooth' })
+        }
       }
     }
   }
@@ -63,9 +94,7 @@ export default function Navbar({
     if (onOpenContact) {
       onOpenContact()
     } else if (onNavigate) {
-      onNavigate('#get-started')
-    } else {
-      window.location.hash = '#get-started'
+      onNavigate('/get-started')
     }
   }
 
@@ -73,15 +102,19 @@ export default function Navbar({
     if (activePage === 'home') return link.id === 'home'
     if (activePage === 'services') return link.id === 'services'
     if (activePage === 'get-started') return link.id === 'contact'
+    if (activePage === 'about') return link.id === 'about'
     return false
   }
 
   return (
-    <header className={`navisland-header ${className}`}>
+    <header className={`navisland-header ${scrolled ? 'navisland-header--scrolled' : ''} ${className}`}>
+      <div className="navisland-progress-track" aria-hidden="true">
+        <div ref={progressBarRef} className="navisland-progress-bar" />
+      </div>
       <div className="navisland-inner">
         <a
-          href="#home"
-          onClick={(e) => handleLinkClick(e, { name: 'Home', href: '#home', id: 'home' })}
+          href="/"
+          onClick={(e) => handleLinkClick(e, { name: 'Home', href: '/', id: 'home' })}
           className="navisland-logo"
         >
           <img

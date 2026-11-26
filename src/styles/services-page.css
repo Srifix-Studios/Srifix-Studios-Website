@@ -4,7 +4,7 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-color: var(--bg-primary, #06070B);
+  background-color: #0F0F1C;
   color: #FFFFFF;
   overflow-x: hidden;
   overflow-x: clip;
@@ -19,7 +19,7 @@
   transform: translateX(-50%);
   width: 100%;
   max-width: 1600px;
-  height: 720px;
+  height: 760px;
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
@@ -27,7 +27,7 @@
 
 .services-hero-dome {
   position: absolute;
-  top: -720px;
+  top: -820px;
   left: 50%;
   transform: translateX(-50%);
   width: 1594px;
@@ -57,7 +57,7 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 56px 66px 40px;
+  padding: clamp(118px, 11vw, 150px) clamp(20px, 4.5vw, 66px) 40px;
   box-sizing: border-box;
 }
 
@@ -94,12 +94,14 @@
   line-height: 1.02;
   letter-spacing: -2.1px;
   color: #FFFFFF;
+  text-shadow: 0 0 28px rgba(255, 255, 255, 0.25);
   margin-bottom: 22px;
 }
 
 .services-title-accent {
   display: inline;
   color: #2753E3;
+  text-shadow: 0 0 32px rgba(39, 83, 227, 0.75);
 }
 
 .services-hero-subtitle {
@@ -117,10 +119,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 12px;
-  max-width: 860px;
-  margin: 44px auto 30px;
+  max-width: 920px;
+  margin: clamp(140px, 16vw, 220px) auto 28px;
   position: relative;
   z-index: 2;
 }
@@ -129,17 +131,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 62px;
-  padding: 0 24px;
-  border-radius: 31px;
-  background: rgba(15, 15, 28, 0.65);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: rgba(15, 15, 28, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   color: #FFFFFF;
   font-family: var(--font-inter, 'Inter', sans-serif);
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -147,15 +147,16 @@
 
 .service-tab-btn:hover {
   background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #FFFFFF;
   transform: translateY(-1px);
 }
 
 .service-tab-btn.active {
-  background: #2753E3;
-  border: 1px solid #2753E3;
+  background: linear-gradient(90deg, #2753E3 0%, #152E7D 100%);
+  border: 1px solid rgba(147, 197, 253, 0.75);
   color: #FFFFFF;
-  box-shadow: 0 0 32px rgba(39, 83, 227, 0.65), 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 24px rgba(39, 83, 227, 0.55), 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 .services-subnav-strip {
@@ -202,6 +203,17 @@
   margin: 0 auto;
   position: relative;
   z-index: 2;
+}
+
+.services-page-wrapper .pricing-card.featured .wave1,
+.services-page-wrapper .pricing-card.featured .wave2 {
+  opacity: 0.85;
+  animation-play-state: running;
+}
+
+.services-page-wrapper .pricing-card.featured {
+  border-color: rgba(168, 85, 247, 0.55);
+  box-shadow: 0 20px 55px rgba(88, 28, 135, 0.35), 0 0 32px rgba(59, 130, 246, 0.25);
 }
 
 .services-cta-section {

@@ -57,7 +57,7 @@
 }
 
 @supports (animation-timeline: view()) {
-    .pricing-section, .question-section , .cta-section ,.footer{
+    .pricing-section, .question-section {
         animation: enter-in linear both;
         animation-timeline: view();
         animation-range: entry 0% exit 100%;

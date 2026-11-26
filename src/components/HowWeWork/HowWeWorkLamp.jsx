@@ -49,6 +49,7 @@ export default function HowWeWorkLamp() {
   const stageRef = useRef(null)
   const cordRef = useRef(null)
   const litRef = useRef(false)
+  const activeStepRef = useRef(null)
   litRef.current = lit
 
   const swing = useCallback(() => {
@@ -182,24 +183,28 @@ export default function HowWeWorkLamp() {
           scrollTrigger: {
             trigger: section,
             start: 'top top',
-            end: isDesktop ? '+=3400' : '+=2600',
+            end: isDesktop ? '+=1500' : '+=1200',
             pin: true,
-            scrub: 0.6,
+            scrub: 0.15,
             anticipatePin: 1,
             onUpdate: (self) => {
               const p = self.progress
-              const isCurrentlyLit = p >= 0.04 && p <= 0.92
+              const isCurrentlyLit = p >= 0.04
               if (litRef.current !== isCurrentlyLit) {
                 setLit(isCurrentlyLit)
                 if (isCurrentlyLit) setPulled(true)
               }
 
-              if (p < 0.04) setActiveStep(null)
-              else if (p < 0.23) setActiveStep('1')
-              else if (p < 0.45) setActiveStep('2')
-              else if (p < 0.67) setActiveStep('3')
-              else if (p <= 0.89) setActiveStep('4')
-              else setActiveStep(null)
+              let nextStep = null
+              if (p >= 0.04 && p < 0.25) nextStep = '1'
+              else if (p >= 0.25 && p < 0.50) nextStep = '2'
+              else if (p >= 0.50 && p < 0.75) nextStep = '3'
+              else if (p >= 0.75) nextStep = '4'
+
+              if (activeStepRef.current !== nextStep) {
+                activeStepRef.current = nextStep
+                setActiveStep(nextStep)
+              }
             },
           },
         })

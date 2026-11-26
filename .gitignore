@@ -6,6 +6,7 @@ dist/
 dist-ssr/
 
 # Environment & Local overrides
+.env
 *.local
 .env*.local
 

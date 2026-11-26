@@ -17,6 +17,20 @@ export default function CtaSection({ onOpenContact }) {
       return
     }
 
+    const checkVisible = () => {
+      const el = sectionRef.current
+      if (!el) return false
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight || document.documentElement.clientHeight
+      if (rect.top < vh * 0.92 && rect.bottom > 0) {
+        setLit(true)
+        return true
+      }
+      return false
+    }
+
+    if (checkVisible()) return
+
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -24,11 +38,22 @@ export default function CtaSection({ onOpenContact }) {
           io.disconnect()
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.05, rootMargin: '0px 0px -40px 0px' }
     )
 
     if (sectionRef.current) io.observe(sectionRef.current)
-    return () => io.disconnect()
+
+    const onScroll = () => {
+      if (checkVisible()) {
+        window.removeEventListener('scroll', onScroll)
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    return () => {
+      io.disconnect()
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
   const handleCtaClick = (e) => {
@@ -36,7 +61,10 @@ export default function CtaSection({ onOpenContact }) {
     if (onOpenContact) {
       onOpenContact()
     } else {
-      window.location.hash = '#get-started'
+      if (typeof window !== 'undefined') {
+        window.history.pushState(null, '', '/get-started')
+        window.dispatchEvent(new PopStateEvent('popstate'))
+      }
     }
   }
 
@@ -66,7 +94,7 @@ export default function CtaSection({ onOpenContact }) {
             one business day.
           </p>
 
-          <a href="#get-started" onClick={handleCtaClick} className="cta-btn">
+          <a href="/get-started" onClick={handleCtaClick} className="cta-btn">
             <span>Get Started</span>
             <ArrowUpRight aria-hidden="true" />
           </a>

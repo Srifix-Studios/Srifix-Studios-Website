@@ -93,9 +93,9 @@ export default function TestimonialsSection() {
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: '+=300%',
+          end: '+=150%',
           pin: true,
-          scrub: 1,
+          scrub: 0.25,
           invalidateOnRefresh: true,
         },
       })
@@ -171,7 +171,15 @@ export default function TestimonialsSection() {
           'step2+=0.35'
         )
 
-        .to({}, { duration: 0.8 })
+        .to({}, { duration: 0.5 })
+
+        .to(card3, {
+          x: 340,
+          scale: 1.35,
+          autoAlpha: 0,
+          duration: 0.45,
+          ease: 'power2.in',
+        })
     }, sectionRef)
 
     mm.add('(max-width: 860px)', () => {
@@ -183,9 +191,9 @@ export default function TestimonialsSection() {
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: '+=300%',
+          end: '+=150%',
           pin: true,
-          scrub: 1,
+          scrub: 0.25,
           invalidateOnRefresh: true,
         },
       })
@@ -246,7 +254,14 @@ export default function TestimonialsSection() {
           'mStep2+=0.4'
         )
 
-        .to({}, { duration: 0.8 })
+        .to({}, { duration: 0.5 })
+
+        .to(card3, {
+          scale: 1.35,
+          autoAlpha: 0,
+          duration: 0.45,
+          ease: 'power2.in',
+        })
     }, sectionRef)
 
     return () => mm.revert()

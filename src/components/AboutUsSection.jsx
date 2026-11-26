@@ -5,7 +5,7 @@ import '../styles/about.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function AboutUsSection({ onOpenContact }) {
+export default function AboutUsSection({ onOpenContact, onNavigate }) {
   const sectionRef = useRef(null)
 
   useEffect(() => {
@@ -95,13 +95,11 @@ export default function AboutUsSection({ onOpenContact }) {
 
   const handleActionClick = (e) => {
     e.preventDefault()
-    if (onOpenContact) {
-      onOpenContact()
+    if (onNavigate) {
+      onNavigate('/about')
     } else {
-      const servicesSection = document.getElementById('services')
-      if (servicesSection) {
-        servicesSection.scrollIntoView({ behavior: 'smooth' })
-      }
+      window.history.pushState(null, '', '/about')
+      window.dispatchEvent(new PopStateEvent('popstate'))
     }
   }
 
@@ -144,7 +142,7 @@ export default function AboutUsSection({ onOpenContact }) {
 
           <div className="about-v5-center-action">
             <a
-              href="#services"
+              href="/about"
               onClick={handleActionClick}
               className="about-v5-btn"
             >

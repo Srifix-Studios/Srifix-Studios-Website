@@ -1,14 +1,46 @@
 
 
 .navisland-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: clamp(14px, 2vh, 24px) clamp(20px, 4vw, 56px);
+  background: transparent;
+  box-sizing: border-box;
+  transition: background 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease, padding 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.navisland-header--scrolled {
+  background: rgba(15, 15, 28, 0.85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: clamp(10px, 1.4vh, 16px) clamp(20px, 4vw, 56px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+}
+
+.navisland-progress-track {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.navisland-progress-bar {
   width: 100%;
-  z-index: 100;
-  padding: clamp(16px, 2.5vh, 28px) clamp(20px, 4vw, 56px);
-  background: transparent;
-  box-sizing: border-box;
+  height: 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, #2753E3 0%, #60A5FA 48%, #F07108 100%);
+  box-shadow: 0 0 12px rgba(96, 165, 250, 0.75), 0 0 8px rgba(240, 113, 8, 0.5);
+  will-change: transform;
 }
 
 .navisland-inner {
@@ -138,9 +170,11 @@
 }
 
 .navisland-cta-btn:hover {
-  border-color: rgba(39, 83, 227, 1);
-  box-shadow: 0 0 28px rgba(39, 83, 227, 0.65);
-  transform: translateY(-1px);
+  background: linear-gradient(90deg, #FF9A3C 0%, #F7801E 45%, #E8650F 100%);
+  border-color: rgba(255, 214, 170, 0.95);
+  box-shadow: 0 10px 30px rgba(247, 128, 30, 0.5);
+  color: #FFFFFF;
+  transform: translateY(-2px);
 }
 
 .navisland-cta-arrow {

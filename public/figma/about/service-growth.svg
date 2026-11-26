@@ -1,0 +1,88 @@
+<svg width="600" height="380" viewBox="0 0 600 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="growthCardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#140f0c"/>
+      <stop offset="100%" stop-color="#090604"/>
+    </linearGradient>
+    <linearGradient id="orangeGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f07108"/>
+      <stop offset="100%" stop-color="#ff9944"/>
+    </linearGradient>
+    <filter id="orangeBloom" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="20" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" mode="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="600" height="380" rx="16" fill="url(#growthCardBg)"/>
+  <rect width="600" height="380" rx="16" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+
+  <!-- Atmospheric Glow -->
+  <circle cx="500" cy="90" r="110" fill="#f07108" opacity="0.22" filter="url(#orangeBloom)"/>
+
+  <!-- Motion & Campaign Studio Canvas -->
+  <!-- Top Left: Video / Motion Frame -->
+  <g transform="translate(40, 36)">
+    <rect width="280" height="170" rx="12" fill="#0c0907" stroke="rgba(240,113,8,0.3)" stroke-width="1.5"/>
+    <!-- Video Player Simulation -->
+    <rect x="16" y="16" width="248" height="110" rx="8" fill="rgba(255,255,255,0.02)"/>
+    <!-- Play Button -->
+    <circle cx="140" cy="71" r="22" fill="url(#orangeGlow)"/>
+    <path d="M136 63 L148 71 L136 79 Z" fill="#ffffff"/>
+    
+    <!-- Timeline Track -->
+    <rect x="16" y="138" width="248" height="6" rx="3" fill="rgba(255,255,255,0.1)"/>
+    <rect x="16" y="138" width="160" height="6" rx="3" fill="#f07108"/>
+    <circle cx="176" cy="141" r="5" fill="#ffffff"/>
+    <text x="16" y="160" font-family="'Inter', sans-serif" font-size="9" fill="rgba(255,255,255,0.5)">00:14 / 00:30 · 4K 60FPS CINEMATIC</text>
+  </g>
+
+  <!-- Top Right: Performance Analytics Spike -->
+  <g transform="translate(340, 36)">
+    <rect width="220" height="170" rx="12" fill="#0c0907" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+    <text x="18" y="32" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="rgba(255,255,255,0.7)">CAMPAIGN CONVERSIONS</text>
+    <text x="18" y="66" font-family="'Syne', sans-serif" font-weight="800" font-size="28" fill="#ffffff">+218%</text>
+    <rect x="115" y="46" width="85" height="20" rx="10" fill="rgba(240,113,8,0.2)"/>
+    <text x="125" y="60" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#f07108">▲ 4.2x ROAS</text>
+
+    <!-- Upward Trend Line -->
+    <path d="M20 140 Q 60 130, 90 110 T 150 85 T 200 50" fill="none" stroke="url(#orangeGlow)" stroke-width="3" stroke-linecap="round"/>
+    <!-- Glow Area under curve -->
+    <path d="M20 140 Q 60 130, 90 110 T 150 85 T 200 50 L 200 150 L 20 150 Z" fill="url(#orangeGlow)" opacity="0.12"/>
+    <circle cx="200" cy="50" r="5" fill="#ffffff"/>
+  </g>
+
+  <!-- Bottom: Ad Variants & Creative Delivery Pipeline -->
+  <g transform="translate(40, 226)">
+    <rect width="520" height="118" rx="12" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.08)"/>
+    
+    <!-- Mini Ad Tile 1 -->
+    <rect x="20" y="20" width="70" height="78" rx="8" fill="#1b120c" stroke="rgba(240,113,8,0.3)"/>
+    <!-- Clean Vector Lightning Bolt -->
+    <path d="M57 42 L48 54 H55 L51 68 L62 52 H55 Z" fill="#f07108"/>
+    <text x="25" y="86" font-family="'Inter', sans-serif" font-size="8" fill="rgba(255,255,255,0.6)">META REEL</text>
+
+    <!-- Mini Ad Tile 2 -->
+    <rect x="100" y="20" width="70" height="78" rx="8" fill="#1b120c" stroke="rgba(240,113,8,0.3)"/>
+    <!-- Clean Vector Arrow Graph -->
+    <path d="M125 65 L132 55 L139 59 L149 46 M149 46 H141 M149 46 V54" stroke="#f07108" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="107" y="86" font-family="'Inter', sans-serif" font-size="8" fill="rgba(255,255,255,0.6)">GOOGLE ADS</text>
+
+    <!-- Copy Block -->
+    <text x="190" y="44" font-family="'Syne', sans-serif" font-weight="700" font-size="16" fill="#ffffff">Targeted Acquisition &amp; Creative Scale</text>
+    <text x="190" y="68" font-family="'Inter', sans-serif" font-size="12" fill="rgba(255,255,255,0.6)">Cinematic Motion · High-Converting Ad Creative · Full Funnel Strategy</text>
+
+    <!-- Tag Pills -->
+    <g transform="translate(190, 82)">
+      <rect width="90" height="20" rx="10" fill="rgba(240,113,8,0.2)"/>
+      <text x="12" y="14" font-family="'Inter', sans-serif" font-size="10" font-weight="600" fill="#f07108">MOTION 3D</text>
+
+      <rect x="98" width="95" height="20" rx="10" fill="rgba(255,255,255,0.06)"/>
+      <text x="110" y="14" font-family="'Inter', sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.7)">CAMPAIGNS</text>
+
+      <rect x="200" width="70" height="20" rx="10" fill="rgba(255,255,255,0.06)"/>
+      <text x="210" y="14" font-family="'Inter', sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.7)">SEO V2</text>
+    </g>
+  </g>
+</svg>

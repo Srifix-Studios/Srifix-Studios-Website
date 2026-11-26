@@ -57,19 +57,43 @@ export default function ServicesPage({ onBack, onOpenContact }) {
       return
     }
 
+    const checkVisible = () => {
+      const el = ctaSectionRef.current
+      if (!el) return false
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight || document.documentElement.clientHeight
+      if (rect.top < vh * 0.92 && rect.bottom > 0) {
+        setCtaLit(true)
+        return true
+      }
+      return false
+    }
+
+    if (checkVisible()) return
+
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
           setCtaLit(true)
-        } else if (e.boundingClientRect.top > (window.innerHeight || document.documentElement.clientHeight)) {
-          setCtaLit(false)
+          io.disconnect()
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.05, rootMargin: '0px 0px -40px 0px' }
     )
 
     if (ctaSectionRef.current) io.observe(ctaSectionRef.current)
-    return () => io.disconnect()
+
+    const onScroll = () => {
+      if (checkVisible()) {
+        window.removeEventListener('scroll', onScroll)
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    return () => {
+      io.disconnect()
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
   const filteredCards = useMemo(() => {
@@ -349,7 +373,10 @@ export default function ServicesPage({ onBack, onOpenContact }) {
         </div>
       </section>
 
-      <Footer onOpenContact={() => handleBookService('general')} />
+      <Footer
+        onOpenContact={() => handleBookService('general')}
+        onNavigate={(target) => onBack && onBack(target)}
+      />
 
       {selectedService && (
         <div

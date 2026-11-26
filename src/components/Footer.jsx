@@ -3,14 +3,14 @@ import { Mail, Phone, ArrowUp } from 'lucide-react'
 import '../styles/cta.css'
 
 const quickLinks = [
-  { name: 'Home', href: '#home' },
-  { name: 'Services', href: '#services' },
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
   { name: 'Work', href: '#how-we-work' },
-  { name: 'About', href: '#about' },
+  { name: 'About', href: '/about' },
   { name: 'Why Us', href: '#why-us' },
   { name: 'Reviews', href: '#testimonials' },
   { name: 'Pricing', href: '#pricing' },
-  { name: 'Contact Desk', href: '#contact' },
+  { name: 'Contact Desk', href: '/get-started' },
 ]
 const legalLinks = ['Terms of Service', 'Privacy Policy']
 const socialLinks = [
@@ -27,38 +27,33 @@ function scrollToTop() {
   else window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-export default function Footer({ onOpenContact }) {
+export default function Footer({ onOpenContact, onNavigate }) {
   function handleLinkClick(e, href) {
-    if (href === '#contact' || href === '#get-started') {
-      e.preventDefault()
+    e.preventDefault()
+
+    if (href === '/get-started' || href === '#contact' || href === '#get-started') {
       if (onOpenContact) {
         onOpenContact()
-      } else {
-        window.location.hash = '#get-started'
+      } else if (onNavigate) {
+        onNavigate('/get-started')
       }
       return
     }
 
-    if (href === '#services') {
-      e.preventDefault()
-      window.location.hash = '#services'
-      if (window.lenis) window.lenis.scrollTo(0, { immediate: true })
-      else window.scrollTo({ top: 0, behavior: 'instant' })
+    if (onNavigate) {
+      onNavigate(href)
       return
     }
 
     if (href.startsWith('#')) {
       const target = document.querySelector(href)
       if (target) {
-        e.preventDefault()
-        if (window.lenis) {
-          window.lenis.scrollTo(target, { duration: 1.2 })
-        } else {
-          target.scrollIntoView({ behavior: 'smooth' })
-        }
+        if (window.lenis) window.lenis.scrollTo(target, { duration: 1.2 })
+        else target.scrollIntoView({ behavior: 'smooth' })
       }
     }
   }
+
   return (
     <>
       <footer className="footer">
@@ -98,6 +93,7 @@ export default function Footer({ onOpenContact }) {
                 <a
                   key={item.name}
                   href={item.href}
+                  className={`social-link social-link--${item.name.toLowerCase()}`}
                   target={item.href.startsWith('http') ? '_blank' : undefined}
                   rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 >

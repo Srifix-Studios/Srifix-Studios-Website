@@ -58,6 +58,10 @@ export default function HeroSection({ onOpenContact }) {
       window.location.hash = '#services'
       return
     }
+    if (href === '#about') {
+      window.location.hash = '#about'
+      return
+    }
     if (href === '#contact') {
       handleCtaClick()
       return
@@ -91,12 +95,6 @@ export default function HeroSection({ onOpenContact }) {
             type="video/mp4"
           />
         </video>
-
-        <Navbar
-          activePage="home"
-          onNavigate={handleNavLinkClick}
-          onOpenContact={handleCtaClick}
-        />
 
         <section className="hero-v5-content">
           <h1 className="hero-v5-heading">

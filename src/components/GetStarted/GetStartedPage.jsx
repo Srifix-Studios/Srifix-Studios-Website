@@ -651,7 +651,10 @@ export default function GetStartedPage({ onBack, preselectedService = null }) {
         </div>
       </div>
 
-      <Footer onOpenContact={() => {}} />
+      <Footer
+        onOpenContact={handleScrollToForm}
+        onNavigate={(target) => onBack && onBack(target)}
+      />
     </div>
   )
 }

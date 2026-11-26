@@ -78,7 +78,7 @@
 }
 
 .hw4.is-on .hw4-dashed-path path {
-  filter: drop-shadow(0 0 12px rgba(240, 113, 8, 0.55));
+  stroke: #ffd8b0;
 }
 
 .hw4-lamp-anchor {
@@ -133,7 +133,7 @@
   height: 440px;
   overflow: visible !important;
   pointer-events: none;
-  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.85));
+  transform: translateZ(0);
 }
 
 .hw4-beam-group {
@@ -246,22 +246,21 @@
   position: absolute;
   top: var(--halo-y, 52%);
   left: var(--halo-x, 78%);
-  transform: translate(-50%, -50%);
-  width: 580px;
-  height: 580px;
+  transform: translate3d(-50%, -50%, 0);
+  width: 680px;
+  height: 680px;
   border-radius: 50%;
   background: radial-gradient(
     circle at center,
-    rgba(255, 160, 51, 0.18) 0%,
-    rgba(240, 113, 8, 0.08) 38%,
-    rgba(217, 88, 0, 0.02) 58%,
+    rgba(255, 160, 51, 0.2) 0%,
+    rgba(240, 113, 8, 0.09) 32%,
+    rgba(217, 88, 0, 0.025) 56%,
     transparent 74%
   );
-  filter: blur(52px);
   opacity: 0;
   pointer-events: none;
   z-index: 3;
-  will-change: left, top, opacity;
+  will-change: opacity, transform;
   transition: opacity 0.3s ease;
 }
 
@@ -283,20 +282,20 @@
   width: clamp(250px, 18.5vw, 305px);
   padding: clamp(16px, 1.5vw, 22px);
   border-radius: 16px;
-  background: rgba(12, 13, 18, 0.90);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: rgba(12, 13, 18, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75);
   pointer-events: auto;
   opacity: 0;
   box-sizing: border-box;
   text-align: left;
+  will-change: transform, opacity;
   transition:
-    border-color 0.4s ease,
-    box-shadow 0.4s ease,
-    background 0.4s ease,
-    transform 0.35s ease;
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background 0.35s ease;
 }
 
 .hw4-card:hover {
